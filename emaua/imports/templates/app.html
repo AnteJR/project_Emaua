@@ -1,0 +1,11 @@
+<body>
+    <template name='mainPage'>
+        <h1>EMAUA</h1>
+        {{#if currentUser}}
+            <!--PAGE UNE FOIS CONNECTÉS AVEC LES ARBRES ET LA CARTE-->
+        {{else}}
+            <!--SI ON N'EST PAS CONNECTÉ ON A LES BOUTONS DE CONNEXION-->
+            {{> loginBtn}}
+        {{/if}}
+    </template>
+</body>
