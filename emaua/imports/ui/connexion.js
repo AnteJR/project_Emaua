@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { TreeCollection } from '../api/arbres.js';
 import { Accounts } from 'meteor/accounts-base';
 
+import '../../client/lib/routes.js'
 import '../templates/app.html';
 import '../templates/loginBtn.html';
 import '../templates/loginPage.html';
@@ -21,15 +22,21 @@ Template.registerPage.events({
 	'click #boutonReg': function(event){
 		console.log("I've been pressed !")
 		event.preventDefault();
-		let prenomUt = document.getElementById("surnameReg").value;
-		let nomFam = document.getElementById("nameReg").value;
+		let nomFam = document.getElementById("surnameReg").value;
+		let prenomUt = document.getElementById("nameReg").value;
 		let emailAdrs = document.getElementById("emailReg").value;
 		let motDePasse = document.getElementById("passwordReg").value;
 		let motDePasseConfirmation = document.getElementById("passwordRegConf").value;
 		let re = /\S+@\S+\.\S+/;
+
+		let pseudo = "";
+		let initialePrenom = prenomUt.split("");
+		pseudo+=initialePrenom[0].toLowerCase();
+		pseudo+=nomFam.toLowerCase();
+		alert(pseudo);
 		
 		if(motDePasse!=motDePasseConfirmation){
-			alert("Les mots de passes ne sont pas les mêmes !");
+			alert(motDePasse + "Les mots de passes ne sont pas les mêmes !");
 		}
 		else if(!emailAdrs.match(re)){
 			alert("Votre email n'est pas valide !");
@@ -38,13 +45,20 @@ Template.registerPage.events({
 			alert("Veuillez entrer un nom/prénom !");
 		}
 		else{
+			if(Meteor.users.findOne({username: pseudo})){
+				while(Meteor.users.findOne({username: pseudo})){
+					let i = Math.round(Math.random()*100)
+					pseudo = pseudo + i
+				}
+			}
 			Accounts.createUser({
+				username: pseudo,
 				prenom: prenomUt,
 				nom: nomFam,
 				email: emailAdrs,
-				mdp: motDePasse
+				password: motDePasse
 			}, function(error){
-				if(error || !emailUt.match(re) || !nomDUt){
+				if(error){
 					alert(error.reason);
 				}
 				else{
