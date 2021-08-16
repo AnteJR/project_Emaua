@@ -10,9 +10,11 @@ import '../templates/loginPage.html';
 import '../templates/registerPage.html';
 
 Template.loginBtn.events({
+	//quand on clique sur "se connecter", on charge la page de connexion
     'click #loginButton': function(event){
 		FlowRouter.go('loginPage');
 	},
+	//quand on clique sur "créer un compte, on se créer un compte"
     'click #registerButton': function(event){
 		FlowRouter.go('registerPage');
 	},
@@ -22,56 +24,70 @@ Template.registerPage.events({
 	'click #boutonReg': function(event){
 		console.log("I've been pressed !")
 		event.preventDefault();
+
+		//récupération des infos des inputs
 		let nomFam = document.getElementById("surnameReg").value;
 		let prenomUt = document.getElementById("nameReg").value;
 		let emailAdrs = document.getElementById("emailReg").value;
 		let motDePasse = document.getElementById("passwordReg").value;
 		let motDePasseConfirmation = document.getElementById("passwordRegConf").value;
-		let re = /\S+@\S+\.\S+/;
 
-		let pseudo = "";
-		let initialePrenom = prenomUt.split("");
-		pseudo+=initialePrenom[0].toLowerCase();
-		pseudo+=nomFam.toLowerCase();
-		alert(pseudo);
+		//variables pour des tests plus tard
+		let re = /\S+@\S+\.\S+/;
+		let i = 1;
+		let role = 'user';
+		let id;
 		
+		//établissement automatique d'un pseudo qui transforme "John Smith" en "johnsmith"
+		let pseudo = ""
+		pseudo += prenomUt.toLowerCase();
+		pseudo += nomFam.toLowerCase();
+		let pseudoOriginal = pseudo;
+		
+		//si les deux mots de passes ne sont pas les mêmes
 		if(motDePasse!=motDePasseConfirmation){
 			alert(motDePasse + "Les mots de passes ne sont pas les mêmes !");
 		}
-		else if(!emailAdrs.match(re)){
+
+		//si l'adress email est invalide
+		if(!emailAdrs.match(re)){
 			alert("Votre email n'est pas valide !");
 		}
-		else if(!prenomUt || !nomFam){
+
+		//s'il manque le nom/prénom
+		if(!prenomUt || !nomFam){
 			alert("Veuillez entrer un nom/prénom !");
 		}
 		else{
+			//modifier le pseudo de l'utilisateur si un autre utilisateur a le même 
+			//--> transforme "jsmith" en "johnsmith1" si le premier existe, "johnsmith1" en "johnsmith2" si "johnsmith1" existe, etc
 			if(Meteor.users.findOne({username: pseudo})){
 				while(Meteor.users.findOne({username: pseudo})){
-					let i = Math.round(Math.random()*100)
-					pseudo = pseudo + i
+					pseudo = pseudoOriginal + i
+					i++;
 				}
 			}
-			Accounts.createUser({
+			//lors que le premier utilisateur est créer, sa fonction sera celle d'admin
+			if(Meteor.users.find().count()===0){
+				role = "admin";
+			}
+			Roles.createRole(role, {unlessExists: true});
+			id = Accounts.createUser({
 				username: pseudo,
-				prenom: prenomUt,
-				nom: nomFam,
 				email: emailAdrs,
 				password: motDePasse
 			}, function(error){
 				if(error){
 					alert(error.reason);
 				}
-				else{
-					FlowRouter.go('home');
-					alert("Vous avez créé votre compte !");
-				}
 			});
 		}
+		FlowRouter.go('home');
 	},
 	'click #annulerReg': function(event){
 		event.preventDefault();
 		console.log("annuler")
-		FlowRouter.go('home');
+		FlowRouter.go('home', { _id: Meteor.userId() });
 	}
 })
 

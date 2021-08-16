@@ -1,14 +1,19 @@
 <template name='mainPage'>
-    <h1>EMAUA</h1>
+    <h1 class="h1EMAUA">EMAUA</h1>
     {{#if currentUser}}
         <!--PAGE UNE FOIS CONNECTÉS AVEC LES ARBRES ET LA CARTE-->
         <!--TEMPLATE POUR UN HEADER AVEC L'OPTION DE SE DECO/MODIFIER LE COMPTE-->
         <!--TEMPLATE LISTE DES ARBRES-->
         <!--TEMPLATE POUR GOOGLE MAPS-->
-        <p>CURRENT USER</p>
+        <button id="addTreeBtn">ajouter arbre</button>
+        {{#if isAdmin}}
+            <p>IS ADMIN</p>
+        {{else}}
+        {{/if}}
     {{else}}
         <!--SI ON N'EST PAS CONNECTÉ ON A LES BOUTONS DE CONNEXION-->
-        <p>NOT CURRENT USERT</p>
         {{> loginBtn}}
+        <p>ou</p>
+        <p>Entrer un code : <input type="text" id="monCode"/><button id="codeButton">valider</button></p>
     {{/if}}
 </template>

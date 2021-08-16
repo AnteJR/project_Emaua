@@ -16,3 +16,15 @@ FlowRouter.route('/register', {
         BlazeLayout.render('registerPage');
     }
 });
+FlowRouter.route('/trees', {
+    name: 'addTreeForm',
+    action(){
+        BlazeLayout.render('addTreeForm');
+    }
+});
+FlowRouter.route('/treesCode/:codeArbre', {
+    name: 'addTreeCode',
+    action(){
+        BlazeLayout.render('addTreeCode');
+    }
+});

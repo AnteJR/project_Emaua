@@ -2,3 +2,18 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+.h1EMAUA{
+  color: #d2232a;
+  text-shadow: 2px 2px #000000;
+}
+.btnLogin{
+  color:white;
+  background-color:green;
+  border-color:white;
+  border-radius:4px;
+  font-size:20px;
+  padding:5px 30px 5px 30px;
+}
+.btnLogin:hover{
+  background-color:lightgreen;
+}

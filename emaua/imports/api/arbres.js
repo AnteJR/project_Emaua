@@ -12,19 +12,29 @@ Meteor.methods({
     'arbres.addTree'(username,date,nbr,gps,codeTree){
         check(username, String);
         check(date, String);
-        check(nbr, Number);
+        check(nbr, String);
         check(gps, String);
         check(codeTree, String);
-        TreeCollection.insert({
-            nomUtilisateur: username,
-            datePlantation: date,
-            nombreArbres: nbr,
-            coordonneesArbres: gps,
-            codeArbre: codeTree
-        })
+        if(username){
+            TreeCollection.insert({
+                nomUtilisateur: username,
+                datePlantation: date,
+                nombreArbres: nbr,
+                coordonneesArbres: gps,
+                codeArbre: codeTree
+            })
+        }
+        else{TreeCollection.insert({
+                nomUtilisateur: "EN ATTENTE DE CODE",
+                datePlantation: date,
+                nombreArbres: nbr,
+                coordonneesArbres: gps,
+                codeArbre: codeTree
+            })
+        }
     }
     //futures (éventuelles) méthodes:
-    //1. ajouter des photos
+    //1. ajouter des photos/vidéos
     //2. ajouter une description
     //3. ajouter une mise à jour
 });
