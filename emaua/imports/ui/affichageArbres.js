@@ -37,8 +37,14 @@ Template.mainPage.events({
     },
     'click #codeButton': function(event){
 		let myCode = document.getElementById("monCode").value;
+        let monArbre = TreeCollection.findOne({codeArbre: myCode});
 		if(TreeCollection.findOne({codeArbre: myCode})){
-			FlowRouter.go('addTreeCode', {codeArbre: myCode});
+            if(monArbre.nomUtilisateur!="EN ATTENTE DE CODE"){
+                alert("Le code est déjà utilisé :(")
+            }
+            else{
+                FlowRouter.go('addTreeCode', {codeArbre: myCode});
+            }
 		}
 		else if(myCode.length > 5){
 			alert("Veuillez entrer un code à 5 caractères");
