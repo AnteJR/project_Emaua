@@ -94,9 +94,12 @@ Template.registerPage.events({
 				if(error){
 					alert(error.reason);
 				}
+				else{
+					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, {$set: {nomUtilisateur: pseudo}});
+					FlowRouter.go("home");
+				}
 			});
 		}
-		FlowRouter.go("home")
 	},
 	'click #annulerReg': function(event){
 		event.preventDefault();
@@ -117,7 +120,8 @@ Template.loginPage.events({
 			}
 			else{
 				if(FlowRouter.getParam("typeUsLog")!="user"){
-					Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}})
+					Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}});
+					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}});
 				}
 				FlowRouter.go('home');
 			}
