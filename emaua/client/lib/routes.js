@@ -4,13 +4,13 @@ FlowRouter.route('/', {
         BlazeLayout.render('mainPage');
     }
 });
-FlowRouter.route('/login', {
+FlowRouter.route('/login/:typeUsLog', {
     name: 'loginPage',
     action(){
         BlazeLayout.render('loginPage');
     }
 });
-FlowRouter.route('/register/:type', {
+FlowRouter.route('/register/:typeUsReg', {
     name: 'registerPage',
     action(){
         BlazeLayout.render('registerPage');

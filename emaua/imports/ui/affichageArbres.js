@@ -7,13 +7,27 @@ import '../../client/lib/routes.js'
 import '../templates/app.html';
 import '../templates/addTreeForm.html';
 import '../templates/addTreeCode.html';
+import '../templates/loginBtnTrees.html';
 
 Template.addTreeCode.helpers({
     codeArbre: function(){
         let code = FlowRouter.getParam('codeArbre');
         return(code);
     }
-})
+});
+
+Template.loginBtnTrees.events({
+    'click #registerButtonT': function(event){
+        event.preventDefault();
+        let code = FlowRouter.getParam('codeArbre');
+        FlowRouter.go("registerPage", {typeUsReg: code});
+    },
+    'click #loginButtonT': function(event){
+        event.preventDefault();
+        let code = FlowRouter.getParam('codeArbre');
+        FlowRouter.go("loginPage", {typeUsLog: code});
+    },
+});
 
 Template.mainPage.helpers({
      //savoir si l'utilisateur qui observe la page est administrateur

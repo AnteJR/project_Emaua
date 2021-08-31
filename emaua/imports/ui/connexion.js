@@ -13,14 +13,14 @@ import '../templates/disconnectHeader.html';
 Template.loginBtn.events({
 	//quand on clique sur "se connecter", on charge la page de connexion
     'click #loginButton': function(event){
-		FlowRouter.go('loginPage');
+		FlowRouter.go('loginPage', {typeUsLog: "user"});
 	},
 	//quand on clique sur "créer un compte, on se créer un compte"
     'click #registerButton': function(event){
-		FlowRouter.go('registerPage', {type: "free"});
+		FlowRouter.go('registerPage', {typeUsReg: "free"});
 	},
 	'click #registerButtonPremium': function(event){
-		FlowRouter.go('registerPage', {type: "paying"});
+		FlowRouter.go('registerPage', {typeUsReg: "paying"});
 	}
 });
 
@@ -40,6 +40,7 @@ Template.registerPage.events({
 		let re = /\S+@\S+\.\S+/;
 		let i = 1;
 		let id;
+		let codeT = "";
 		
 		//établissement automatique d'un pseudo qui transforme "John Smith" en "johnsmith"
 		let pseudo = ""
@@ -52,7 +53,11 @@ Template.registerPage.events({
         if(Meteor.users.find().count()<1){
             monAdmin = true;
         }
-		
+
+		if(FlowRouter.getParam("typeUsReg")!="free" && FlowRouter.getParam("typeUsReg")!="paying"){
+			codeT=FlowRouter.getParam("typeUsReg");
+		}
+
 		//si les deux mots de passes ne sont pas les mêmes
 		if(motDePasse!=motDePasseConfirmation){
 			alert(motDePasse + "Les mots de passes ne sont pas les mêmes !");
@@ -82,7 +87,8 @@ Template.registerPage.events({
 				password: motDePasse,
 				profile: {
 					isAdmin: monAdmin,
-					userTier: 0
+					userTier: 0,
+					trees: [codeT]
 				}
 			}, function(error){
 				if(error){
@@ -90,7 +96,7 @@ Template.registerPage.events({
 				}
 			});
 		}
-		FlowRouter.go('plans');
+		FlowRouter.go("home")
 	},
 	'click #annulerReg': function(event){
 		event.preventDefault();
@@ -110,6 +116,9 @@ Template.loginPage.events({
 				alert(error.reason);
 			}
 			else{
+				if(FlowRouter.getParam("typeUsLog")!="user"){
+					Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}})
+				}
 				FlowRouter.go('home');
 			}
 		})
