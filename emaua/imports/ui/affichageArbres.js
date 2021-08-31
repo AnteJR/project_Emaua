@@ -36,6 +36,8 @@ Template.mainPage.events({
         FlowRouter.go("addTreeForm");
     },
     'click #codeButton': function(event){
+        event.preventDefault();
+
 		let myCode = document.getElementById("monCode").value;
         let monArbre = TreeCollection.findOne({codeArbre: myCode});
 		if(TreeCollection.findOne({codeArbre: myCode})){
@@ -53,7 +55,7 @@ Template.mainPage.events({
 			alert(myCode + " code invalide !");
 		}
 	}
-})
+});
 
 Template.addTreeForm.events({
     'click #submitTree': function(event){
