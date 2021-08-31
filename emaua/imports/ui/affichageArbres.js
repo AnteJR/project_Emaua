@@ -20,7 +20,7 @@ Template.mainPage.helpers({
      isAdmin: function(){
         let myID = Meteor.userId();
         let requete = Meteor.users.findOne({_id: myID});
-        if(requete.estAdmin){
+        if(requete.profile.isAdmin){
             Template.instance().isAdmin = new ReactiveVar(true);
         }
         else {

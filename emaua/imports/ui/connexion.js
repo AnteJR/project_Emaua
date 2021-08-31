@@ -36,7 +36,6 @@ Template.registerPage.events({
 		//variables pour des tests plus tard
 		let re = /\S+@\S+\.\S+/;
 		let i = 1;
-		let role = 'user';
 		let id;
 		
 		//établissement automatique d'un pseudo qui transforme "John Smith" en "johnsmith"
@@ -44,6 +43,12 @@ Template.registerPage.events({
 		pseudo += prenomUt.toLowerCase();
 		pseudo += nomFam.toLowerCase();
 		let pseudoOriginal = pseudo;
+
+		//le premier utilisateur créé est admin
+        let monAdmin = false;
+        if(Meteor.users.find().count()<1){
+            monAdmin = true;
+        }
 		
 		//si les deux mots de passes ne sont pas les mêmes
 		if(motDePasse!=motDePasseConfirmation){
@@ -68,15 +73,13 @@ Template.registerPage.events({
 					i++;
 				}
 			}
-			//lors que le premier utilisateur est créer, sa fonction sera celle d'admin
-			if(Meteor.users.find().count()===0){
-				role = "admin";
-			}
-			Roles.createRole(role, {unlessExists: true});
 			id = Accounts.createUser({
 				username: pseudo,
 				email: emailAdrs,
-				password: motDePasse
+				password: motDePasse,
+				profile: {
+					isAdmin: monAdmin
+				}
 			}, function(error){
 				if(error){
 					alert(error.reason);
