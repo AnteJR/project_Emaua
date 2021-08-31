@@ -9,6 +9,13 @@
         {{#if isAdmin}}
             <button id="addTreeBtn">ajouter arbre</button>
         {{else}}
+        <ol>
+            {{#each treeProjects}}
+                {{#each profile.trees}}
+                    <li>{{this}}</li>
+                {{/each}}
+            {{/each}}
+        </ol>
         {{/if}}
     {{else}}
     <h1 class="h1EMAUA">EMAUA</h1>

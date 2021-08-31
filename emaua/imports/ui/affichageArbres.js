@@ -31,7 +31,7 @@ Template.loginBtnTrees.events({
 
 Template.mainPage.helpers({
      //savoir si l'utilisateur qui observe la page est administrateur
-     isAdmin: function(){
+     'isAdmin': function(){
         let myID = Meteor.userId();
         let requete = Meteor.users.findOne({_id: myID});
         if(requete.profile.isAdmin){
@@ -41,6 +41,9 @@ Template.mainPage.helpers({
             Template.instance().isAdmin = new ReactiveVar(false);
         }
         return Template.instance().isAdmin.get();
+    },
+    'treeProjects': function () {
+        return Meteor.users.find({_id: Meteor.userId()}).fetch();
     }
 });
 

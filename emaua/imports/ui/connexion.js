@@ -95,7 +95,9 @@ Template.registerPage.events({
 					alert(error.reason);
 				}
 				else{
-					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, {$set: {nomUtilisateur: pseudo}});
+					if(FlowRouter.getParam("typeUsReg")!="free" && FlowRouter.getParam("typeUsReg")!="paying"){
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, {$set: {nomUtilisateur: pseudo}});
+					}
 					FlowRouter.go("home");
 				}
 			});
