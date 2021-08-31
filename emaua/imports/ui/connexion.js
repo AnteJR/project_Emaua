@@ -17,8 +17,11 @@ Template.loginBtn.events({
 	},
 	//quand on clique sur "créer un compte, on se créer un compte"
     'click #registerButton': function(event){
-		FlowRouter.go('registerPage');
+		FlowRouter.go('registerPage', {type: "free"});
 	},
+	'click #registerButtonPremium': function(event){
+		FlowRouter.go('registerPage', {type: "paying"});
+	}
 });
 
 Template.registerPage.events({
@@ -78,7 +81,8 @@ Template.registerPage.events({
 				email: emailAdrs,
 				password: motDePasse,
 				profile: {
-					isAdmin: monAdmin
+					isAdmin: monAdmin,
+					userTier: 0
 				}
 			}, function(error){
 				if(error){
@@ -86,7 +90,7 @@ Template.registerPage.events({
 				}
 			});
 		}
-		FlowRouter.go('home');
+		FlowRouter.go('plans');
 	},
 	'click #annulerReg': function(event){
 		event.preventDefault();

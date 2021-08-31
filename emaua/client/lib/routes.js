@@ -10,7 +10,7 @@ FlowRouter.route('/login', {
         BlazeLayout.render('loginPage');
     }
 });
-FlowRouter.route('/register', {
+FlowRouter.route('/register/:type', {
     name: 'registerPage',
     action(){
         BlazeLayout.render('registerPage');
@@ -26,5 +26,11 @@ FlowRouter.route('/treesCode/:codeArbre', {
     name: 'addTreeCode',
     action(){
         BlazeLayout.render('addTreeCode');
+    }
+});
+FlowRouter.route('/plans', {
+    name: 'plans',
+    action(){
+        BlazeLayout.render('registerPage');
     }
 });

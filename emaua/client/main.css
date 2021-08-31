@@ -14,6 +14,10 @@ body {
   font-size:15px;
   padding:5px 30px 5px 30px;
 }
+.txtLogin{
+  color:lightgrey;
+  font-size:10px;
+}
 .btnLogin:hover{
   background-color:lightgreen;
 }
@@ -44,4 +48,25 @@ body {
   height:100%;
   background-color: teal;
   padding:40px;
+}
+.codeTree{
+  color:black;
+  background-color:rgba(255, 0, 0, 0);
+  border:none;
+}
+.codeTree:focus{
+  outline:none;
+  background-color:rgba(255, 0, 0, 0);
+}
+.codeButton{
+  border-radius:25px;
+  color:white;
+  background-color:rgb(183, 241, 178);
+  border:none;
+}
+.codeButton:hover{
+  background-color:rgb(117, 238, 106);
+}
+#monCode{
+  width:100px;
 }

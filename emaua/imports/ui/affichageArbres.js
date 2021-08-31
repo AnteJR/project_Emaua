@@ -35,7 +35,7 @@ Template.mainPage.events({
         event.preventDefault();
         FlowRouter.go("addTreeForm");
     },
-    'click #codeButton': function(event){
+    'submit #codeButton': function(event){
         event.preventDefault();
 
 		let myCode = document.getElementById("monCode").value;

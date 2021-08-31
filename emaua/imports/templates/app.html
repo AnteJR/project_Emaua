@@ -14,7 +14,14 @@
     <h1 class="h1EMAUA">EMAUA</h1>
         <!--SI ON N'EST PAS CONNECTÉ ON A LES BOUTONS DE CONNEXION-->
         {{> loginBtn}}
-        <p>ou</p>
-        <p>Entrer un code : <input type="text" id="monCode"/><button id="codeButton">valider</button></p>
+        <div align=center>
+            <hr width="25%">
+            <p>
+                <form id="codeButton">
+                    <input type="text" id="monCode" placeholder="Entrer un code" class="codeTree"/>
+                    <input type="submit" class="codeButton" value="✓">
+                </form>
+            </p>
+        </div>
     {{/if}}
 </template>
