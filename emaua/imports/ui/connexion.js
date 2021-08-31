@@ -8,6 +8,7 @@ import '../templates/app.html';
 import '../templates/loginBtn.html';
 import '../templates/loginPage.html';
 import '../templates/registerPage.html';
+import '../templates/disconnectHeader.html';
 
 Template.loginBtn.events({
 	//quand on clique sur "se connecter", on charge la page de connexion
@@ -110,4 +111,11 @@ Template.loginPage.events({
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
-})
+});
+
+Template.disconnectHeader.events({
+	'click #disconnectUser': function(event){
+		event.preventDefault();
+		Meteor.logout();
+	}
+});

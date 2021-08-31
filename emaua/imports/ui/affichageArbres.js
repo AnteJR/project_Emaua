@@ -91,5 +91,9 @@ Template.addTreeForm.events({
         else{
             Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
         }
+    },
+    'click #homeButton': function(event){
+        event.preventDefault();
+        FlowRouter.go("home");
     }
 });

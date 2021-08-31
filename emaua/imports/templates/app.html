@@ -1,6 +1,7 @@
 <template name='mainPage'>
-    <h1 class="h1EMAUA">EMAUA</h1>
     {{#if currentUser}}
+    {{> disconnectHeader}}
+    <h1 class="h1EMAUA">EMAUA</h1>
         <!--PAGE UNE FOIS CONNECTÉS AVEC LES ARBRES ET LA CARTE-->
         <!--TEMPLATE POUR UN HEADER AVEC L'OPTION DE SE DECO/MODIFIER LE COMPTE-->
         <!--TEMPLATE LISTE DES ARBRES-->
@@ -11,6 +12,7 @@
         {{else}}
         {{/if}}
     {{else}}
+    <h1 class="h1EMAUA">EMAUA</h1>
         <!--SI ON N'EST PAS CONNECTÉ ON A LES BOUTONS DE CONNEXION-->
         {{> loginBtn}}
         <p>ou</p>
