@@ -1,7 +1,7 @@
 <template name='mainPage'>
     {{#if currentUser}}
     {{> disconnectHeader}}
-    <h1 class="h1EMAUA">EMAUA</h1>
+    <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
         {{#if isAdmin}}
             <button id="addTreeBtn">ajouter arbre</button>
         {{else}}
@@ -15,7 +15,7 @@
         </ol>
         {{/if}}
     {{else}}
-    <h1 class="h1EMAUA">EMAUA</h1>
+    <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
         <!--SI ON N'EST PAS CONNECTÉ ON A LES BOUTONS DE CONNEXION-->
         {{> loginBtn}}
         <div align=center>
