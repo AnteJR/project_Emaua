@@ -10,10 +10,38 @@ body {
   color:white;
   background-color:green;
   border-color:white;
-  border-radius:4px;
-  font-size:20px;
+  border-radius:6px;
+  font-size:15px;
   padding:5px 30px 5px 30px;
 }
 .btnLogin:hover{
   background-color:lightgreen;
+}
+.bold{
+  font-weight: 800;
+}
+.bold_green{
+  font-weight: 800;
+  color:green
+}
+.background{
+  color:rgb(64, 64, 131)
+}
+.button_green{
+  background-color:green;
+  color:white;
+  border-radius: 6px;
+  align-items: stretch;
+  font-weight: 800;
+  font-stretch:extra-expanded;
+  padding: 15px 25px 15px 25px;
+}
+.page_design{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background-color: teal;
+  padding:40px;
 }
