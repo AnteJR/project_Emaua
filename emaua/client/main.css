@@ -1,25 +1,32 @@
 body {
   padding: 10px;
   font-family: sans-serif;
+  background-image: url("/images/BackgroundWebpage.jpg");
+  background-repeat: no-repeat;
+  background-size: auto;
 }
 .h1EMAUA{
   color: #d2232a;
   text-shadow: 2px 2px #000000;
 }
 .btnLogin{
-  color:white;
-  background-color:green;
+  color:rgb(43, 43, 43);
+  background-color:rgb(255, 255, 255);
   border-color:white;
   border-radius:6px;
   font-size:15px;
   padding:5px 30px 5px 30px;
 }
 .txtLogin{
-  color:lightgrey;
+  background-color:rgb(255, 255, 255);
+  color:rgb(218, 218, 218);
   font-size:10px;
 }
+.txtLogin:hover{
+  color:rgb(255, 182, 47);
+}
 .btnLogin:hover{
-  background-color:lightgreen;
+  background-color:rgb(255, 182, 47);
 }
 .bold{
   font-weight: 800;
@@ -58,8 +65,12 @@ body {
   outline:none;
   background-color:rgba(255, 0, 0, 0);
 }
+.codeTree:hover{
+  color:rgb(255, 182, 47);
+}
 .codeButton{
-  border-radius:25px;
+  padding:5px 10px 5px 10px;
+  border-radius:5px;
   color:white;
   background-color:rgb(183, 241, 178);
   border:none;
@@ -73,4 +84,11 @@ body {
 .logoTitle{
   width: 200px;
   padding-left: 20px;
+}
+.loginplatform{
+  background-color:white;
+  width:200px;
+  margin:100px;
+  border-radius:10px;
+  padding:50px 10px 50px 10px;
 }
