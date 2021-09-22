@@ -18,12 +18,13 @@ body {
 }
 .btn_top{
   height:140px;
-  width:200px;
+  width:300px;
   border-radius:25px 25px 0px 0px;
 }
 .btn_bottom{
   height:140px;
-  width:200px;
+  width:300px;
+  border-radius:0px 0px 25px 25px;
 }
 .hr_platform{
   padding: 0px;
@@ -100,10 +101,9 @@ body {
 }
 .loginplatform{
   background-color:white;
-  width:200px;
-  margin:100px;
+  width:300px;
+  margin:100px 100px 70px 100px;
   border-radius:25px;
-  padding-bottom: 20px;
 }
 .map-container {
   width: 800px;
