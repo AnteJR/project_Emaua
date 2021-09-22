@@ -101,9 +101,11 @@ body {
 .loginplatform{
   background-color:white;
   width:200px;
-  margin:100px;
   border-radius:25px;
   padding-bottom: 20px;
+}
+.loginDiv{
+  margin:100px;
 }
 .map-container {
   width: 800px;

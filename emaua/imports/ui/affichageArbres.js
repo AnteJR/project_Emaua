@@ -116,3 +116,4 @@ Template.addTreeForm.events({
         FlowRouter.go("home");
     }
 });
+
