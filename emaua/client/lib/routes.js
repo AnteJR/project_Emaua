@@ -25,7 +25,7 @@ FlowRouter.route('/trees', {
 FlowRouter.route('/treesCode/:codeArbre', {
     name: 'addTreeCode',
     action(){
-        BlazeLayout.render('addTreeCode');
+        BlazeLayout.render('addTreesCode');
     }
 });
 FlowRouter.route('/plans', {
