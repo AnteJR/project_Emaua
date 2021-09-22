@@ -1,8 +1,10 @@
 <template name="loginBtn">
     <div class="loginDiv">
         <div align="center" class="loginplatform">
-            <button class="btnLogin btn_top" id="registerButton">CRÉER UN COMPTE GRATUIT</button><hr class="hr_platform">
-            <button class="btnLogin btn_bottom" id="registerButtonPremium">CRÉER UN COMPTE PAYANT</button>
+            <button class="btnLogin btn_top" id="registerButton">
+                <span class="Créer">Créer un compte <span class="txt_green">gratuit</span></span></button>
+            <hr class="hr_platform">
+            <button class="btnLogin btn_bottom" id="registerButtonPremium">Créer un compte <span class="txt_green">payant</span></button>
         </div>
         <p>
             <table border=0>
@@ -14,10 +16,11 @@
                         </form>
                     </td>
                     <td border=0>
-                        <a class="txtLogin" id="loginButton" href="">SE CONNECTER</a>
+                        <vl class="vl_platform"></vl><a class="txtLogin" id="loginButton" href="">Se connecter</a>
                     </td>
                 </tr>
             </table>
         </p>
     </div>
+    <div class="intro_txt_box"><p class="intro_txt">Nous diffusons du savoir<span class="txt_couleur"> indigène et scientifique</span> pour améliorer l'autonomie des communautés et nous plantons <span class="txt_couleur">des dizaines de milliers d'arbres</span></p></div>
 </template>
