@@ -105,6 +105,9 @@ body {
   margin:100px 100px 70px 100px;
   border-radius:25px;
 }
+.loginDiv{
+  margin:100px;
+}
 .map-container {
   width: 800px;
   max-width: 100%;
