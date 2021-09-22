@@ -60,16 +60,16 @@ Template.registerPage.events({
 
 		//si les deux mots de passes ne sont pas les mêmes
 		if(motDePasse!=motDePasseConfirmation){
-			alert(motDePasse + "Les mots de passes ne sont pas les mêmes !");
+			alert(motDePasse + " Les mots de passes ne sont pas les mêmes !");
 		}
 
 		//si l'adress email est invalide
-		if(!emailAdrs.match(re)){
+		else if(!emailAdrs.match(re)){
 			alert("Votre email n'est pas valide !");
 		}
 
 		//s'il manque le nom/prénom
-		if(!prenomUt || !nomFam){
+		else if(!prenomUt || !nomFam){
 			alert("Veuillez entrer un nom/prénom !");
 		}
 		else{
@@ -123,7 +123,9 @@ Template.loginPage.events({
 			else{
 				if(FlowRouter.getParam("typeUsLog")!="user"){
 					Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}});
-					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}});
+					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
+										  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
+					);
 				}
 				FlowRouter.go('home');
 			}
