@@ -74,7 +74,7 @@ Template.registerPage.events({
 		}
 		else{
 			//modifier le pseudo de l'utilisateur si un autre utilisateur a le même 
-			//--> transforme "jsmith" en "johnsmith1" si le premier existe, "johnsmith1" en "johnsmith2" si "johnsmith1" existe, etc
+			//--> transforme "johnsmith" en "johnsmith1" si le premier existe, "johnsmith1" en "johnsmith2" si "johnsmith1" existe, etc
 			if(Meteor.users.findOne({username: pseudo})){
 				while(Meteor.users.findOne({username: pseudo})){
 					pseudo = pseudoOriginal + i

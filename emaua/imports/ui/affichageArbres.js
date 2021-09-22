@@ -3,11 +3,12 @@ import { Meteor } from 'meteor/meteor';
 import { TreeCollection } from '../api/arbres.js';
 import { Accounts } from 'meteor/accounts-base';
 
-import '../../client/lib/routes.js'
+import '../../client/lib/routes.js';
 import '../templates/app.html';
 import '../templates/addTreeForm.html';
-import '../templates/addTreeCode.html';
 import '../templates/loginBtnTrees.html';
+import '../templates/treeMaps.html';
+import '../templates/addTreeCode.html';
 
 Template.addTreeCode.helpers({
     codeArbre: function(){
@@ -114,5 +115,33 @@ Template.addTreeForm.events({
     'click #homeButton': function(event){
         event.preventDefault();
         FlowRouter.go("home");
+    }
+});
+
+Template.treeMaps.onRendered(function() {
+    GoogleMaps.load();
+});
+
+Template.treeMaps.onCreated(function() {
+    // We can use the `ready` callback to interact with the map API once the map is ready.
+    GoogleMaps.ready('exampleMap', function(map) {
+        // Add a marker to the map once it's ready
+        var marker = new google.maps.Marker({
+            position: map.options.center,
+            map: map.instance
+         });
+    });
+});
+
+Template.treeMaps.helpers({
+    exampleMapOptions: function() {
+        // Make sure the maps API has loaded
+        if (GoogleMaps.loaded()) {
+            // Map initialization options
+            return {
+                center: new google.maps.LatLng(-37.8136, 144.9631),
+                zoom: 8
+            };
+        }
     }
 });
