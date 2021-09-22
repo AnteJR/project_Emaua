@@ -1,14 +1,14 @@
 <template name="loginBtn">
     <div align="center" class="loginplatform">
-        <p><button class="btnLogin" id="registerButton">CRÉER UN COMPTE GRATUIT</button></p>
-        <p><button class="btnLogin" id="registerButtonPremium">CRÉER UN COMPTE PAYANT</button></p>
+        <button class="btnLogin btn_top" id="registerButton">CRÉER UN COMPTE GRATUIT</button><hr class="hr_platform">
+        <button class="btnLogin btn_bottom" id="registerButtonPremium">CRÉER UN COMPTE PAYANT</button>
         <p><a class="txtLogin" id="loginButton" href="">SE CONNECTER</a></p>
-        <hr width="25%">
-        <p>
-            <form id="codeButton">
-                <input type="text" id="monCode" placeholder="Entrer un code" class="codeTree"/>
-                <input type="submit" class="codeButton" value="✓">
-            </form>
-        </p>
     </div>
+    <p>
+        <form id="codeButton">
+            <input type="text" id="monCode" placeholder="Entrer un code" class="codeTree"/>
+            <input type="submit" class="codeButton" value="✓">
+        </form>
+        <a class="txtLogin" id="loginButton" href="">SE CONNECTER</a>
+    </p>
 </template>

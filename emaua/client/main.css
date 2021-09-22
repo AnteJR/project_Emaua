@@ -12,10 +12,23 @@ body {
 .btnLogin{
   color:rgb(43, 43, 43);
   background-color:rgb(255, 255, 255);
-  border-color:white;
-  border-radius:6px;
+  border: none;
   font-size:15px;
   padding:5px 30px 5px 30px;
+}
+.btn_top{
+  height:140px;
+  width:200px;
+  border-radius:25px 25px 0px 0px;
+}
+.btn_bottom{
+  height:140px;
+  width:200px;
+}
+.hr_platform{
+  padding: 0px;
+  margin: 0px;
+  width: 60%;
 }
 .txtLogin{
   background-color:rgb(255, 255, 255);
@@ -89,8 +102,8 @@ body {
   background-color:white;
   width:200px;
   margin:100px;
-  border-radius:10px;
-  padding:50px 10px 50px 10px;
+  border-radius:25px;
+  padding-bottom: 20px;
 }
 .map-container {
   width: 800px;
