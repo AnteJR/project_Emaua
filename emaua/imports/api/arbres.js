@@ -10,11 +10,15 @@ export const TreeCollection = new Mongo.Collection('arbres');
 Meteor.methods({
     //méthode 1: ajouter un arbre à la BDD avec les infos données
     'arbres.addTree'(username,date,nbr,gps,codeTree){
+
+        //récupérer le contenu des inputs
         check(username, String);
         check(date, String);
         check(nbr, String);
         check(gps, String);
         check(codeTree, String);
+
+        //si on a un username : créer un arbre avec un proprio
         if(username){
             TreeCollection.insert({
                 nomUtilisateur: username,
@@ -24,6 +28,8 @@ Meteor.methods({
                 codeArbre: codeTree
             })
         }
+
+        //si on a pas un username : créer un arbre sans proprio
         else{TreeCollection.insert({
                 nomUtilisateur: "EN ATTENTE DE CODE",
                 datePlantation: date,

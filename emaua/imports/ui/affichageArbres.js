@@ -53,22 +53,30 @@ Template.mainPage.events({
         event.preventDefault();
         FlowRouter.go("addTreeForm");
     },
+    //soumettre un code
     'submit #codeButton': function(event){
         event.preventDefault();
 
+        //récupérer le contenu des inputs
 		let myCode = document.getElementById("monCode").value;
         let monArbre = TreeCollection.findOne({codeArbre: myCode});
+
+        //si on trouve un arbre qui correspond...
 		if(TreeCollection.findOne({codeArbre: myCode})){
+            //si l'arbre a déjà un proprio, on explique que le code est déjà utilisé
             if(monArbre.nomUtilisateur!="EN ATTENTE DE CODE"){
                 alert("Le code est déjà utilisé :(")
             }
+            //si l'arbre est dispo, on lui ajoute un proprio
             else{
                 FlowRouter.go('addTreeCode', {codeArbre: myCode});
             }
 		}
-		else if(myCode.length > 5){
+        //si le code n'est pas de la bonne longueur
+		else if(myCode.length > 5 || myCode.length < 5){
 			alert("Veuillez entrer un code à 5 caractères");
 		}
+        //si le code est invalide
 		else if(!TreeCollection.findOne({codeArbre: myCode})){
 			alert(myCode + " code invalide !");
 		}
@@ -76,6 +84,7 @@ Template.mainPage.events({
 });
 
 Template.addTreeForm.events({
+    //fonctione pour ajouter un arbre aux bases de données
     'click #submitTree': function(event){
         event.preventDefault();
 
@@ -102,8 +111,7 @@ Template.addTreeForm.events({
             let randomNbr = Math.floor(Math.random()*36);
             codeT += charCode[randomNbr];
         }
-        alert(codeT);
-        
+
         //on créer une entrée dans la base de donnée
         if(pseudo!=""){
             Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
@@ -118,15 +126,16 @@ Template.addTreeForm.events({
     }
 });
 
+//MAPS
 Template.treeMaps.onRendered(function() {
     GoogleMaps.load();
   });
 
 Template.treeMaps.helpers({
     exampleMapOptions: function() {
-        // Make sure the maps API has loaded
+        //s'arrurer que l'API Google Maps est chargé
         if (GoogleMaps.loaded()) {
-            // Map initialization options
+            //options d'initialisation de la Map
             return {
                 center: new google.maps.LatLng(-37.8136, 144.9631),
                 zoom: 8
@@ -136,9 +145,9 @@ Template.treeMaps.helpers({
 });
 
 Template.treeMaps.onCreated(function() {
-    // We can use the `ready` callback to interact with the map API once the map is ready.
+    //callback pour interagir maintenant que la Map est prête
     GoogleMaps.ready('exampleMap', function(map) {
-      // Add a marker to the map once it's ready
+      //ajouter un marquer à la latitude/longitude indiquées
       var marker = new google.maps.Marker({
         position: map.options.center,
         map: map.instance

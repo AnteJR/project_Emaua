@@ -81,6 +81,7 @@ Template.registerPage.events({
 					i++;
 				}
 			}
+			//creation user
 			id = Accounts.createUser({
 				username: pseudo,
 				email: emailAdrs,
@@ -91,18 +92,23 @@ Template.registerPage.events({
 					trees: [codeT]
 				}
 			}, function(error){
+				//s'il y a un problème, dire ce qui n'a pas marché
 				if(error){
 					alert(error.reason);
 				}
 				else{
+					//si le user se crée un compte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
 					if(FlowRouter.getParam("typeUsReg")!="free" && FlowRouter.getParam("typeUsReg")!="paying"){
-						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, {$set: {nomUtilisateur: pseudo}});
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
+											  {$set: {nomUtilisateur: pseudo}});
 					}
+					//dans tous les cas, se connecter et revenir à la page HOME, qui sera changée puisque le currentuser() est actif
 					FlowRouter.go("home");
 				}
 			});
 		}
 	},
+	//si on annule, revenir en arrière
 	'click #annulerReg': function(event){
 		event.preventDefault();
 		console.log("annuler")
@@ -111,32 +117,40 @@ Template.registerPage.events({
 })
 
 Template.loginPage.events({
+	//Fonctione pour se log-in
 	'click #boutonLogin': function(event){
 		event.preventDefault();
+
+		//récupérer les inputs (username + password)
 		let nomUt = document.getElementById("usernameLogin").value;
 		let mdpUt = document.getElementById("passwordLogin").value;
 
 		Meteor.loginWithPassword(nomUt, mdpUt, function(error){
+			//s'il y a un problème, dire lequel
 			if(error){
 				alert(error.reason);
 			}
 			else{
+				//si l'utilisateur se connecte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
 				if(FlowRouter.getParam("typeUsLog")!="user"){
 					Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}});
 					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
 										  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
 					);
 				}
+				//dans tous les cas, revenir à la page HOME
 				FlowRouter.go('home');
 			}
 		})
 	},
+	//si on annule, revenir en arrière
 	'click #annulerLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
 	}
 });
 
+//fonction pour se déconnecter
 Template.disconnectHeader.events({
 	'click #disconnectUser': function(event){
 		event.preventDefault();
