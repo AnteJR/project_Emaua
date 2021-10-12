@@ -8,11 +8,10 @@
         <ol>
             {{#each treeProjects}}
                 {{#each profile.trees}}
-                    <li>{{this}}</li>
+                    <li><a href="" class="lienArbres {{this}}">{{this}}</a></li>
                     <!--TEMPLATE POUR GOOGLE MAPS-->
                 {{/each}}
             {{/each}}
-            {{> treeMaps}}
         </ol>
         {{/if}}
     {{else}}

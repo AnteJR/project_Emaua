@@ -80,7 +80,12 @@ Template.mainPage.events({
 		else if(!TreeCollection.findOne({codeArbre: myCode})){
 			alert(myCode + " code invalide !");
 		}
-	}
+	},
+    'click .lienArbres': function(event){
+        event.preventDefault();
+        let selectProject = this;
+        FlowRouter.go("project", {codeArbre: selectProject});
+    }
 });
 
 Template.addTreeForm.events({
@@ -133,14 +138,34 @@ Template.treeMaps.onRendered(function() {
 
 Template.treeMaps.helpers({
     exampleMapOptions: function() {
+        let monCode = FlowRouter.getParam('codeArbre');
+        let monArbre = TreeCollection.findOne({codeArbre: monCode});
+        let treeLatLong = monArbre.coordonneesArbres;
+        let splitTree = treeLatLong.split(" ");
+
         //s'arrurer que l'API Google Maps est chargé
         if (GoogleMaps.loaded()) {
             //options d'initialisation de la Map
             return {
-                center: new google.maps.LatLng(-37.8136, 144.9631),
+                center: new google.maps.LatLng(splitTree[0], splitTree[1]),
                 zoom: 8
             };
         }
+    },
+    'idPlant': function(){
+        let monCode = FlowRouter.getParam('codeArbre');
+        let monArbre = TreeCollection.findOne({codeArbre: monCode});
+        return monArbre.codeArbre;
+    },
+    'datePlant': function(){
+        let monCode = FlowRouter.getParam('codeArbre');
+        let monArbre = TreeCollection.findOne({codeArbre: monCode});
+        return monArbre.datePlantation;
+    },
+    'nbrPlant': function(){
+        let monCode = FlowRouter.getParam('codeArbre');
+        let monArbre = TreeCollection.findOne({codeArbre: monCode});
+        return monArbre.nombreArbres;
     }
 });
 
@@ -153,4 +178,10 @@ Template.treeMaps.onCreated(function() {
         map: map.instance
       });
     });
+  });
+
+  Template.treeMaps.events({
+    'click #backHome': function(event){
+        FlowRouter.go("home");
+    }
   });

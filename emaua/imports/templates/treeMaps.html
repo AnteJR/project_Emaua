@@ -1,5 +1,15 @@
 <template name="treeMaps">
-    <div class="map-container">
+    <div>
+      <div class="map-container container_maps">
         {{> googleMap name="exampleMap" options=exampleMapOptions}}
       </div>
+      <div class="container_maps">
+          <div class="maps_info">
+            <h1>Projet {{idPlant}}</h1>
+            <p><b>Date de plantation : </b>{{datePlant}}</p>
+            <p><b>Nombre d'arbres plantés : </b>{{nbrPlant}}</p>
+            <button id="backHome">retour</button>
+          </div>
+      </div>
+    </div>
 </template>

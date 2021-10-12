@@ -34,3 +34,9 @@ FlowRouter.route('/plans', {
         BlazeLayout.render('registerPage');
     }
 });
+FlowRouter.route('/myProject/:codeArbre', {
+    name: 'project',
+    action(){
+        BlazeLayout.render('treeMaps');
+    }
+});
