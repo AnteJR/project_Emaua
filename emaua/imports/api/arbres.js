@@ -40,7 +40,7 @@ Meteor.methods({
         }
     }
     //futures (éventuelles) méthodes:
-    //1. ajouter des photos/vidéos
+    //1. ajouter des photos
     //2. ajouter une description
     //3. ajouter une mise à jour
 });

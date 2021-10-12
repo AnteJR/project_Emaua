@@ -133,7 +133,8 @@ Template.addTreeForm.events({
 
 //MAPS
 Template.treeMaps.onRendered(function() {
-    GoogleMaps.load();
+    //MANQUE L'API
+    GoogleMaps.load(/*API HERE*/);
   });
 
 Template.treeMaps.helpers({
@@ -148,7 +149,7 @@ Template.treeMaps.helpers({
             //options d'initialisation de la Map
             return {
                 center: new google.maps.LatLng(splitTree[0], splitTree[1]),
-                zoom: 8
+                zoom: 10
             };
         }
     },
