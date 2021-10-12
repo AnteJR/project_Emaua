@@ -5,12 +5,9 @@ body {
   background-repeat: no-repeat;
   background-size: auto;
 }
-.intro_txt_box{
-  width: 700px;
-  margin-left: 550px;
-  float: left;
-}
 .intro_txt{
+  width: 90%;
+  margin-top: 15%;
   font-size: 30px;
   font-weight: 300;
   text-align: center;
@@ -47,20 +44,13 @@ body {
   width: 60%;
   border-top: 0.1px solid rgb(168, 168, 168);
 }
-.vl_platform{
-  margin-left: 20px;
-  border-left: 1px solid rgb(172, 172, 172);
-  height: 15px;
-  float: left;
-  margin-top: 300px;
-}
 .txtLogin{
-  color:black;
+  color:white;
   font-weight: 300;
   font-size: 13px;
   padding-left: 30px;
-  margin-top: 300px;
   float: left;
+  width:100px;
 }
 .txtLogin:hover{
   color:rgb(255, 182, 47);
@@ -104,8 +94,7 @@ body {
   color:black;
   background-color:rgba(255, 0, 0, 0);
   border:none;
-  float: left;
-  margin-top: 304px;
+  display:inline-block;
 }
 .codeTree:focus{
   outline:none;
@@ -114,17 +103,22 @@ body {
 .codeTree:hover{
   color:rgb(255, 182, 47);
 }
+.codeTree::placeholder{
+  color:white;
+}
 .codeButton{
   padding:5px 10px 5px 10px;
   border-radius:5px;
   color:white;
   background-color:rgb(183, 241, 178);
   border:none;
-  float: left;
-  margin: 300px 0px 0px 10px;
+  display:inline-block;
 }
 .codeButton:hover{
   background-color:rgb(117, 238, 106);
+}
+#codeButton{
+  width:140px;
 }
 #monCode{
   width:100px;
@@ -138,12 +132,6 @@ body {
   width:300px;
   border-radius:25px;
   float: left;
-  position:absolute;
-}
-.loginDiv{
-  margin:100px;
-  width: 100%;
-  overflow:hidden;
 }
 .map-container {
   width: 50%;
@@ -156,13 +144,29 @@ body {
   float:left;
 }
 .maps_info{
-  padding:5px 25px 25px 25px;
+  padding:5px 25px 5px 25px;
   background-color:white;
   border-radius:25px;
   width:50%;
   margin-left:25%;
 }
-.placement_div_login{
-  width: 50%;
-  float: left;
+.loginTotal{
+  width:50%;
+  height:available;
+  margin-left:25%;
+}
+.placement_div_login1{
+  width:33%;
+  float:left;
+}
+.placement_div_login2{
+  width:67%;
+  float:left;
+}
+.loginDiv{
+  margin-top: 10%;
+}
+.connectCode{
+  height: 30px;
+  margin-left:15px;
 }

@@ -1,29 +1,33 @@
 <template name="loginBtn">
-    <div>
-        <div class="loginDiv placement_div_login">
-            <div align="center" class="loginplatform">
-                <button class="btnLogin btn_top" id="registerButton">
-                    <span class="Créer">Créer un compte <span class="txt_green">gratuit</span></span></button>
-                <hr class="hr_platform">
-                <button class="btnLogin btn_bottom" id="registerButtonPremium">Créer un compte <span class="txt_green">payant</span></button>
+    <div class="loginDiv">
+        <div class="placement_div_login1">
+            <div class="loginTotal">
+                <div align="center" class="loginplatform">
+                    <button class="btnLogin btn_top" id="registerButton">
+                        <span class="Créer">Créer un compte <span class="txt_green">gratuit</span></span></button>
+                    <hr class="hr_platform">
+                    <button class="btnLogin btn_bottom" id="registerButtonPremium">Créer un compte <span class="txt_green">payant</span></button>
+                </div>
+                <div class="connectCode">
+                    <table border=0>
+                        <tr height="50px">
+                            <td border=0 style="vertical-align:middle">
+                                <form id="codeButton">
+                                    <input type="text" id="monCode" placeholder="Entrer un code" class="codeTree"/>
+                                    <input type="submit" class="codeButton" value="✓">
+                                </form>
+                            </td>
+                            <td border=0 style="vertical-align:middle" class="tdLog">
+                                <a class="txtLogin" id="loginButton" href="">
+                                    Se connecter
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-            <p>
-                <table border=0>
-                    <tr border=0>
-                        <td border=0>
-                            <form id="codeButton">
-                                <input type="text" id="monCode" placeholder="Entrer un code" class="codeTree"/>
-                                <input type="submit" class="codeButton" value="✓">
-                            </form>
-                        </td>
-                        <td border=0>
-                            <vl class="vl_platform"></vl><a class="txtLogin" id="loginButton" href="">Se connecter</a>
-                        </td>
-                    </tr>
-                </table>
-            </p>
         </div>
-        <div class="intro_txt_box placement_div_login">
+        <div class="placement_div_login2">
             <p class="intro_txt">
                 Nous diffusons du savoir<span class="txt_couleur"> indigène et scientifique</span> pour améliorer l'autonomie des communautés et nous plantons <span class="txt_couleur">des dizaines de milliers d'arbres</span>
             </p>
