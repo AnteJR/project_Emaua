@@ -134,7 +134,7 @@ Template.addTreeForm.events({
 //MAPS
 Template.treeMaps.onRendered(function() {
     //MANQUE L'API
-    GoogleMaps.load(/*API HERE*/);
+    GoogleMaps.load({v: '3', key: 'AIzaSyC36gF29ZFZUuVMziMphdPEMcfkJti8ztM'});
   });
 
 Template.treeMaps.helpers({
@@ -149,7 +149,8 @@ Template.treeMaps.helpers({
             //options d'initialisation de la Map
             return {
                 center: new google.maps.LatLng(splitTree[0], splitTree[1]),
-                zoom: 10
+                zoom: 12,
+                mapTypeId: 'satellite'
             };
         }
     },
@@ -176,7 +177,12 @@ Template.treeMaps.onCreated(function() {
       //ajouter un marquer à la latitude/longitude indiquées
       var marker = new google.maps.Marker({
         position: map.options.center,
-        map: map.instance
+        map: map.instance,
+        label: {
+            text: 'projet',
+            color: '#222222',
+            fontSize: '25px'
+        }
       });
     });
   });
