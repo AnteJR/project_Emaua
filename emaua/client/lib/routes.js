@@ -28,10 +28,10 @@ FlowRouter.route('/treesCode/:codeArbre', {
         BlazeLayout.render('addTreeCode');
     }
 });
-FlowRouter.route('/plans', {
-    name: 'plans',
+FlowRouter.route('/password', {
+    name: 'newPassword',
     action(){
-        BlazeLayout.render('registerPage');
+        BlazeLayout.render('changePassword');
     }
 });
 FlowRouter.route('/myProject/:codeArbre', {

@@ -9,6 +9,7 @@ import '../templates/addTreeForm.html';
 import '../templates/loginBtnTrees.html';
 import '../templates/addTreeCode.html';
 import '../templates/treeMaps.html';
+import '../templates/disconnectHeader.html';
 
 Template.addTreeCode.helpers({
     codeArbre: function(){
@@ -31,8 +32,8 @@ Template.loginBtnTrees.events({
 });
 
 Template.mainPage.helpers({
-     //savoir si l'utilisateur qui observe la page est administrateur
-     'isAdmin': function(){
+    //savoir si l'utilisateur qui observe la page est administrateur
+    'isAdmin': function(){
         let myID = Meteor.userId();
         let requete = Meteor.users.findOne({_id: myID});
         if(requete.profile.isAdmin){
@@ -49,10 +50,6 @@ Template.mainPage.helpers({
 });
 
 Template.mainPage.events({
-    'click #addTreeBtn': function(event){
-        event.preventDefault();
-        FlowRouter.go("addTreeForm");
-    },
     //soumettre un code
     'submit #codeButton': function(event){
         event.preventDefault();
@@ -275,3 +272,25 @@ Template.treeMaps.onCreated(function() {
         FlowRouter.go("home");
     }
   });
+
+Template.disconnectHeader.events({
+    'submit #submitCodeHeader': function(event){
+        event.preventDefault();
+
+        let monInput = document.getElementById('codeHeader');
+        let monCodeArbre = monInput.value;
+
+        if(TreeCollection.findOne({codeArbre: monCodeArbre}).nomUtilisateur=="EN ATTENTE DE CODE"){
+            Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": monCodeArbre}});
+            TreeCollection.update({_id: TreeCollection.findOne({codeArbre: monCodeArbre})._id}, 
+								  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
+			);
+            alert("Code "+monCodeArbre+" ajouté !");
+        }
+        else{
+            alert("Code invalide ou déjà utilisé !")
+        }
+
+        monInput.value = "";
+    }
+});

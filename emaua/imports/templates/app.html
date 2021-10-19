@@ -3,13 +3,12 @@
     {{> disconnectHeader}}
     <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
         {{#if isAdmin}}
-            <button id="addTreeBtn">ajouter arbre</button>
+            
         {{else}}
         <ol>
             {{#each treeProjects}}
                 {{#each profile.trees}}
                     <li><a href="" class="lienArbres {{this}}">{{this}}</a></li>
-                    <!--TEMPLATE POUR GOOGLE MAPS-->
                 {{/each}}
             {{/each}}
         </ol>

@@ -9,6 +9,7 @@ import '../templates/loginBtn.html';
 import '../templates/loginPage.html';
 import '../templates/registerPage.html';
 import '../templates/disconnectHeader.html';
+import '../templates/changePassword.html';
 
 Template.loginBtn.events({
 	//quand on clique sur "se connecter", on charge la page de connexion
@@ -35,6 +36,8 @@ Template.registerPage.events({
 		let emailAdrs = document.getElementById("emailReg").value;
 		let motDePasse = document.getElementById("passwordReg").value;
 		let motDePasseConfirmation = document.getElementById("passwordRegConf").value;
+
+		let nomComplet = prenomUt + " " + nomFam;
 
 		//variables pour des tests plus tard
 		let re = /\S+@\S+\.\S+/;
@@ -81,31 +84,54 @@ Template.registerPage.events({
 					i++;
 				}
 			}
-			//creation user
-			id = Accounts.createUser({
-				username: pseudo,
-				email: emailAdrs,
-				password: motDePasse,
-				profile: {
-					isAdmin: monAdmin,
-					userTier: 0,
-					trees: [codeT]
-				}
-			}, function(error){
-				//s'il y a un problème, dire ce qui n'a pas marché
-				if(error){
-					alert(error.reason);
-				}
-				else{
-					//si le user se crée un compte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
-					if(FlowRouter.getParam("typeUsReg")!="free" && FlowRouter.getParam("typeUsReg")!="paying"){
+
+			//creation user selon si c'est via code ou non
+			if(codeT!=""){
+				id = Accounts.createUser({
+					username: pseudo,
+					email: emailAdrs,
+					password: motDePasse,
+					profile: {
+						isAdmin: monAdmin,
+						fullName: nomComplet,
+						userTier: 0,
+						trees: [codeT]
+					}
+				}, function(error){
+					//s'il y a un problème, dire ce qui n'a pas marché
+					if(error){
+						alert(error.reason);
+					}
+					else{
+						//si le user se crée un compte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
 						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
 											  {$set: {nomUtilisateur: pseudo}});
+						//se connecter et revenir à la page HOME, qui sera changée puisque le currentuser() est actif
+						FlowRouter.go("home");
 					}
-					//dans tous les cas, se connecter et revenir à la page HOME, qui sera changée puisque le currentuser() est actif
-					FlowRouter.go("home");
-				}
-			});
+				});
+			}
+			else{
+				id = Accounts.createUser({
+					username: pseudo,
+					email: emailAdrs,
+					password: motDePasse,
+					profile: {
+						isAdmin: monAdmin,
+						fullName: nomComplet,
+						userTier: 0,
+						trees: []
+					}
+				}, function(error){
+					//s'il y a un problème, dire ce qui n'a pas marché
+					if(error){
+						alert(error.reason);
+					}
+					else{
+						FlowRouter.go("home");
+					}
+				});
+			}
 		}
 	},
 	//si on annule, revenir en arrière
@@ -150,10 +176,73 @@ Template.loginPage.events({
 	}
 });
 
-//fonction pour se déconnecter
+Template.changePassword.events({
+	'submit #formChangePass': function(event){
+		event.preventDefault();
+
+		let oldPW = document.getElementById('oldPass').value;
+		let newPW = document.getElementById('newPass').value;
+		let newPWConf = document.getElementById('newPassConf').value;
+		let samePW = false;
+
+		if(newPW == newPWConf){
+			samePW = true;
+		}
+
+		if(samePW = true){
+			Accounts.changePassword(oldPW, newPW, function(error){
+				if(error){
+					alert(error.reason);
+				}
+				else{
+					alert("Mot de passe modifié !");
+					FlowRouter.go("home");
+				}
+			})
+		}
+	}
+})
+
 Template.disconnectHeader.events({
+	//fonction pour se déconnecter
 	'click #disconnectUser': function(event){
 		event.preventDefault();
 		Meteor.logout();
+	},
+	//fonction admin pour aller ajouter des arbres
+    'click #addTreeBtn': function(event){
+        event.preventDefault();
+        FlowRouter.go("addTreeForm");
+    },
+	'click #changePassword': function(event){
+		event.preventDefault();
+		FlowRouter.go("newPassword");
 	}
+});
+
+Template.disconnectHeader.helpers({
+	//donner le nom de l'utilisateur dans le header, ainsi que son niveau de donateur
+	nomUser: function(){
+		let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
+		let monUserLevel = Meteor.users.findOne({_id: Meteor.userId()}).profile.userTier;
+		let monUserStars = "";
+
+		for(let i = 0; i <= monUserLevel; i++){
+			monUserStars += "☆";
+		}
+
+        return(monUsername + " | " + monUserStars);
+    },
+	//savoir si l'utilisateur qui observe la page est administrateur
+    'isAdmin': function(){
+        let myID = Meteor.userId();
+        let requete = Meteor.users.findOne({_id: myID});
+        if(requete.profile.isAdmin){
+            Template.instance().isAdmin = new ReactiveVar(true);
+        }
+        else {
+            Template.instance().isAdmin = new ReactiveVar(false);
+        }
+        return Template.instance().isAdmin.get();
+    },
 });
