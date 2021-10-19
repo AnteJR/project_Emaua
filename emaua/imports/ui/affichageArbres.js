@@ -104,9 +104,7 @@ Template.addTreeForm.events({
         //établissement automatique d'un pseudo qui transforme "John Smith" en "johnsmith"
 		if(nameT){
 		    let nomPrenom = nameT.split(" ");
-            pseudo += nomPrenom[0].toLowerCase();
-            pseudo += nomPrenom[1].toLowerCase();
-		    alert(pseudo);
+            nomPrenom.forEach(element => pseudo += element.toLowerCase());
         }
 
         //on génère un code aléatoire
@@ -115,6 +113,17 @@ Template.addTreeForm.events({
         for(let i=0; i<5; i++){
             let randomNbr = Math.floor(Math.random()*36);
             codeT += charCode[randomNbr];
+        }
+
+        //vérifier que le code n'existe pas déjà
+        let canFindTree = TreeCollection.findOne({codeArbre: codeT});
+        while(canFindTree){
+            codeT = "";
+            for(let i=0; i<5; i++){
+                let randomNbr = Math.floor(Math.random()*36);
+                codeT += charCode[randomNbr];
+            }
+            canFindTree = TreeCollection.findOne({codeArbre: codeT});
         }
 
         //on créer une entrée dans la base de donnée
@@ -128,12 +137,86 @@ Template.addTreeForm.events({
     'click #homeButton': function(event){
         event.preventDefault();
         FlowRouter.go("home");
+    },
+    'change #myfile': function(event){
+        const fileList = event.target.files;
+        if(fileList){
+            let csvToParse = fileList[0];
+            console.log(csvToParse)
+            const myTrees = Papa.parse(csvToParse, {
+                complete: function(results) {
+                    let myTreesData = results.data;
+                    console.log(myTreesData)
+                
+                    for(let i=2; i<myTreesData.length; i++){
+                        let dateT = myTreesData[i][0];
+                        let nameT = myTreesData[i][10];
+                        let latLongT = myTreesData[i][9];
+                        let nbrT = myTreesData[i][4];
+        
+                        //date au bon format
+                        if(dateT!=""){
+                            let newDate = dateT.split("/");
+                            dateT = "";
+                            dateT += newDate[2];
+                            dateT += "-";
+                            dateT += newDate[1];
+                            dateT += "-";
+                            dateT += newDate[0];
+                        }
+
+                        //établissement automatique d'un pseudo qui transforme "John Smith" en "johnsmith"
+                        let pseudo = "";
+                        if(nameT){
+                            let nomPrenom = nameT.split(" ");
+                            nomPrenom.forEach(element => pseudo += element.toLowerCase());
+                        }
+
+                        //on génère un code aléatoire
+                        let charCode = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","0","1","2","3","4","5","6","7","8","9"];
+                        let codeT = "";
+                        for(let i=0; i<5; i++){
+                            let randomNbr = Math.floor(Math.random()*36);
+                            codeT += charCode[randomNbr];
+                        }
+
+                        //si le code existe déjà, le remplacer
+                        let canFindTree = TreeCollection.findOne({codeArbre: codeT});
+                        while(canFindTree){
+                            codeT = "";
+                            for(let i=0; i<5; i++){
+                                let randomNbr = Math.floor(Math.random()*36);
+                                codeT += charCode[randomNbr];
+                            }
+                            canFindTree = TreeCollection.findOne({codeArbre: codeT});
+                        }
+
+                        let canFindTreeGPS = TreeCollection.findOne({coordonneesArbres: latLongT});
+                        let canFindTreeDate = TreeCollection.findOne({datePlantation: dateT});
+                        let canFindTreeNbre = TreeCollection.findOne({nombreArbres: nbrT});
+                        let treeExists = false;
+
+                        if(canFindTreeDate && canFindTreeGPS && canFindTreeNbre){
+                            treeExists = true;
+                        }
+                        
+                        //on créer une entrée dans la base de donnée
+                        if(latLongT!="" && dateT!="" && treeExists==false){
+                            Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
+                        }
+                    }
+                }
+            });
+        }
+        else{
+                alert("erreur lors de l'importation")
+        }
     }
 });
 
 //MAPS
 Template.treeMaps.onRendered(function() {
-    //MANQUE L'API
+    //Load Google Maps API
     GoogleMaps.load({v: '3', key: 'AIzaSyC36gF29ZFZUuVMziMphdPEMcfkJti8ztM'});
   });
 
@@ -142,7 +225,7 @@ Template.treeMaps.helpers({
         let monCode = FlowRouter.getParam('codeArbre');
         let monArbre = TreeCollection.findOne({codeArbre: monCode});
         let treeLatLong = monArbre.coordonneesArbres;
-        let splitTree = treeLatLong.split(" ");
+        let splitTree = treeLatLong.split(",");
 
         //s'arrurer que l'API Google Maps est chargé
         if (GoogleMaps.loaded()) {
