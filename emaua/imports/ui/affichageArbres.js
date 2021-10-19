@@ -31,6 +31,11 @@ Template.loginBtnTrees.events({
     },
 });
 
+Template.mainPage.onRendered(function() {
+    //Load Google Maps API
+    GoogleMaps.load({v: '3', key: 'AIzaSyC36gF29ZFZUuVMziMphdPEMcfkJti8ztM'});
+});
+
 Template.mainPage.helpers({
     //savoir si l'utilisateur qui observe la page est administrateur
     'isAdmin': function(){
@@ -46,8 +51,45 @@ Template.mainPage.helpers({
     },
     'treeProjects': function () {
         return Meteor.users.find({_id: Meteor.userId()}).fetch();
+    },
+    fullMapOptions: function() {
+        //s'arrurer que l'API Google Maps est chargé
+        if (GoogleMaps.loaded()) {
+            //options d'initialisation de la Map
+            return {
+                center: new google.maps.LatLng(0.742872, 34.387666),
+                zoom: 9,
+                mapTypeId: 'satellite'
+            };
+        }
     }
 });
+
+Template.mainPage.onCreated(function() {
+    
+    let mesArbres = TreeCollection.find();
+    let mesMarkers = [];
+    
+    mesArbres.forEach(function(element){
+        let treez = element.coordonneesArbres;
+        let treezSplit = treez.split(",")
+        mesMarkers.push({
+            position: new google.maps.LatLng(treezSplit[0],treezSplit[1])
+        })
+    });
+
+    //callback pour interagir maintenant que la Map est prête
+    GoogleMaps.ready('exampleMap', function(map) {
+      //ajouter un marquer à la latitude/longitude indiquées
+      for (let i = 0; i < mesMarkers.length; i++) {
+            const marker = new google.maps.Marker({
+                position: mesMarkers[i].position,
+                map: map.instance,
+            });
+        }
+    });
+  });
+
 
 Template.mainPage.events({
     //soumettre un code
@@ -211,11 +253,11 @@ Template.addTreeForm.events({
     }
 });
 
-//MAPS
+//Maps pour chaque projet
 Template.treeMaps.onRendered(function() {
     //Load Google Maps API
     GoogleMaps.load({v: '3', key: 'AIzaSyC36gF29ZFZUuVMziMphdPEMcfkJti8ztM'});
-  });
+});
 
 Template.treeMaps.helpers({
     exampleMapOptions: function() {

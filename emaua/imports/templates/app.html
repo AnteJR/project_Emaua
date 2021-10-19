@@ -5,13 +5,24 @@
         {{#if isAdmin}}
             
         {{else}}
-        <ol>
-            {{#each treeProjects}}
-                {{#each profile.trees}}
-                    <li><a href="" class="lienArbres {{this}}">{{this}}</a></li>
+        <div class = "mainPageDiv">
+            <h2 style="color:white;text-align:center;">Tous nos projets</h2>
+            <p style="color:white;text-align:center;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas laborum similique dolorum ex! Totam aperiam fugiat id voluptatibus modi ad, numquam, perspiciatis excepturi maxime ipsum molestiae cum eos accusantium a? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, pariatur eligendi dolore quibusdam quo fugiat optio, nam modi consequatur cum officiis fuga repellat voluptatibus ea tenetur aliquid aspernatur quam maxime.</p>
+            <div class="map-container2 container2_maps">
+                {{> googleMap name="exampleMap" options=fullMapOptions}}
+            </div>
+        </div>
+        <div class="secondaryMainPageDiv">
+            <h2 style="color:white;text-align:center;">Les projets auxquels vous avez contribué</h2>
+            <p style="color:white;text-align:center;">Sélectionnez un projet pour obtenir plus d'informations.</p>
+            <ol style="color:white;text-align: center;list-style-position: inside;">
+                {{#each treeProjects}}
+                    {{#each profile.trees}}
+                        <li style="color:white;"><a href="" class="lienArbres {{this}}">Projet ID n°{{this}}</a></li>
+                    {{/each}}
                 {{/each}}
-            {{/each}}
-        </ol>
+            </ol>
+        </div>
         {{/if}}
     {{else}}
     <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
