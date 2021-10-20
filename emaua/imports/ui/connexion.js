@@ -86,7 +86,7 @@ Template.registerPage.events({
 			}
 
 			//creation user selon si c'est via code ou non
-			if(codeT!=""){
+			if(codeT!="" && codeT!="free" && codeT!="paying"){
 				id = Accounts.createUser({
 					username: pseudo,
 					email: emailAdrs,
@@ -138,7 +138,7 @@ Template.registerPage.events({
 	'click #annulerReg': function(event){
 		event.preventDefault();
 		console.log("annuler")
-		FlowRouter.go('home', { _id: Meteor.userId() });
+		FlowRouter.go('home', { _id: Meteor.userId()});
 	}
 })
 
@@ -150,24 +150,46 @@ Template.loginPage.events({
 		//récupérer les inputs (username + password)
 		let nomUt = document.getElementById("usernameLogin").value;
 		let mdpUt = document.getElementById("passwordLogin").value;
+		let re = /\S+@\S+\.\S+/;
 
-		Meteor.loginWithPassword(nomUt, mdpUt, function(error){
-			//s'il y a un problème, dire lequel
-			if(error){
-				alert(error.reason);
-			}
-			else{
-				//si l'utilisateur se connecte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
-				if(FlowRouter.getParam("typeUsLog")!="user"){
-					Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}});
-					TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
-										  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
-					);
+		if(nomUt.match(re)){
+			Meteor.loginWithPassword({email: nomUt}, mdpUt, function(error){
+				//s'il y a un problème, dire lequel
+				if(error){
+					alert(error.reason);
 				}
-				//dans tous les cas, revenir à la page HOME
-				FlowRouter.go('home');
-			}
-		})
+				else{
+					//si l'utilisateur se connecte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
+					if(FlowRouter.getParam("typeUsLog")!="user"){
+						Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}});
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
+											  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
+						);
+					}
+					//dans tous les cas, revenir à la page HOME
+					FlowRouter.go('home');
+				}
+			});
+		}
+		else if(!nomUt.match(re)){
+			Meteor.loginWithPassword({username: nomUt}, mdpUt, function(error){
+				//s'il y a un problème, dire lequel
+				if(error){
+					alert(error.reason);
+				}
+				else{
+					//si l'utilisateur se connecte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
+					if(FlowRouter.getParam("typeUsLog")!="user"){
+						Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": FlowRouter.getParam("typeUsLog")}});
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
+											  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
+						);
+					}
+					//dans tous les cas, revenir à la page HOME
+					FlowRouter.go('home');
+				}
+			});
+		}
 	},
 	//si on annule, revenir en arrière
 	'click #annulerLogin': function(event){

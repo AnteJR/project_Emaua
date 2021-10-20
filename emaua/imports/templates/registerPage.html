@@ -1,11 +1,14 @@
 <template name='registerPage'>
-    <div class="page_design">
-        <p><span class="bold_green">Bienvenue sur l'application Emaua ! </span><br/> <br> Ici, vous pourrez voir où sont situés les arbres que vous avez contribué à planter. <span class="bold">Nous postons également des mises à jour ici.</span></p>
-        <p><span class="bold">Nom :</span> <input type="text" placeholder="Entrez votre nom de famille" id="surnameReg"/></p>
-        <p><span class="bold">Prénom :</span> <input type="text" placeholder="Entrez votre prénom" id="nameReg"/></p>
-        <p><span class="bold">Email :</span> <input type="email" placeholder="Entrez votre email" id="emailReg"/></p>
-        <p><span class="bold">Mot de passe :</span> <input type="password" placeholder="Mot de passe" id="passwordReg"/></p>
-        <p><span class="bold">Répétez le mot de passe :</span> <input type="password" placeholder="Mot de passe" id="passwordRegConf"/></p>
-        <p><input type="button" id="boutonReg" value="Créer un compte" class="button_green"/><input type="button" id="annulerReg" value="Annuler" class="button_green"/></p>
+    {{> disconnectHeader}}
+    <div class = "mainPageDiv">
+        <div class = "maps_info" align="center">
+            <p class="pReg"><span class="bold green">Bienvenue sur l'application Emaua ! </span><br/> <br> Ici, vous pourrez voir où sont situés les arbres que vous avez contribué à planter. <span class="bold">Nous postons également des mises à jour ici.</span></p>
+            <p class="pReg"><span class="bold">Nom</span> <br> <input type="text" placeholder="Entrez votre nom de famille" id="surnameReg" class="inputReg"/></p>
+            <p class="pReg"><span class="bold">Prénom</span> <br> <input type="text" placeholder="Entrez votre prénom" id="nameReg" class="inputReg"/></p>
+            <p class="pReg"><span class="bold">Email</span> <br> <input type="email" placeholder="Entrez votre email" id="emailReg" class="inputReg"/></p>
+            <p class="pReg"><span class="bold">Mot de passe</span> <br> <input type="password" placeholder="Mot de passe" id="passwordReg" class="inputReg"/></p>
+            <p class="pReg"><em>Répétez le mot de passe</em> <br> <input type="password" placeholder="Mot de passe" id="passwordRegConf" class="inputReg"/></p>
+            <p><input type="button" id="boutonReg" value="Créer un compte"/><input type="button" id="annulerReg" value="Annuler"/></p>
+        </div>
     </div>
-    </template>
+</template>

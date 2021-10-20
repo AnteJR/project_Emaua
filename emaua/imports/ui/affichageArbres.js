@@ -167,12 +167,7 @@ Template.addTreeForm.events({
         }
 
         //on créer une entrée dans la base de donnée
-        if(pseudo!=""){
-            Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
-        }
-        else{
-            Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
-        }
+        Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
     },
     'click #homeButton': function(event){
         event.preventDefault();
@@ -235,18 +230,29 @@ Template.addTreeForm.events({
                             canFindTree = TreeCollection.findOne({codeArbre: codeT});
                         }
 
+                        //check si une entrée pour l'arbre existe déjà
                         let canFindTreeGPS = TreeCollection.findOne({coordonneesArbres: latLongT});
                         let canFindTreeDate = TreeCollection.findOne({datePlantation: dateT});
                         let canFindTreeNbre = TreeCollection.findOne({nombreArbres: nbrT});
+                        let canFindTreeOwner;
                         let treeExists = false;
 
                         if(canFindTreeDate && canFindTreeGPS && canFindTreeNbre){
                             treeExists = true;
+                            canFindTreeOwner = canFindTreeDate.nomUtilisateur;
+                            console.log(canFindTreeOwner);
                         }
                         
-                        //on créer une entrée dans la base de donnée
-                        if(latLongT!="" && dateT!="" && treeExists==false){
-                            Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
+                        //si aucune entrée n'existe, on créer une entrée dans la base de donnée
+                        if(treeExists==false){
+                            if(latLongT!="" && dateT!=""){
+                                Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
+                            }
+                        }
+                        else if(treeExists==true){
+                            if(canFindTreeOwner=="EN ATTENTE DE CODE" && pseudo!=""){
+                                TreeCollection.update({_id: canFindTreeNbre._id}, {$set: {nomUtilisateur: pseudo}});
+                            }
                         }
                     }
                 }

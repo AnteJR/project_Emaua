@@ -65,8 +65,7 @@ body {
 .bold{
   font-weight: 800;
 }
-.bold_green{
-  font-weight: 800;
+.green{
   color:green
 }
 .background{
@@ -257,4 +256,35 @@ body {
 }
 .lienArbres:visited{
   color:white;
+}
+
+.inputReg{
+  text-align:center;
+  color:black;
+  background-color:rgba(255, 0, 0, 0);
+  border:none;
+  display:inline;
+  width:250px;
+}
+.inputReg:focus{
+  text-align:center;
+  outline:none;
+  background-color:rgba(255, 0, 0, 0);
+}
+.inputReg::placeholder{
+  text-align:center;
+}
+.pReg{
+  width:250px;
+}
+
+.a_black{
+  color:black;
+  font-size: 12px;
+}
+.a_black:visited{
+  color:black;
+}
+.a_black:hover{
+  color:grey;
 }

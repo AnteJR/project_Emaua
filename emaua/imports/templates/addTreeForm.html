@@ -1,9 +1,15 @@
 <template name='addTreeForm'>
-    <p>nom complet de l'utilisateur ayant contribué (prénom + nom) : <input type="text" placeholder="prénom + nom" id="nomTree"/></p>
-    <p>date de plantation : <input type="date" id="dateTree"/></p>
-    <p>nombres d'arbres plantés : <input type="number" id="nbrTree"/></p>
-    <p>coordonnées des arbres (latitude et longitude) : <input type="text" id="latLongTree"/></p>
-    <p><button id="submitTree">ajouter</button></p>
-    <p><button id="homeButton">home</button></p>
-    <p>Entrer un fichier : <input type="file" id="myfile" name="myfile" accept=".csv"></p>
+    {{> disconnectHeader}}
+    <div class = "mainPageDiv">
+        <div class = "maps_info" align="center">
+            <h2>Instruction pour la mise à jour de la base de données</h2>
+            <p>La base de donnée est mise à jour à travers l'usage de fichier CSV. Pour ce faire, il suffit d'ouvrir le document sur Drive et de cliquer sur Fichier > Télécharger, et sélectionner le format CSV. Une fois que c'est fait, simplement cliquer sur le bouton ci-dessous pour uploader le fichier et automatiquement mettre la base à jour.</p>
+            <hr>
+            <h2>Instructions on how to update the database</h2>
+            <p>The database is updated using CSV files. To do so, go find the file on the Drive, and select "File > Download", and select the CSV format. Once it is done, simply clic on the button below to upload the file - the program will update the database automatically.</p>
+            <hr>
+            <p>Entrer un fichier : <input type="file" id="myfile" name="myfile" accept=".csv"></p>
+            <p><button id="homeButton">Retour</button></p>
+        </div>
+    </div>
 </template>

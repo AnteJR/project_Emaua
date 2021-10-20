@@ -1,5 +1,10 @@
 <template name='loginPage'>
-    <p>nom d'utilisateur : <input type="text" placeholder="entrer votre nom d'utilisateur" id="usernameLogin"/></p>
-    <p>mot de passe : <input type="password" placeholder="entrer ici" id="passwordLogin"/></p>
-    <p><input type="button" id="boutonLogin" value="se connecter"/><input type=button id="annulerLogin" value="annuler"/></p>
+    {{> disconnectHeader}}
+    <div class = "mainPageDiv">
+        <div class = "maps_info" align="center">
+            <p>Nom d'utilisateur/email <br> <input type="text" placeholder="Nom d'utilisateur ou email" id="usernameLogin" class="inputReg"/></p>
+            <p>Mot de passe <br> <input type="password" placeholder="Entrer ici" id="passwordLogin" class="inputReg"/></p>
+            <p><input type="button" id="boutonLogin" value="se connecter"/><input type=button id="annulerLogin" value="annuler"/></p>
+        </div>
+    </div>
 </template>
