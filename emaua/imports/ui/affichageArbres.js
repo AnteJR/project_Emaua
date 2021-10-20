@@ -84,6 +84,7 @@ Template.mainPage.onCreated(function() {
       for (let i = 0; i < mesMarkers.length; i++) {
             const marker = new google.maps.Marker({
                 position: mesMarkers[i].position,
+                icon:'https://i.ibb.co/NZZ87vK/pin.png',
                 map: map.instance,
             });
         }
@@ -204,6 +205,10 @@ Template.addTreeForm.events({
                             dateT += newDate[0];
                         }
 
+                        let nbr = nbrT.split(",");
+                        let monNombre = nbr[0]+nbr[1];
+                        nbrT = parseInt(monNombre);
+
                         //établissement automatique d'un pseudo qui transforme "John Smith" en "johnsmith"
                         let pseudo = "";
                         if(nameT){
@@ -299,12 +304,8 @@ Template.treeMaps.onCreated(function() {
       //ajouter un marquer à la latitude/longitude indiquées
       var marker = new google.maps.Marker({
         position: map.options.center,
-        map: map.instance,
-        label: {
-            text: 'projet',
-            color: '#222222',
-            fontSize: '25px'
-        }
+        icon:'https://i.ibb.co/NZZ87vK/pin.png',
+        map: map.instance
       });
     });
   });

@@ -14,7 +14,7 @@ Meteor.methods({
         //récupérer le contenu des inputs
         check(username, String);
         check(date, String);
-        check(nbr, String);
+        check(nbr, Number);
         check(gps, String);
         check(codeTree, String);
 

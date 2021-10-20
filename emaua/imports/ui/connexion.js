@@ -246,3 +246,40 @@ Template.disconnectHeader.helpers({
         return Template.instance().isAdmin.get();
     },
 });
+
+Template.disconnectHeader.onRendered(function(){
+	let monUser = Meteor.users.findOne({_id: Meteor.userId()});
+	let userTrees = monUser.profile.trees;
+	let nbr = 0;
+	userTrees.forEach(function(element){
+		let monArbre = TreeCollection.findOne({codeArbre: element});
+		console.log(monArbre);
+		nbr += monArbre.nombreArbres;
+		console.log(nbr);
+	});
+	if(nbr>5000){
+		if(monUser.profile.userTier < 1){
+			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 1}});
+		}
+	}
+	if(nbr>10000){
+		if(monUser.profile.userTier < 2){
+			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 2}});
+		}
+	}
+	if(nbr>25000){
+		if(monUser.profile.userTier < 3){
+			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 3}});
+		}
+	}
+	if(nbr>50000){
+		if(monUser.profile.userTier < 4){
+			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 4}});
+		}
+	}
+	if(nbr>100000){
+		if(monUser.profile.userTier < 5){
+			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 5}});
+		}
+	}
+});

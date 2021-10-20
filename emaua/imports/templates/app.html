@@ -1,10 +1,6 @@
 <template name='mainPage'>
-    {{#if currentUser}}
     {{> disconnectHeader}}
-    <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
-        {{#if isAdmin}}
-            
-        {{else}}
+    {{#if currentUser}}
         <div class = "mainPageDiv">
             <h2 style="color:white;text-align:center;">Tous nos projets</h2>
             <p style="color:white;text-align:center;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas laborum similique dolorum ex! Totam aperiam fugiat id voluptatibus modi ad, numquam, perspiciatis excepturi maxime ipsum molestiae cum eos accusantium a? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, pariatur eligendi dolore quibusdam quo fugiat optio, nam modi consequatur cum officiis fuga repellat voluptatibus ea tenetur aliquid aspernatur quam maxime.</p>
@@ -23,10 +19,7 @@
                 {{/each}}
             </ol>
         </div>
-        {{/if}}
     {{else}}
-    <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
-        <!--SI ON N'EST PAS CONNECTÉ ON A LES BOUTONS DE CONNEXION-->
         {{> loginBtn}}
     {{/if}}
 </template>

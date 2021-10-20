@@ -1,20 +1,25 @@
 <template name="disconnectHeader">
     <header align=right>
-        <div class="dropdown" style="float:right;">
-            <button class="dropbtn">{{nomUser}}</button>
-            <div class="dropdown-content" style="text-align:left;">
-              <a href="" id="disconnectUser">SE DECONNECTER</a>
-              <a href="" id="changePassword">CHANGER MDP</a>
-              {{#if isAdmin}}
-                <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
-              {{else}}
-                <a href="" id="addCode">
-                  <form id="submitCodeHeader">
-                    <input type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
-                  </form>
-                </a>
-              {{/if}}
+      <div class="myHeader">
+        <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
+        {{#if currentUser}}
+          <div class="dropdown" style="float:right;">
+              <button class="dropbtn">{{nomUser}}</button>
+              <div class="dropdown-content" style="text-align:left;">
+                <a href="" id="disconnectUser">SE DECONNECTER</a>
+                <a href="" id="changePassword">CHANGER MDP</a>
+                {{#if isAdmin}}
+                  <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
+                {{else}}
+                  <a href="" id="addCode">
+                    <form id="submitCodeHeader">
+                      <input type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
+                    </form>
+                  </a>
+                {{/if}}
+              </div>
             </div>
-          </div>          
+            {{/if}}
+      </div>          
     </header>
 </template>
