@@ -59,36 +59,37 @@ Template.mainPage.helpers({
             return {
                 center: new google.maps.LatLng(0.742872, 34.387666),
                 zoom: 9,
-                mapTypeId: 'satellite'
+                mapTypeId: google.maps.MapTypeId.HYBRID
             };
         }
     }
 });
 
 Template.mainPage.onCreated(function() {
-    
-    let mesArbres = TreeCollection.find();
-    let mesMarkers = [];
-    
-    mesArbres.forEach(function(element){
-        let treez = element.coordonneesArbres;
-        let treezSplit = treez.split(",")
-        mesMarkers.push({
-            position: new google.maps.LatLng(treezSplit[0],treezSplit[1])
-        })
-    });
+    setTimeout(function(){
+        let mesArbres = TreeCollection.find();
+        let mesMarkers = [];
+        
+        mesArbres.forEach(function(element){
+            let treez = element.coordonneesArbres;
+            let treezSplit = treez.split(",")
+            mesMarkers.push({
+                position: new google.maps.LatLng(treezSplit[0],treezSplit[1])
+            })
+        });
 
-    //callback pour interagir maintenant que la Map est prête
-    GoogleMaps.ready('exampleMap', function(map) {
-      //ajouter un marquer à la latitude/longitude indiquées
-      for (let i = 0; i < mesMarkers.length; i++) {
-            const marker = new google.maps.Marker({
-                position: mesMarkers[i].position,
-                icon:'https://i.ibb.co/NZZ87vK/pin.png',
-                map: map.instance,
-            });
-        }
-    });
+        //callback pour interagir maintenant que la Map est prête
+        GoogleMaps.ready('exampleMap', function(map) {
+        //ajouter un marquer à la latitude/longitude indiquées
+        for (let i = 0; i < mesMarkers.length; i++) {
+                const marker = new google.maps.Marker({
+                    position: mesMarkers[i].position,
+                    //icon: "pin.png",
+                    map: map.instance,
+                });
+            }
+        });
+    },250);
   });
 
 
@@ -283,7 +284,7 @@ Template.treeMaps.helpers({
             return {
                 center: new google.maps.LatLng(splitTree[0], splitTree[1]),
                 zoom: 12,
-                mapTypeId: 'satellite'
+                mapTypeId: google.maps.MapTypeId.HYBRID
             };
         }
     },
@@ -310,7 +311,7 @@ Template.treeMaps.onCreated(function() {
       //ajouter un marquer à la latitude/longitude indiquées
       var marker = new google.maps.Marker({
         position: map.options.center,
-        icon:'https://i.ibb.co/NZZ87vK/pin.png',
+        //icon: ???
         map: map.instance
       });
     });

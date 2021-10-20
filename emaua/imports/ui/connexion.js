@@ -304,4 +304,23 @@ Template.disconnectHeader.onRendered(function(){
 			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 5}});
 		}
 	}
+	let arbresUser = []
+	TreeCollection.find({nomUtilisateur: monUser.username}).forEach(function(element){
+		arbresUser.push(element.codeArbre);
+	});
+
+	let treesUser = monUser.profile.trees;
+	let treesToAdd = [];
+
+	if(treesUser.length!=arbresUser.length){
+		for(let i=0; i<= arbresUser.length; i++){
+			for(let j=0; j<=treesUser.length; j++){
+				let arbreUserActuel = treesUser[j];
+				let arbreActuel = arbresUser [i];
+				if(arbreUserActuel!=arbreActuel){
+					treesToAdd.push(arbreActuel); 
+				}
+			}
+		}
+	}
 });
