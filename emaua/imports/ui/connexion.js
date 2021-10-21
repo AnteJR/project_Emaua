@@ -86,6 +86,7 @@ Template.registerPage.events({
 			}
 
 			//creation user selon si c'est via code ou non
+			//SI IL EST CRÉÉ SANS CODE :
 			if(codeT!="" && codeT!="free" && codeT!="paying"){
 				id = Accounts.createUser({
 					username: pseudo,
@@ -111,6 +112,7 @@ Template.registerPage.events({
 					}
 				});
 			}
+			//S'IL EST CRÉÉ AVEC UN CODE
 			else{
 				id = Accounts.createUser({
 					username: pseudo,
@@ -152,6 +154,7 @@ Template.loginPage.events({
 		let mdpUt = document.getElementById("passwordLogin").value;
 		let re = /\S+@\S+\.\S+/;
 
+		//pouvoir se connecter avec l'adresse email
 		if(nomUt.match(re)){
 			Meteor.loginWithPassword({email: nomUt}, mdpUt, function(error){
 				//s'il y a un problème, dire lequel
@@ -171,6 +174,7 @@ Template.loginPage.events({
 				}
 			});
 		}
+		//pouvoir se connecter avec son username
 		else if(!nomUt.match(re)){
 			Meteor.loginWithPassword({username: nomUt}, mdpUt, function(error){
 				//s'il y a un problème, dire lequel
@@ -199,6 +203,7 @@ Template.loginPage.events({
 });
 
 Template.changePassword.events({
+	//fonction pour changer son mot de passe
 	'submit #formChangePass': function(event){
 		event.preventDefault();
 
@@ -207,15 +212,18 @@ Template.changePassword.events({
 		let newPWConf = document.getElementById('newPassConf').value;
 		let samePW = false;
 
+		//vérifier que la personne a bien entré 2 fois le même MDP
 		if(newPW == newPWConf){
 			samePW = true;
 		}
 
+		//si c'est le cas, créer un nouveau mot de passe
 		if(samePW = true){
 			Accounts.changePassword(oldPW, newPW, function(error){
 				if(error){
 					alert(error.reason);
 				}
+				//prévenir le user que c'est fait
 				else{
 					alert("Mot de passe modifié !");
 					FlowRouter.go("home");
@@ -230,6 +238,7 @@ Template.disconnectHeader.events({
 	'click #disconnectUser': function(event){
 		event.preventDefault();
 		Meteor.logout();
+		FlowRouter.go('home');
 	},
 	//fonction admin pour aller ajouter des arbres
     'click #addTreeBtn': function(event){
@@ -270,57 +279,59 @@ Template.disconnectHeader.helpers({
 });
 
 Template.disconnectHeader.onRendered(function(){
+	//afficher le nombre approprié d'étoiles en fonction de nombre d'arbres plantés
+	//vérifier combien d'arbres un user a planté
 	let monUser = Meteor.users.findOne({_id: Meteor.userId()});
 	let userTrees = monUser.profile.trees;
 	let nbr = 0;
 	userTrees.forEach(function(element){
 		let monArbre = TreeCollection.findOne({codeArbre: element});
-		console.log(monArbre);
 		nbr += monArbre.nombreArbres;
-		console.log(nbr);
 	});
+	//s'il en a planté - que 5'000, il est de niveau 0
+	//s'il en a planté + que 5'000, il est de niveau 1
 	if(nbr>5000){
 		if(monUser.profile.userTier < 1){
 			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 1}});
 		}
 	}
+	//s'il en a planté + que 10'000, il est de niveau 2
 	if(nbr>10000){
 		if(monUser.profile.userTier < 2){
 			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 2}});
 		}
 	}
+	//s'il en a planté + que 25'000, il est de niveau 3
 	if(nbr>25000){
 		if(monUser.profile.userTier < 3){
 			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 3}});
 		}
 	}
+	//s'il en a planté + que 50'000, il est de niveau 4
 	if(nbr>50000){
 		if(monUser.profile.userTier < 4){
 			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 4}});
 		}
 	}
+	//s'il en a planté + que 100'000, il est de niveau 5
 	if(nbr>100000){
 		if(monUser.profile.userTier < 5){
 			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 5}});
 		}
 	}
+
+	//Vérifier si tous les arbres auquel le user a contribué lui sont attribué
 	let arbresUser = []
 	TreeCollection.find({nomUtilisateur: monUser.username}).forEach(function(element){
 		arbresUser.push(element.codeArbre);
 	});
-
 	let treesUser = monUser.profile.trees;
-	let treesToAdd = [];
 
-	if(treesUser.length!=arbresUser.length){
-		for(let i=0; i<= arbresUser.length; i++){
-			for(let j=0; j<=treesUser.length; j++){
-				let arbreUserActuel = treesUser[j];
-				let arbreActuel = arbresUser [i];
-				if(arbreUserActuel!=arbreActuel){
-					treesToAdd.push(arbreActuel); 
-				}
-			}
-		}
+	//si un arbre a été ajouté dans la BDD sans que le user l'ai ajouté lui-même, lui les attribuer automatiquement
+	let treesToAdd = arbresUser.filter(x => !treesUser.includes(x));
+	if(treesToAdd!=[]){
+		treesToAdd.forEach(function(element){
+			Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": element}});
+		});
 	}
 });

@@ -12,6 +12,7 @@ import '../templates/treeMaps.html';
 import '../templates/disconnectHeader.html';
 
 Template.addTreeCode.helpers({
+    //afficher le code entré
     codeArbre: function(){
         let code = FlowRouter.getParam('codeArbre');
         return(code);
@@ -19,11 +20,13 @@ Template.addTreeCode.helpers({
 });
 
 Template.loginBtnTrees.events({
+    //pouvoir se créer un compte en ajoutant un code
     'click #registerButtonT': function(event){
         event.preventDefault();
         let code = FlowRouter.getParam('codeArbre');
         FlowRouter.go("registerPage", {typeUsReg: code});
     },
+    //pouvoir se connecter en ajoutant un code
     'click #loginButtonT': function(event){
         event.preventDefault();
         let code = FlowRouter.getParam('codeArbre');
@@ -65,8 +68,10 @@ Template.mainPage.helpers({
     }
 });
 
+//Google Maps pour la carte avec TOUS les projets
 Template.mainPage.onCreated(function() {
     setTimeout(function(){
+        //récupérer les geolocalisation des arbres et créer la liste des markers qu'on veut ajouter à la carte
         let mesArbres = TreeCollection.find();
         let mesMarkers = [];
         
@@ -170,20 +175,24 @@ Template.addTreeForm.events({
         //on créer une entrée dans la base de donnée
         Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
     },
+    //revenir à la page d'accueil
     'click #homeButton': function(event){
         event.preventDefault();
         FlowRouter.go("home");
     },
+    //mise en ligne de fichiers pour peupler la base de donnée des projets
     'change #myfile': function(event){
+        //récupérer le fichier
         const fileList = event.target.files;
         if(fileList){
+            //lire le fichier CSV pour obtenir une variable JSON
             let csvToParse = fileList[0];
-            console.log(csvToParse)
             const myTrees = Papa.parse(csvToParse, {
                 complete: function(results) {
+                    //variable JSON qui contient TOUTES les lignes du fichier CSV
                     let myTreesData = results.data;
-                    console.log(myTreesData)
-                
+                    
+                    //boucle pour passer à travers TOUT le fichier JSON, ligne par ligne
                     for(let i=2; i<myTreesData.length; i++){
                         let dateT = myTreesData[i][0];
                         let nameT = myTreesData[i][10];
@@ -201,6 +210,7 @@ Template.addTreeForm.events({
                             dateT += newDate[0];
                         }
 
+                        //interpréter le nombre d'arbres comme un nombre entier (Int)
                         let nbr = nbrT.split(",");
                         let monNombre = nbr[0]+nbr[1];
                         nbrT = parseInt(monNombre);
@@ -238,10 +248,10 @@ Template.addTreeForm.events({
                         let canFindTreeOwner;
                         let treeExists = false;
 
+                        //si une entrée existe déjà, le préciser
                         if(canFindTreeDate && canFindTreeGPS && canFindTreeNbre){
                             treeExists = true;
                             canFindTreeOwner = canFindTreeDate.nomUtilisateur;
-                            console.log(canFindTreeOwner);
                         }
                         
                         //si aucune entrée n'existe, on créer une entrée dans la base de donnée
@@ -250,6 +260,7 @@ Template.addTreeForm.events({
                                 Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
                             }
                         }
+                        //si une entrée existe déjà mais qu'elle n'avait précédemment pas de nom, les ajouter
                         else if(treeExists==true){
                             if(canFindTreeOwner=="EN ATTENTE DE CODE" && pseudo!=""){
                                 TreeCollection.update({_id: canFindTreeNbre._id}, {$set: {nomUtilisateur: pseudo}});
@@ -259,8 +270,9 @@ Template.addTreeForm.events({
                 }
             });
         }
+        //s'il y a eu une erreur lors de l'importation, prévenir le user
         else{
-                alert("erreur lors de l'importation")
+            alert("erreur lors de l'importation")
         }
     }
 });
@@ -272,6 +284,7 @@ Template.treeMaps.onRendered(function() {
 });
 
 Template.treeMaps.helpers({
+    //setup la carte Google Maps, notamment la localisation sur laquelle elle se centre
     exampleMapOptions: function() {
         let monCode = FlowRouter.getParam('codeArbre');
         let monArbre = TreeCollection.findOne({codeArbre: monCode});
@@ -288,16 +301,19 @@ Template.treeMaps.helpers({
             };
         }
     },
+    //helper pour savoir qu'elle est le code du projet
     'idPlant': function(){
         let monCode = FlowRouter.getParam('codeArbre');
         let monArbre = TreeCollection.findOne({codeArbre: monCode});
         return monArbre.codeArbre;
     },
+    //helper pour savoir qu'elle est la date de plantation du projet
     'datePlant': function(){
         let monCode = FlowRouter.getParam('codeArbre');
         let monArbre = TreeCollection.findOne({codeArbre: monCode});
         return monArbre.datePlantation;
     },
+    //helper pour savoir qu'elle est le nombre d'arbres du projet
     'nbrPlant': function(){
         let monCode = FlowRouter.getParam('codeArbre');
         let monArbre = TreeCollection.findOne({codeArbre: monCode});
@@ -311,36 +327,40 @@ Template.treeMaps.onCreated(function() {
       //ajouter un marquer à la latitude/longitude indiquées
       var marker = new google.maps.Marker({
         position: map.options.center,
-        //icon: ???
+        //icon: pin.png
         map: map.instance
       });
     });
   });
 
   Template.treeMaps.events({
+      //bouton pour revenir en arrière
     'click #backHome': function(event){
         FlowRouter.go("home");
     }
   });
 
 Template.disconnectHeader.events({
+    //fonction pour entrer un code depuis le menu déroulant dans le header
     'submit #submitCodeHeader': function(event){
         event.preventDefault();
-
         let monInput = document.getElementById('codeHeader');
         let monCodeArbre = monInput.value;
 
+        //Si un projet existe et n'est pas attribué, l'attribuer
         if(TreeCollection.findOne({codeArbre: monCodeArbre}).nomUtilisateur=="EN ATTENTE DE CODE"){
             Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": monCodeArbre}});
             TreeCollection.update({_id: TreeCollection.findOne({codeArbre: monCodeArbre})._id}, 
 								  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
 			);
+            //alerter que le  code a été utilisé
             alert("Code "+monCodeArbre+" ajouté !");
         }
+        //sinon prévenir le user
         else{
             alert("Code invalide ou déjà utilisé !")
         }
-
+        //vider l'input
         monInput.value = "";
     }
 });
