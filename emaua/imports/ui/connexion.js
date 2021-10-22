@@ -287,7 +287,61 @@ Template.disconnectHeader.events({
 		Meteor.call('sendVerEmail', id, function(){
 			console.log("email sent");
 		});
-	}
+	},
+	//fonction pour upgrade un user en admin
+    'submit #submitNewAdmin': function(event){
+        event.preventDefault();
+        let monInput = document.getElementById('usernameHeader');
+        let monUsername = monInput.value;
+		let monUser = Meteor.users.findOne({username: monUsername});
+		console.log(monUser.username)
+
+        //Si le user existe
+        if(monUser){
+			//si le user n'est pas déjà admin, le passer admin
+            if(!monUser.profile.isAdmin){
+              Meteor.users.update({_id: monUser._id}, {$set: {'profile.isAdmin': true}});
+              alert("admin ajouté !")
+            }
+			//sinon dire que l'utilisateur est déjà admin
+            else{
+              alert("L'utilisateur est déjà admin !")
+            }
+              }
+    	//si le user cherché n'existe pas, le dire
+    	else{
+    	    alert("username invalide")
+    	}
+        //vider l'input
+        monInput.value = "";
+    },
+	//fonction pour downgrade un admin en user
+    'submit #submitLessAdmin': function(event){
+        event.preventDefault();
+        let monInput = document.getElementById('usernameRemoveHeader');
+        let monUsername = monInput.value;
+		let monUser = Meteor.users.findOne({username: monUsername});
+		console.log(monUser.username)
+
+        //Si l'admin existe
+        if(monUser){
+			//s'il est admin, le downgrade
+            if(monUser.profile.isAdmin){
+              Meteor.users.update({_id: monUser._id}, {$set: {'profile.isAdmin': false}});
+              alert("admin retiré !")
+            }
+			//sinon, dire qu'il n'est déjà pas admin
+            else{
+              alert("L'utilisateur n'est déjà plus admin !")
+            }
+        }
+    	//sinon prévenir le user
+    	else{
+    	    alert("username invalide")
+    	}
+        //vider l'input
+        monInput.value = "";
+    }
 });
 
 Template.disconnectHeader.helpers({

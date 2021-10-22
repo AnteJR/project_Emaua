@@ -22,6 +22,13 @@ Meteor.startup(() => {
       update() {return true},
       remove() {return true}
     });
+    Meteor.users.allow({
+      update: function(userId, user) {
+        const currentUser = Meteor.users.findOne(userId);
+        return !!currentUser && currentUser.profile.isAdmin === true;
+      }
+    });
+    
     if(Meteor.isServer){
       process.env.MAIL_URL = `smtps://emaua.info@gmail.com:emaua_MP21@smtp.gmail.com:465/`;
 
@@ -59,7 +66,7 @@ Meteor.startup(() => {
           check(userId, String);
   
           Accounts.sendVerificationEmail(userId, callback);
-        }
+        },
       });
     }
 	});

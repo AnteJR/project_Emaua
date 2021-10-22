@@ -200,6 +200,15 @@ body {
   border: none;
   cursor: pointer;
 }
+.dropbtn1 {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  margin-left:25px;
+}
 
 .dropdown {
   position: relative;
@@ -228,17 +237,17 @@ body {
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
-#codeHeader{
+.codeHeader{
   color:black;
   background-color:rgba(255, 0, 0, 0);
   border:none;
   display:inline;
 }
-#codeHeader:focus{
+.codeHeader:focus{
   outline:none;
   background-color:rgba(255, 0, 0, 0);
 }
-#codeHeader::placeholder{
+.codeHeader::placeholder{
   color:#000000;
 }
 

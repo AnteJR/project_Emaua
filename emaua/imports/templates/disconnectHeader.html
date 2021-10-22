@@ -1,29 +1,52 @@
 <template name="disconnectHeader">
     <header align=right>
       <div class="myHeader">
+        {{#if isAdmin}}
+        <div class="dropdown" style="float:right;">
+          <button class="dropbtn1">Ajouter un admin</button>
+          <div class="dropdown-content" style="text-align:left;">
+            <a href="" id="addUserAdmin">
+              <form id="submitNewAdmin">
+                <input class="codeHeader" type="text" id="usernameHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
+              </form>
+            </a>
+          </div>
+        </div>
+        <div class="dropdown" style="float:right;">
+          <button class="dropbtn1">Retirer un admin</button>
+          <div class="dropdown-content" style="text-align:left;">
+            <a href="" id="removeUserAdmin">
+              <form id="submitLessAdmin">
+                <input class="codeHeader" type="text" id="usernameRemoveHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
+              </form>
+            </a>
+          </div>
+        </div>
+        {{else}}
+        {{/if}}
         <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
         {{#if currentUser}}
           <div class="dropdown" style="float:right;">
-              <button class="dropbtn">{{nomUser}}</button>
-              <div class="dropdown-content" style="text-align:left;">
-                <a href="" id="disconnectUser">SE DECONNECTER</a>
-                <a href="" id="changePassword">CHANGER MDP</a>
-                {{#if isAdmin}}
-                  <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
-                {{else}}
-                  <a href="" id="addCode">
-                    <form id="submitCodeHeader">
-                      <input type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
-                    </form>
-                  </a>
-                {{/if}}
-                {{#if isVerified}}
-                {{else}}
-                  <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
-                {{/if}}
-              </div>
+            <button class="dropbtn">{{nomUser}}</button>
+            <div class="dropdown-content" style="text-align:left;">
+              <a href="" id="disconnectUser">SE DECONNECTER</a>
+              <a href="" id="changePassword">CHANGER MDP</a>
+              {{#if isAdmin}}
+                <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
+              {{else}}
+                <a href="" id="addCode">
+                  <form id="submitCodeHeader">
+                    <input class="codeHeader" type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
+                  </form>
+                </a>
+              {{/if}}
+              {{#if isVerified}}
+              {{else}}
+                <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
+              {{/if}}
             </div>
-            {{/if}}
+          </div>
+          {{/if}}
       </div>          
     </header>
 </template>
