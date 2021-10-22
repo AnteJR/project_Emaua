@@ -381,7 +381,7 @@ Template.disconnectHeader.helpers({
 		else{
 			Template.instance().isVerified = new ReactiveVar(false);
 		}
-		return Template.instance().isAdmin.get();
+		return Template.instance().isVerified.get();
 	}
 });
 

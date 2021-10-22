@@ -8,16 +8,20 @@ Meteor.startup(() => {
   // code to run on server at startup
   Tracker.autorun(()=>{
 		Meteor.publish('arbres', function () {
-			return Semaines.find({},{
-				'_id':1,
-				'nomUtilisateur': 1,
-        'datePlantation': 1,
-        'nombreArbres': 1,
-        'coordonneesArbres': 1,
-        'codeArbre': 1
-			});
+			return TreeCollection.find();
 		});
-    TreeCollection.allow({
+		Meteor.publish('users', function () {
+				return Meteor.users.find({},{
+					fields:{
+            'emails':1,
+					  '_id':1,
+					  'username':1,
+            'profile':1
+				  }
+				});
+			});
+    
+	  TreeCollection.allow({
       insert() {return true},
       update() {return true},
       remove() {return true}
