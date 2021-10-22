@@ -319,13 +319,15 @@ Template.disconnectHeader.helpers({
 	'isVerified': function(){
         let myID = Meteor.userId();
         let requete = Meteor.users.findOne({_id: myID});
-		let email = requete.emails[0].address;
+		let email = requete.emails[0].verified;
+		console.log(email)
 		if(email){
 			Template.instance().isVerified = new ReactiveVar(true);
 		}
 		else{
 			Template.instance().isVerified = new ReactiveVar(false);
 		}
+		return Template.instance().isAdmin.get();
 	}
 });
 
