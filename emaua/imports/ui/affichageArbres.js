@@ -195,9 +195,13 @@ Template.addTreeForm.events({
                     //boucle pour passer à travers TOUT le fichier JSON, ligne par ligne
                     for(let i=2; i<myTreesData.length; i++){
                         let dateT = myTreesData[i][0];
+                        let projectNumber = myTreesData[i][1];
                         let nameT = myTreesData[i][10];
                         let latLongT = myTreesData[i][9];
                         let nbrT = myTreesData[i][4];
+
+                        let monNum = projectNumber;
+                        projectNumber = parseInt(monNum);
         
                         //date au bon format
                         if(dateT!=""){
@@ -241,29 +245,19 @@ Template.addTreeForm.events({
                             canFindTree = TreeCollection.findOne({codeArbre: codeT});
                         }
 
-                        //check si une entrée pour l'arbre existe déjà
-                        let canFindTreeGPS = TreeCollection.findOne({coordonneesArbres: latLongT});
-                        let canFindTreeDate = TreeCollection.findOne({datePlantation: dateT});
-                        let canFindTreeNbre = TreeCollection.findOne({nombreArbres: nbrT});
-                        let canFindTreeOwner;
-                        let treeExists = false;
-
-                        //si une entrée existe déjà, le préciser
-                        if(canFindTreeDate && canFindTreeGPS && canFindTreeNbre){
-                            treeExists = true;
-                            canFindTreeOwner = canFindTreeDate.nomUtilisateur;
-                        }
+                        let canFindMyTree = TreeCollection.findOne({numeroDeProjet: projectNumber});
                         
                         //si aucune entrée n'existe, on créer une entrée dans la base de donnée
-                        if(treeExists==false){
+                        if(!canFindMyTree){
                             if(latLongT!="" && dateT!=""){
-                                Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT);
+                                Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT, projectNumber);
                             }
                         }
                         //si une entrée existe déjà mais qu'elle n'avait précédemment pas de nom, les ajouter
-                        else if(treeExists==true){
-                            if(canFindTreeOwner=="EN ATTENTE DE CODE" && pseudo!=""){
-                                TreeCollection.update({_id: canFindTreeNbre._id}, {$set: {nomUtilisateur: pseudo}});
+                        else if(canFindMyTree){
+                            let treeOwner = canFindMyTree.nomUtilisateur;
+                            if(treeOwner=="EN ATTENTE DE CODE" && pseudo!=""){
+                                TreeCollection.update({_id: canFindMyTree._id}, {$set: {nomUtilisateur: pseudo}});
                             }
                         }
                     }

@@ -9,7 +9,7 @@ export const TreeCollection = new Mongo.Collection('arbres');
 //méthodes
 Meteor.methods({
     //méthode 1: ajouter un arbre à la BDD avec les infos données
-    'arbres.addTree'(username,date,nbr,gps,codeTree){
+    'arbres.addTree'(username,date,nbr,gps,codeTree, projectNum){
 
         //récupérer le contenu des inputs
         check(username, String);
@@ -17,6 +17,7 @@ Meteor.methods({
         check(nbr, Number);
         check(gps, String);
         check(codeTree, String);
+        check(projectNum, Number);
 
         //si on a un username : créer un arbre avec un proprio
         if(username){
@@ -25,7 +26,8 @@ Meteor.methods({
                 datePlantation: date,
                 nombreArbres: nbr,
                 coordonneesArbres: gps,
-                codeArbre: codeTree
+                codeArbre: codeTree,
+                numeroDeProjet: projectNum
             })
         }
 
@@ -35,7 +37,8 @@ Meteor.methods({
                 datePlantation: date,
                 nombreArbres: nbr,
                 coordonneesArbres: gps,
-                codeArbre: codeTree
+                codeArbre: codeTree,
+                numeroDeProjet: projectNum
             })
         }
     }
