@@ -41,9 +41,16 @@ Meteor.methods({
                 numeroDeProjet: projectNum
             })
         }
+    },
+    'arbres.addUpdate'(treeId, text, updateDate){
+        TreeCollection.update({_id: treeId}, {$push: {updateArbre:
+            {
+                updateText: text,
+                dateUpdate: updateDate
+            }
+        }})
     }
     //futures (éventuelles) méthodes:
     //1. ajouter des photos
     //2. ajouter une description
-    //3. ajouter une mise à jour
 });

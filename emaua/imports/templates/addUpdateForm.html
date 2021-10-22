@@ -1,0 +1,20 @@
+<template name="addUpdateForm">
+    {{> disconnectHeader}}
+    <div class = "mainPageDiv">
+        <div class = "maps_info" align="center">
+            <form id="formChangePass">
+                <div class="half-div">
+                    <p>Numéro du projet : </p>
+                    <p><input type="text" class="inputReg" id="numProj" placeholder="Numéro du projet"></p>
+                </div>
+                <div class="half-div">
+                    <p>Code du projet :</p>
+                    <p><input type="text" class="inputReg" id="codeProj" placeholder="Code du projet"></p>
+                </div>
+                <p>Mise à jour du projet :</p>
+                <p><textarea class="largeInput" id="updateProj" name="updateProj" form="formChangePass" placeholder="Update à ajouter."></textarea></p>
+                <p><input type="submit"></p>
+            </form>
+        </div>
+    </div>
+</template>

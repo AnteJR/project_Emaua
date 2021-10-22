@@ -15,7 +15,9 @@ Meteor.startup(()=>{
             return Meteor.users.find();
         })
         Meteor.subscribe('arbres', function (_id) {
-        	return TreeCollection.find({});
+        	if(Meteor.users.findOne(Meteor.userId()).profile.isAdmin || Meteor.users.findOne(Meteor.userId()).emails[0].verified){
+                return TreeCollection.find({});
+            }
         });
     });
 });
