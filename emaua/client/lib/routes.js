@@ -40,3 +40,9 @@ FlowRouter.route('/myProject/:codeArbre', {
         BlazeLayout.render('treeMaps');
     }
 });
+FlowRouter.route('/#/verify-email/:token', {
+    name: 'verify-mail',
+    action(){
+        BlazeLayout.render('mainPage');
+    }
+});

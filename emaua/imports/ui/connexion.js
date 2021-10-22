@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { TreeCollection } from '../api/arbres.js';
 import { Accounts } from 'meteor/accounts-base';
+import { Email } from 'meteor/email';
 
 import '../../client/lib/routes.js'
 import '../templates/app.html';
@@ -11,6 +12,20 @@ import '../templates/registerPage.html';
 import '../templates/disconnectHeader.html';
 import '../templates/changePassword.html';
 
+if(Meteor.isClient){
+	Accounts.onEmailVerificationLink((token, done) => {
+	  Accounts.verifyEmail(token, (err) => {
+		if (err) {
+		  console.log('Error: ', err);
+		}
+		else {
+		  done();
+		  console.log('Success');
+		}
+	  });
+	});
+  }
+  
 Template.loginBtn.events({
 	//quand on clique sur "se connecter", on charge la page de connexion
     'click #loginButton': function(event){
@@ -84,6 +99,7 @@ Template.registerPage.events({
 					i++;
 				}
 			}
+			let monMail = "Bonjour, \n \n Vos identifiants Emaua sont les suivants : \n \n Nom d'utilisateur : "+pseudo+"\n E-mail: "+emailAdrs+"\n Mot de passe : "+motDePasse+"\n \n Meilleures salutations, \n L'équipe Emaua"
 
 			//creation user selon si c'est via code ou non
 			//SI IL EST CRÉÉ SANS CODE :
@@ -107,6 +123,13 @@ Template.registerPage.events({
 						//si le user se crée un compte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
 						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
 											  {$set: {nomUtilisateur: pseudo}});
+						Meteor.call(
+							'sendEmail',
+							emailAdrs,
+							'Emaua <emaua.info@gmail.com>',
+							"Vos identifiants Emaua",
+							monMail
+						);
 						//se connecter et revenir à la page HOME, qui sera changée puisque le currentuser() est actif
 						FlowRouter.go("home");
 					}
@@ -130,6 +153,13 @@ Template.registerPage.events({
 						alert(error.reason);
 					}
 					else{
+						Meteor.call(
+							'sendEmail',
+							emailAdrs,
+							'Emaua <emaua.info@gmail.com',
+							"Vos identifiants Emaua",
+							monMail
+						);
 						FlowRouter.go("home");
 					}
 				});
@@ -248,6 +278,15 @@ Template.disconnectHeader.events({
 	'click #changePassword': function(event){
 		event.preventDefault();
 		FlowRouter.go("newPassword");
+	},
+	'click #verifyEmail': function(event){
+		event.preventDefault();
+		let user = Meteor.users.findOne({_id: Meteor.userId()});
+		let id = user._id;
+		let mail = user.emails[0].address;
+		Meteor.call('sendVerEmail', id, function(){
+			console.log("email sent");
+		});
 	}
 });
 
@@ -276,6 +315,18 @@ Template.disconnectHeader.helpers({
         }
         return Template.instance().isAdmin.get();
     },
+	//savoir si l'utilisateur qui observe la page a vérifié son adresse email
+	'isVerified': function(){
+        let myID = Meteor.userId();
+        let requete = Meteor.users.findOne({_id: myID});
+		let email = requete.emails[0].address;
+		if(email){
+			Template.instance().isVerified = new ReactiveVar(true);
+		}
+		else{
+			Template.instance().isVerified = new ReactiveVar(false);
+		}
+	}
 });
 
 Template.disconnectHeader.onRendered(function(){
