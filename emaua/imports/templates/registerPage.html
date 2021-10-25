@@ -3,12 +3,20 @@
     <div class = "mainPageDiv">
         <div class = "maps_info" align="center">
             <p class="pReg"><span class="bold green">Bienvenue sur l'application Emaua ! </span><br/> <br> Ici, vous pourrez voir où sont situés les arbres que vous avez contribué à planter. <span class="bold">Nous postons également des mises à jour ici.</span></p>
-            <p class="pReg"><span class="bold">Nom</span> <br> <input type="text" placeholder="Entrez votre nom de famille" id="surnameReg" class="inputReg"/></p>
-            <p class="pReg"><span class="bold">Prénom</span> <br> <input type="text" placeholder="Entrez votre prénom" id="nameReg" class="inputReg"/></p>
-            <p class="pReg"><span class="bold">Email</span> <br> <input type="email" placeholder="Entrez votre email" id="emailReg" class="inputReg"/></p>
-            <p class="pReg"><span class="bold">Mot de passe</span> <br> <input type="password" placeholder="Mot de passe" id="passwordReg" class="inputReg"/></p>
-            <p class="pReg"><em>Répétez le mot de passe</em> <br> <input type="password" placeholder="Mot de passe" id="passwordRegConf" class="inputReg"/></p>
-            <p><input type="button" id="boutonReg" value="Créer un compte"/><input type="button" id="annulerReg" value="Annuler"/></p>
+            <form id="formRegister">
+                <p class="pReg"><b>Nom</b></p>
+                <p class="pReg"><input type="text" placeholder="Entrez votre nom de famille" id="surnameReg" class="inputReg"/></p>
+                <p class="pReg"><b>Prénom</b></p>
+                <p class="pReg"><input type="text" placeholder="Entrez votre prénom" id="nameReg" class="inputReg"/></p>
+                <p class="pReg"><b>Email</b></p>
+                <p class="pReg"><input type="email" placeholder="Entrez votre email" id="emailReg" class="inputReg"/></p>
+                <p class="pReg"><b>Mot de passe</b></p>
+                <p class="pReg"><input type="password" placeholder="Mot de passe" id="passwordReg" class="inputReg"/></p>
+                <p class="pReg"><em style="font-size:14px;">Répétez le mot de passe</em></p>
+                <p class="pReg"><input type="password" placeholder="Mot de passe" id="passwordRegConf" class="inputReg"/></p>
+                <p class="pReg"><input class="buttonGeneral" type="submit" id="boutonReg" value="Créer un compte"/></p>
+            </form>
+            <p class="pReg"><input class="buttonGeneral" type="button" id="annulerReg" value="Annuler"/></p>
         </div>
     </div>
 </template>

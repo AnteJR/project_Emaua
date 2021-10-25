@@ -1,55 +1,62 @@
 <template name="disconnectHeader">
     <header align=right>
       <div class="myHeader">
-        {{#if isAdmin}}
-          <div class="dropdown" style="float:right;">
-            <button class="dropbtn1">Ajouter un admin</button>
-            <div class="dropdown-content" style="text-align:left;">
-              <a href="" id="addUserAdmin">
-                <form id="submitNewAdmin">
-                  <input class="codeHeader" type="text" id="usernameHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
-                </form>
-              </a>
-            </div>
-          </div>
-          <div class="dropdown" style="float:right;">
-            <button class="dropbtn1">Retirer un admin</button>
-            <div class="dropdown-content" style="text-align:left;">
-              <a href="" id="removeUserAdmin">
-                <form id="submitLessAdmin">
-                  <input class="codeHeader" type="text" id="usernameRemoveHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
-                </form>
-              </a>
-            </div>
-          </div>
-          {{else}}
-          {{/if}}
         {{#if currentUser}}
-          <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
-          <div class="dropdown" style="float:right;">
-            <button class="dropbtn">{{nomUser}}</button>
-            <div class="dropdown-content" style="text-align:left;">
-              <a href="" id="disconnectUser">SE DECONNECTER</a>
-              <a href="" id="changePassword">CHANGER MDP</a>
-              {{#if isAdmin}}
-                <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
-                <a href="" id="addUpdateBtn">AJOUTER UPDATE</a>
-              {{else}}
-                <a href="" id="addCode">
-                  <form id="submitCodeHeader">
-                    <input class="codeHeader" type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
-                  </form>
-                </a>
-              {{/if}}
-              {{#if isVerified}}
-              {{else}}
-                <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
-              {{/if}}
-            </div>
-          </div>
-        {{else}}
+          {{#if isAdmin}}
           <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
-        {{/if}}
+          {{else}}
+            {{#if isMainPage}}
+              <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
+              <div class="dropdown" style="float:right;">
+                <button class="dropbtn">{{nomUser}}</button>
+                <div class="dropdown-content" style="text-align:left;">
+                  <a href="" id="disconnectUser">SE DECONNECTER</a>
+                  <a href="" id="changePassword">CHANGER MDP</a>
+                    <a href="" id="addCode">
+                      <form id="submitCodeHeader">
+                        <input class="codeHeader" type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
+                      </form>
+                    </a>
+                  {{#if isVerified}}
+                  {{else}}
+                    <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
+                  {{/if}}
+                </div>
+              </div>
+              {{else}}
+              <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
+              {{/if}}
+            {{/if}}
+          {{else}}
+            <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
+          {{/if}}
       </div>          
     </header>
+    {{#if isAdmin}}
+      {{#if isMainPage}}
+        <div class="dropdown-content-wide" style="text-align:left;">
+          <span class="monAdmin">{{nomUserNoStar}}</span>
+          <a href="" id="disconnectUser">SE DECONNECTER</a>
+          <a href="" id="changePassword">CHANGER MDP</a>
+          <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
+          <a href="" id="addUpdateBtn">AJOUTER UPDATE</a>
+          <a href="" id="addUserAdmin" class="smallScreenAdmin">
+            <form id="submitNewAdmin">
+              AJOUTER UN ADMIN : <br />
+              <input class="codeHeader" type="text" id="usernameHeader" placeholder="Entrer un nom" style="display:inline;" />
+            </form>
+          </a>
+          <a href="" id="removeUserAdmin" class="smallScreenAdmin">
+            <form id="submitLessAdmin">
+              RETIRER UN ADMIN : <br />
+              <input class="codeHeader" type="text" id="usernameRemoveHeader" placeholder="Entrer un nom" style="display:inline;" />
+            </form>
+          </a>
+          {{#if isVerified}}
+            {{else}}
+              <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
+            {{/if}}
+        </div>
+      {{/if}}
+    {{/if}}
 </template>

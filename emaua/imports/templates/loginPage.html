@@ -2,9 +2,14 @@
     {{> disconnectHeader}}
     <div class = "mainPageDiv">
         <div class = "maps_info" align="center">
-            <p>Nom d'utilisateur/email <br> <input type="text" placeholder="Nom d'utilisateur ou email" id="usernameLogin" class="inputReg"/></p>
-            <p>Mot de passe <br> <input type="password" placeholder="Entrer ici" id="passwordLogin" class="inputReg"/></p>
-            <p><input type="button" id="boutonLogin" value="se connecter"/><input type=button id="annulerLogin" value="annuler"/></p>
+            <form id="formLogin">
+                <p class="pReg"><b>Nom d'utilisateur/email</b></p>
+                <p class="pReg"><input type="text" placeholder="Nom d'utilisateur ou email" id="usernameLogin" class="inputReg"/></p>
+                <p class="pReg"><b>Mot de passe</b></p>
+                <p class="pReg"><input type="password" placeholder="Entrer ici" id="passwordLogin" class="inputReg"/></p>
+                <p class="pReg"><input type="submit" class="buttonGeneral" value="SE CONNECTER"/></p>
+                <p class="pReg"><input type="button" id="annulerLogin" class="buttonGeneral" value="ANNULER"/></p>
+            </form>
         </div>
     </div>
 </template>

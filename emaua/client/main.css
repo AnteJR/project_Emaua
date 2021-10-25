@@ -5,6 +5,9 @@ body {
   background-repeat: no-repeat;
   background-size: auto;
 }
+.smallScreenAdmin{
+  display:none;
+}
 .intro_txt{
   width: 80%;
   height:100%;
@@ -69,15 +72,6 @@ body {
 .background{
   color:rgb(64, 64, 131)
 }
-.button_green{
-  background-color:green;
-  color:white;
-  border-radius: 6px;
-  align-items: stretch;
-  font-weight: 800;
-  font-stretch:extra-expanded;
-  padding: 15px 25px 15px 25px;
-}
 .page_design{
   position:absolute;
   top:0px;
@@ -139,8 +133,7 @@ body {
 }
 .mainPageDiv{
   width:100%;
-  margin:auto;
-  display:block;
+  margin-top: 2%;
 }
 .secondaryMainPageDiv{
   width:100%;
@@ -155,9 +148,6 @@ body {
 }
 .container_maps{
   width: 100%;
-  height:available;
-  float:left;
-  display:block;
 }
 .map-container2 {
   margin-top:25px;
@@ -170,11 +160,12 @@ body {
   height:available;
 }
 .maps_info{
-  padding:5px 25px 5px 25px;
+  padding-top:25px;
+  padding-bottom: 25px;
   background-color:white;
-  border-radius:25px;
-  width:50%;
-  margin-left:25%;
+  border-radius:3px;
+  width:60%;
+  margin-left:20%;
 }
 .loginTotal{
   width:75%;
@@ -207,16 +198,6 @@ body {
   border: none;
   cursor: pointer;
 }
-.dropbtn1 {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  margin-left:25px;
-}
-
 .dropdown {
   position: relative;
   display: inline-block;
@@ -280,7 +261,7 @@ body {
   background-color:rgba(255, 0, 0, 0);
   border:none;
   display:inline;
-  width:250px;
+  width:75%;
 }
 .inputReg:focus{
   text-align:center;
@@ -291,7 +272,7 @@ body {
   text-align:center;
 }
 .pReg{
-  width:250px;
+  width:50%;
 }
 
 .a_black{
@@ -325,6 +306,50 @@ body {
   overflow: visible;
   text-align: center;
 }
+.dropdown-content-wide{
+  display: block;
+  position:relative;
+  margin-top:5%;
+  width:75%;
+  margin-left:12.5%;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content-wide a {
+  color:black;
+  padding: 15px;
+  height:25px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content-wide a:hover{
+  background-color: lightgrey;
+}
+.monAdmin{
+  background-color: #04AA6D;
+  border-bottom: 1px lightgray solid;
+  padding: 15px;
+  height:25px;
+  text-decoration: none;
+  display: block;
+  color:white;
+  font-size: 20px;
+}
+.buttonGeneral{
+  padding:10px;
+  border-color:darkgrey;
+  border-style: solid;
+  border-radius: 2px;
+  border-width: 1px;
+  background-color: rgb(241, 239, 239);
+  width:100%;
+}
+.buttonGeneral:hover{
+  border-color:lightgrey;
+  background-color: rgb(247, 247, 247);
+}
 @media only screen and (max-width: 1050px) {
   .placement_div_login1{
     width:100%;
@@ -339,8 +364,8 @@ body {
     margin-top:5%;
   }
   .logoTitleNoUser{
-    width: 50%;
-    padding-left:25%;
+    width: 45%;
+    padding-left:27.5%;
   }
   .loginTotal{
     width:40%;
@@ -353,13 +378,30 @@ body {
   .loginDiv{
     margin-top: 5%;
   }
+  .mainPageDiv{
+    margin-top:7%;
+  }
+  .maps_info{
+    width:65%;
+    margin-left:17.5%;
+  }
+  .logoTitle{
+    width: 40%;
+  }
+  .fullscreenDrop{
+    display:none;
+  }
+  .dropdown-content-wide{
+    margin-top:10%;
+  }
 }
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 786px) {
   .intro_txt{
     width: 95%;
-    text-align: left;
+    text-align: center;
     line-height: 1.5;
     margin-top:10%;
+    font-size: 29px;
   }
   .loginTotal{
     width:75%;
@@ -376,7 +418,84 @@ body {
   .loginDiv{
     margin-top: 10%;
   }
+  .mainPageDiv{
+    margin-top:10%;
+  }
   .hr_platform{
     width: 60%;
+  }
+  .maps_info{
+    width:75%;
+    margin-left:12.5%;
+  }
+  .logoTitle{
+    width: 60%;
+  }
+  .half-div{
+    width:100%
+  }
+}
+@media only screen and (max-width: 450px) {
+  .intro_txt{
+    width: 95%;
+    text-align: center;
+    line-height: 1.5;
+    margin-top:10%;
+    font-size: 29px;
+  }
+  .loginTotal{
+    width:75%;
+    height:100%;
+  }
+  .myHeader{
+    width:100%;
+    height:53px;
+  }
+  .logoTitleNoUser{
+    width: 75%;
+    padding-left:12.5%;
+  }
+  .loginDiv{
+    margin-top: 3%;
+  }
+  .mainPageDiv{
+    margin-top:5%;
+  }
+  .maps_info{
+    width:75%;
+    margin-left:12.5%;
+  }
+  .logoTitle{
+    width: 100%;
+    padding-left: 0px;
+  }
+  .dropbtn{
+    width:100%;
+  }
+  .dropdown {
+    margin-top:20px;
+    position: relative;
+    display: inline-block;
+    width:100%;
+  }
+  .dropdown-content {
+    width:100%;
+  }
+  .mainPageDiv{
+    margin-top:10%;
+  }
+  .mainPageDivApp{
+    margin-top:30%;
+  }
+  .maps_info{
+    width:95%;
+    margin-left:2.5%;
+    margin-top:3%;
+  }
+  .pReg{
+    width:95%;
+  }
+  .buttonGeneral{
+    width:100%;
   }
 }

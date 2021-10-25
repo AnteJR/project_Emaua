@@ -42,7 +42,7 @@ Template.loginBtn.events({
 });
 
 Template.registerPage.events({
-	'click #boutonReg': function(event){
+	'submit #formRegister': function(event){
 		console.log("I've been pressed !")
 		event.preventDefault();
 
@@ -177,7 +177,7 @@ Template.registerPage.events({
 
 Template.loginPage.events({
 	//Fonctione pour se log-in
-	'click #boutonLogin': function(event){
+	'submit #formLogin': function(event){
 		event.preventDefault();
 
 		//récupérer les inputs (username + password)
@@ -261,6 +261,10 @@ Template.changePassword.events({
 				}
 			})
 		}
+	},
+	'click #homeBtn': function(event){
+		event.preventDefault();
+		FlowRouter.go("home");
 	}
 })
 
@@ -295,7 +299,6 @@ Template.disconnectHeader.events({
         let monInput = document.getElementById('usernameHeader');
         let monUsername = monInput.value;
 		let monUser = Meteor.users.findOne({username: monUsername});
-		console.log(monUser.username)
 
         //Si le user existe
         if(monUser){
@@ -322,7 +325,6 @@ Template.disconnectHeader.events({
         let monInput = document.getElementById('usernameRemoveHeader');
         let monUsername = monInput.value;
 		let monUser = Meteor.users.findOne({username: monUsername});
-		console.log(monUser.username)
 
         //Si l'admin existe
         if(monUser){
@@ -358,6 +360,12 @@ Template.disconnectHeader.helpers({
 
         return(monUsername + " | " + monUserStars);
     },
+	nomUserNoStar: function(){
+		let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
+
+        return(monUsername + " | Admin");
+		
+	},
 	//savoir si l'utilisateur qui observe la page est administrateur
     'isAdmin': function(){
         let myID = Meteor.userId();
@@ -383,6 +391,16 @@ Template.disconnectHeader.helpers({
 			Template.instance().isVerified = new ReactiveVar(false);
 		}
 		return Template.instance().isVerified.get();
+	},
+	'isMainPage': function(){
+		let maPage = FlowRouter.getRouteName();
+		if(maPage == "home"){
+			Template.instance().isMainPage = new ReactiveVar(true);
+		}
+		else{
+			Template.instance().isMainPage = new ReactiveVar(false);
+		}
+		return Template.instance().isMainPage.get();
 	}
 });
 

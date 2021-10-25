@@ -291,7 +291,7 @@ Template.treeMaps.helpers({
             //options d'initialisation de la Map
             return {
                 center: new google.maps.LatLng(splitTree[0], splitTree[1]),
-                zoom: 12,
+                zoom: 16,
                 mapTypeId: google.maps.MapTypeId.HYBRID
             };
         }
@@ -407,5 +407,9 @@ Template.addUpdateForm.events({
 
             Meteor.call("arbres.addUpdate", monProjet._id, monUpdate, maDateAEnvoyer);
         }
+    },
+    'click #btnHome': function(event){
+        event.preventDefault();
+        FlowRouter.go("home")
     }
 });
