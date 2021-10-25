@@ -37,11 +37,11 @@ Meteor.startup(() => {
       process.env.MAIL_URL = `smtps://emaua.info@gmail.com:emaua_MP21@smtp.gmail.com:465/`;
 
       Accounts.emailTemplates = {
-        from: "Emaua <emaua.info@gmail.com",
+        from: "Emaua <emaua.info@gmail.com>",
         siteName: "Emaua",
         verifyEmail: {
           from: function () {
-            return "Emaua Login <emaua.info@gmail.com";
+            return "Emaua Login <emaua.info@gmail.com>";
           },
           subject: function () {
             return "Vérification de l'adresse email - Emaua";
@@ -55,15 +55,15 @@ Meteor.startup(() => {
       
       //méthode pour envoyer des mails au nom d'Emaua
       Meteor.methods({
-        sendEmail(to, from, subject, text) {
+        sendEmail(destinataire, auteur, sujet, texte) {
           //vérifier que les arguments envoyés sont du texte
-          check([to, from, subject, text], [String]);
+          check([destinataire, auteur, sujet, texte], [String]);
         
           //permettre d'autres fonctions de tourner pendant que le mail s'envoie, ne bloque pas tout pour l'envoi d'iun mail
           this.unblock();
           
           //envoyer l'email avec les paramètres
-          Email.send({ to, from, subject, text });
+          Email.send({ to: destinataire, from: auteur, subject: sujet, html: texte });
         },
         sendVerEmail(userId, callback) {
           this.unblock;

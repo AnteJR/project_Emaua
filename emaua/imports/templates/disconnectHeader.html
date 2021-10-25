@@ -2,30 +2,30 @@
     <header align=right>
       <div class="myHeader">
         {{#if isAdmin}}
-        <div class="dropdown" style="float:right;">
-          <button class="dropbtn1">Ajouter un admin</button>
-          <div class="dropdown-content" style="text-align:left;">
-            <a href="" id="addUserAdmin">
-              <form id="submitNewAdmin">
-                <input class="codeHeader" type="text" id="usernameHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
-              </form>
-            </a>
+          <div class="dropdown" style="float:right;">
+            <button class="dropbtn1">Ajouter un admin</button>
+            <div class="dropdown-content" style="text-align:left;">
+              <a href="" id="addUserAdmin">
+                <form id="submitNewAdmin">
+                  <input class="codeHeader" type="text" id="usernameHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
+                </form>
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="dropdown" style="float:right;">
-          <button class="dropbtn1">Retirer un admin</button>
-          <div class="dropdown-content" style="text-align:left;">
-            <a href="" id="removeUserAdmin">
-              <form id="submitLessAdmin">
-                <input class="codeHeader" type="text" id="usernameRemoveHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
-              </form>
-            </a>
+          <div class="dropdown" style="float:right;">
+            <button class="dropbtn1">Retirer un admin</button>
+            <div class="dropdown-content" style="text-align:left;">
+              <a href="" id="removeUserAdmin">
+                <form id="submitLessAdmin">
+                  <input class="codeHeader" type="text" id="usernameRemoveHeader" placeholder="ENTRER UN UTILISATEUR" style="display:inline;float:left;" />
+                </form>
+              </a>
+            </div>
           </div>
-        </div>
-        {{else}}
-        {{/if}}
-        <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
+          {{else}}
+          {{/if}}
         {{#if currentUser}}
+          <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
           <div class="dropdown" style="float:right;">
             <button class="dropbtn">{{nomUser}}</button>
             <div class="dropdown-content" style="text-align:left;">
@@ -47,7 +47,9 @@
               {{/if}}
             </div>
           </div>
-          {{/if}}
+        {{else}}
+          <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
+        {{/if}}
       </div>          
     </header>
 </template>

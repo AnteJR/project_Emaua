@@ -12,6 +12,7 @@ import '../templates/registerPage.html';
 import '../templates/disconnectHeader.html';
 import '../templates/changePassword.html';
 
+//vérifier l'email
 if(Meteor.isClient){
 	Accounts.onEmailVerificationLink((token, done) => {
 	  Accounts.verifyEmail(token, (err) => {
@@ -99,7 +100,7 @@ Template.registerPage.events({
 					i++;
 				}
 			}
-			let monMail = "Bonjour, \n \n Vos identifiants Emaua sont les suivants : \n \n Nom d'utilisateur : "+pseudo+"\n E-mail: "+emailAdrs+"\n Mot de passe : "+motDePasse+"\n \n Meilleures salutations, \n L'équipe Emaua"
+			let monMail = "<p>Bonjour,</p><p>Vos identifiants Emaua sont les suivants :</p><p><ul><li>Nom d'utilisateur : "+pseudo+"</li><li>E-mail: "+emailAdrs+"</li><li>Mot de passe : "+motDePasse+"</li></ul></p><p>Meilleures salutations,<br />L'équipe Emaua</p>"+'<p style="font-size:10px;"><em>Cet email est envoyé automatiquement ; veuillez ne pas y répondre.<br />Pour contacter Emaua, veuillez nous contacter en utilisant'+" l'adresse suivante : "+'<a href="mailto:info@emaua.org">info@emaua.org</a>.</em></p>'
 
 			//creation user selon si c'est via code ou non
 			//SI IL EST CRÉÉ SANS CODE :
@@ -156,7 +157,7 @@ Template.registerPage.events({
 						Meteor.call(
 							'sendEmail',
 							emailAdrs,
-							'Emaua <emaua.info@gmail.com',
+							'Emaua <emaua.info@gmail.com>',
 							"Vos identifiants Emaua",
 							monMail
 						);
