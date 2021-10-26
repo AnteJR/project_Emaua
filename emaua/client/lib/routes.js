@@ -34,6 +34,12 @@ FlowRouter.route('/password', {
         BlazeLayout.render('changePassword');
     }
 });
+FlowRouter.route('/reset-password/:monToken', {
+    name: 'forgotPW',
+    action(){
+        BlazeLayout.render('forgotPassword');
+    }
+});
 FlowRouter.route('/myProject/:codeArbre', {
     name: 'project',
     action(){

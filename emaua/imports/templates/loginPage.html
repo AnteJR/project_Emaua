@@ -4,13 +4,21 @@
         <div class = "maps_info" align="center">
             <span class="monAdmin" style="margin-top:0px;">Se connecter</span>
             <form id="formLogin">
-                <p class="pReg"><b>Nom d'utilisateur/email</b></p>
-                <p class="pReg"><input type="text" placeholder="Nom d'utilisateur ou email" id="usernameLogin" class="inputReg"/></p>
-                <p class="pReg"><b>Mot de passe</b></p>
-                <p class="pReg"><input type="password" placeholder="Entrer ici" id="passwordLogin" class="inputReg"/></p>
-                <p class="pReg"><input type="submit" class="buttonGeneral" value="SE CONNECTER"/></p>
-                <p class="pReg"><input type="button" id="annulerLogin" class="buttonGeneral" value="ANNULER"/></p>
+                <p class="pReg" id="elementToHide1"><b>Nom d'utilisateur/email</b></p>
+                <p class="pReg" id="elementToHide2"><input type="text" placeholder="Nom d'utilisateur ou email" id="usernameLogin" class="inputReg"/></p>
+                <p class="pReg" id="elementToHide3"><b>Mot de passe</b></p>
+                <p class="pReg" id="elementToHide4"><input type="password" placeholder="Entrer ici" id="passwordLogin" class="inputReg"/></p>
+                <p class="pReg" id="elementToHide5"><input type="submit" class="buttonGeneral" value="SE CONNECTER"/></p>
+                <p class="pReg" id="elementToHide6"><input type="button" id="annulerLogin" class="buttonGeneral" value="ANNULER"/></p>
             </form>
+            <p class="pReg" id="elementToHide7"><a href="" class="aMDP" id="forgotPassword">Mot de passe oublié ?</a></p>
+            <p class="pReg" style="display:none;" id="hiddenPass0"><b>Mot de passe oublié ?</b></p>
+            <p class="pReg" style="display:none;font-size:12px;" id="hiddenPass1">Entrez l'adresse email liée à votre compte :</p>
+            <form id="formForgot">
+                <p class="pReg" style="display:none;" id="hiddenPass2"><input type="text" placeholder="Adresse email" id="emailUserForgot" class="inputReg"/></p>
+                <p class="pReg" style="display:none;" id="hiddenPass3"><input type="submit" value="RÉINITIALISER" id="submitForgot" class="buttonGeneral"/></p>
+            </form>
+            <p class="pReg" style="display:none;" id="hiddenPass4"><input type="button" value="ANNULER" id="annulerForgot" class="buttonGeneral"/></p>
         </div>
     </div>
 </template>

@@ -1,7 +1,6 @@
 import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { TreeCollection } from '../api/arbres.js';
-import { Accounts } from 'meteor/accounts-base';
 
 import '../../client/lib/routes.js';
 import '../templates/app.html';
@@ -319,9 +318,9 @@ Template.treeMaps.helpers({
         let monArbre = TreeCollection.findOne({codeArbre: monCode});
         return monArbre.nombreArbres;
     },
+    //helper pour lister les updates à afficher dans un projet donné
     'updateToAdd': function(){
         let monCode = FlowRouter.getParam('codeArbre');
-        //let mesUpdates = TreeCollection.find({codeArbre: monCode},{_id: 0,nomUtilisateur: 0,datePlantation: 0,nombreArbres: 0,coordonneesArbres: 0,codeArbre: 0});
         return TreeCollection.find({codeArbre: monCode}).fetch();
     }
 });
@@ -374,21 +373,28 @@ Template.disconnectHeader.events({
     }
 });
 
+//ajouter des updates à des projets en tant qu'admin
 Template.addUpdateForm.events({
     'submit #formChangePass': function(event){
         event.preventDefault();
+
+        //récupérer les valeurs des inputs
         let monNum = document.getElementById('numProj').value;
         let monCode = document.getElementById('codeProj').value;
         let monUpdate = document.getElementById('updateProj').value;
         let monProjet;
 
+        //si au moins un des champs (numéro ou code) est non-vide
         if(monNum!="" || monCode!=""){
+            //si c'est le numéro qui est non-vide uniquement, chercher par numéro
             if(monNum!="" && monCode==""){
                 monProjet = TreeCollection.findOne({numeroDeProjet: parseInt(monNum)});
             }
+            //si c'est le code qui est non-vide uniquement, chercher par code
             else if(monNum=="" && monCode!=""){
                 monProjet = TreeCollection.findOne({codeArbre: monCode});
             }
+            //si les deux sont rempli, vérifier qu'ils se réfèrent au même projet quand même
             else if(monNum!="" && monCode!=""){
                 if(TreeCollection.findOne({numeroDeProjet: parseInt(monNum)}).codeArbre == TreeCollection.findOne({codeArbre: monCode}).codeArbre){
                     monProjet = TreeCollection.findOne({codeArbre: monCode});;
@@ -398,21 +404,27 @@ Template.addUpdateForm.events({
                 }
             }
         }
+        //si les champs sont tous les deux vides
         else{
             alert("Veuillez entrer un numéro ou un code de projet !")
         }
+
+        //si on a un projet, créer une date
         if(monProjet){
             let maDate = new Date();
             let maDateAEnvoyer = "";
+            //ordonner la date selon le format prédéfini
             maDateAEnvoyer += maDate.getUTCFullYear();
             maDateAEnvoyer += "-";
             maDateAEnvoyer += maDate.getMonth() + 1;
             maDateAEnvoyer += "-";
             maDateAEnvoyer += maDate.getDate();
 
+            //appeler la méthode pour ajouter une mise à jour
             Meteor.call("arbres.addUpdate", monProjet._id, monUpdate, maDateAEnvoyer);
         }
     },
+    //pouvoir revenir en arrière
     'click #btnHome': function(event){
         event.preventDefault();
         FlowRouter.go("home")

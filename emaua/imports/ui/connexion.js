@@ -2,7 +2,6 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { TreeCollection } from '../api/arbres.js';
 import { Accounts } from 'meteor/accounts-base';
-import { Email } from 'meteor/email';
 
 import '../../client/lib/routes.js'
 import '../templates/app.html';
@@ -11,8 +10,9 @@ import '../templates/loginPage.html';
 import '../templates/registerPage.html';
 import '../templates/disconnectHeader.html';
 import '../templates/changePassword.html';
+import '../templates/forgotPassword.html';
 
-//vérifier l'email
+//vérifier l'email du user
 if(Meteor.isClient){
 	Accounts.onEmailVerificationLink((token, done) => {
 	  Accounts.verifyEmail(token, (err) => {
@@ -25,17 +25,43 @@ if(Meteor.isClient){
 		}
 	  });
 	});
-  }
+	Accounts.onResetPasswordLink((token, done) => {
+		FlowRouter.go("forgotPW", {monToken: token});
+	});
+}
+
+Template.forgotPassword.events({
+	"submit #formNewPW": function (event){
+		event.preventDefault()
+		let password1 = document.getElementById("nouveauPW").value;
+		let password2 = document.getElementById("nouveauPWConf").value;
+		if (password1 != password2)
+		{
+			alert("Les mots de passe ne correspondent pas")
+		}
+		let token = FlowRouter.getParam("monToken");
+
+		Accounts.resetPassword(token, password1, ()=>
+		{
+			FlowRouter.go("home");
+		});
+	},
+	'click #goHome': function(event){
+		event.preventDefault();
+		FlowRouter.go("home");
+	}
+});
   
 Template.loginBtn.events({
 	//quand on clique sur "se connecter", on charge la page de connexion
     'click #loginButton': function(event){
 		FlowRouter.go('loginPage', {typeUsLog: "user"});
 	},
-	//quand on clique sur "créer un compte, on se créer un compte"
+	//quand on clique sur "créer un compte", on se créer un compte
     'click #registerButton': function(event){
 		FlowRouter.go('registerPage', {typeUsReg: "free"});
 	},
+	//quand on clique sur "créer un compte payant", on se créer un compte
 	'click #registerButtonPremium': function(event){
 		FlowRouter.go('registerPage', {typeUsReg: "paying"});
 	}
@@ -124,6 +150,7 @@ Template.registerPage.events({
 						//si le user se crée un compte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
 						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
 											  {$set: {nomUtilisateur: pseudo}});
+						//envoyer un mail de bienvenue avec les identifiants
 						Meteor.call(
 							'sendEmail',
 							emailAdrs,
@@ -154,6 +181,7 @@ Template.registerPage.events({
 						alert(error.reason);
 					}
 					else{
+						//envoyer un mail de bienvenue avec les identifiants
 						Meteor.call(
 							'sendEmail',
 							emailAdrs,
@@ -230,6 +258,45 @@ Template.loginPage.events({
 	'click #annulerLogin': function(event){
 		event.preventDefault();
 		FlowRouter.go('home');
+	},
+	'click #forgotPassword': function(event){
+		event.preventDefault();
+		document.getElementById("hiddenPass0").style.display = "block";
+		document.getElementById("hiddenPass1").style.display = "block";
+		document.getElementById("hiddenPass2").style.display = "block";
+		document.getElementById("hiddenPass3").style.display = "block";
+		document.getElementById("hiddenPass4").style.display = "block";
+		document.getElementById("elementToHide1").style.display = "none";
+		document.getElementById("elementToHide2").style.display = "none";
+		document.getElementById("elementToHide3").style.display = "none";
+		document.getElementById("elementToHide4").style.display = "none";
+		document.getElementById("elementToHide5").style.display = "none";
+		document.getElementById("elementToHide6").style.display = "none";
+		document.getElementById("elementToHide7").style.display = "none";
+	},
+	'click #annulerForgot': function(event){
+		event.preventDefault();
+		document.getElementById("hiddenPass0").style.display = "none";
+		document.getElementById("hiddenPass1").style.display = "none";
+		document.getElementById("hiddenPass2").style.display = "none";
+		document.getElementById("hiddenPass3").style.display = "none";
+		document.getElementById("hiddenPass4").style.display = "none";
+		document.getElementById("elementToHide1").style.display = "block";
+		document.getElementById("elementToHide2").style.display = "block";
+		document.getElementById("elementToHide3").style.display = "block";
+		document.getElementById("elementToHide4").style.display = "block";
+		document.getElementById("elementToHide5").style.display = "block";
+		document.getElementById("elementToHide6").style.display = "block";
+		document.getElementById("elementToHide7").style.display = "block";
+	},
+	'submit #formForgot': function(event){
+		event.preventDefault();
+		let monMail = document.getElementById('emailUserForgot').value;
+		let user = Meteor.users.findOne({'emails.address': monMail});
+		let id = user._id;
+		Meteor.call('sendForgotEmail', id, function(){
+			alert("Un email vous a été envoyé à l'adresse " + monMail);
+		});
 	}
 });
 
@@ -280,10 +347,12 @@ Template.disconnectHeader.events({
         event.preventDefault();
         FlowRouter.go("addTreeForm");
     },
+	//aller à la page pour changer le mdp
 	'click #changePassword': function(event){
 		event.preventDefault();
 		FlowRouter.go("newPassword");
 	},
+	//envoyer un mail de vérification quand on clique sur le bouton approprié
 	'click #verifyEmail': function(event){
 		event.preventDefault();
 		let user = Meteor.users.findOne({_id: Meteor.userId()});
@@ -354,12 +423,14 @@ Template.disconnectHeader.helpers({
 		let monUserLevel = Meteor.users.findOne({_id: Meteor.userId()}).profile.userTier;
 		let monUserStars = "";
 
+		//pour chaque niveau du donateur, ajouter une étoile
 		for(let i = 0; i <= monUserLevel; i++){
 			monUserStars += "☆";
 		}
 
         return(monUsername + " | " + monUserStars);
     },
+	//afficher le nom d'un admin (pas d'étoile)
 	nomUserNoStar: function(){
 		let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
 
@@ -392,6 +463,7 @@ Template.disconnectHeader.helpers({
 		}
 		return Template.instance().isVerified.get();
 	},
+	//savoir s'il l'on regarde la page principale ou non
 	'isMainPage': function(){
 		let maPage = FlowRouter.getRouteName();
 		if(maPage == "home"){
