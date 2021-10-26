@@ -41,6 +41,18 @@ body {
 }
 .btn_bottom{
   border-radius:0px 0px 25px 25px;
+  background-image: 
+    repeating-linear-gradient(
+      45deg,
+      lightgray,
+      lightgray 10px,
+      rgb(240, 240, 240) 10px,
+      rgb(240, 240, 240) 20px /* determines size */
+    );
+  color:darkgrey;
+}
+.btn_bottom .txt_green{
+  color:black;
 }
 .hr_platform{
   padding: 0px;
