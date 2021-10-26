@@ -7,25 +7,41 @@ import { Accounts } from 'meteor/accounts-base';
 Meteor.startup(() => {
   // code to run on server at startup
   Tracker.autorun(()=>{
+    //on publie la collection des arbres
 		Meteor.publish('arbres', function () {
-			return TreeCollection.find();
+			//if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin || Meteor.users.findOne({_id: Meteor.userId()}).emails[0].verified){
+      if(Meteor.userId()){
+        return TreeCollection.find();
+      }
+      //}
 		});
+    //on publie certaines infos des users
 		Meteor.publish('users', function () {
-				return Meteor.users.find({},{
-					fields:{
-            'emails':1,
-					  '_id':1,
-					  'username':1,
-            'profile':1
-				  }
-				});
-			});
-    
-	  TreeCollection.allow({
-      insert() {return true},
-      update() {return true},
-      remove() {return true}
+      if(Meteor.userId()){
+        if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+          return Meteor.users.find();
+        }
+        else if(!Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+          return Meteor.users.findOne({_id: Meteor.userId()});
+        }
+      }
     });
+    
+    //on permet d'insérer des arbres dans la collection et de les supprimer uniquement aux admins
+    //les users standards peuvent les update ceci dit
+	  TreeCollection.allow({
+      insert: function(userId, user) {
+        const currentUser = Meteor.users.findOne(userId);
+        return !!currentUser && currentUser.profile.isAdmin === true;
+      },
+      update() {return true},
+      remove: function(userId, user) {
+        const currentUser = Meteor.users.findOne(userId);
+        return !!currentUser && currentUser.profile.isAdmin === true;
+      }
+    });
+
+    //seuls les admin peuvent toucher aux autres users
     Meteor.users.allow({
       update: function(userId, user) {
         const currentUser = Meteor.users.findOne(userId);
@@ -34,11 +50,14 @@ Meteor.startup(() => {
     });
     
     if(Meteor.isServer){
+      //on charge le serveur mail
       process.env.MAIL_URL = `smtps://emaua.info@gmail.com:emaua_MP21@smtp.gmail.com:465/`;
 
+      //on créer des templates pour les mails automatiques
       Accounts.emailTemplates = {
         from: "Emaua <emaua.info@gmail.com>",
         siteName: "Emaua",
+        //pour la vérification des adresses
         verifyEmail: {
           from: function () {
             return "Emaua Login <emaua.info@gmail.com>";
@@ -50,6 +69,7 @@ Meteor.startup(() => {
             return '<p>Bonjour,</p><p>Merci de cliquer sur le lien suivant pour vérifier votre email.</p><p><a href="' + url + '">Vérifier mon adresse email</a></p>'+"<p>Meilleures salutations,<br />L'équipe Emaua"+'<p style="font-size:10px;"><em>Cet email est envoyé automatiquement ; veuillez ne pas y répondre.<br />Pour contacter Emaua, veuillez nous contacter en utilisant'+" l'adresse suivante : "+'<a href="mailto:info@emaua.org">info@emaua.org</a>.</em></p>';
           }
         },
+        //pour la réinitialisation des mots de passe
         resetPassword: {
           from: function () {
             return "Emaua Login <emaua.info@gmail.com>";
@@ -88,7 +108,7 @@ Meteor.startup(() => {
           check(userId, String);
   
           Accounts.sendResetPasswordEmail(userId, callback);
-        },
+        }
       });
     }
 	});

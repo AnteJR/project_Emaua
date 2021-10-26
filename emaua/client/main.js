@@ -1,25 +1,24 @@
-import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
 import { Meteor } from 'meteor/meteor';
 import { TreeCollection } from '../imports/api/arbres.js';
 import { Tracker } from 'meteor/tracker';
-import { Email } from 'meteor/email';
-import { Accounts } from 'meteor/accounts-base';
 
 import '../imports/ui/connexion.js'
 import '../imports/ui/affichageArbres.js'
 
+//côté client
 Meteor.startup(()=>{
 	Tracker.autorun(()=> {
+        //on abonne les users à la collection des arbres
         Meteor.subscribe('users', function () {
-            return Meteor.users.find();
+            if(Meteor.users.findOne({_id: Meteor.userId()}) && Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+                return Meteor.users.find();
+            }
+            else if(Meteor.users.findOne({_id: Meteor.userId()}) && !!Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+                return Meteor.users.findOne({_id: Meteor.userId()});
+            }
         })
         Meteor.subscribe('arbres', function (_id) {
-        	if(Meteor.userId()){
-                if(Meteor.users.findOne(Meteor.userId()).profile.isAdmin || Meteor.users.findOne(Meteor.userId()).emails[0].verified){
-                    return TreeCollection.find({});
-                }
-            }
+        	return TreeCollection.find()
         });
     });
 });
