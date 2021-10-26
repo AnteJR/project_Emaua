@@ -403,6 +403,31 @@ a.whiteA:hover{
 .aMDP:hover{
   text-decoration: underline;
 }
+.hovertext {
+  position: relative;
+  border-bottom: 1px dotted black;
+}
+.hovertext:before {
+  content: attr(data-hover);
+  visibility: hidden;
+  opacity: 0;
+  width: 140px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px 0;
+  transition: opacity 1s ease-in-out;
+
+  position: absolute;
+  z-index: 1;
+  left: 30%;
+  top: 35%;
+}
+.hovertext:hover:before {
+  opacity: 1;
+  visibility: visible;
+}
 /*Si on regarde la page avec un appareil qui affiche avec une largeur de 1050px MAX*/
 @media only screen and (max-width: 1050px) {
   .placement_div_login1{
