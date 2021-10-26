@@ -10,19 +10,43 @@ Meteor.startup(() => {
     //on publie la collection des arbres
 		Meteor.publish('arbres', function () {
       if(Meteor.userId()){
-        return TreeCollection.find();
+        if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == true || Meteor.users.findOne({_id: Meteor.userId()}).emails[0].verified == true){
+          return TreeCollection.find();
+        }
       }
-      //}
+      else if(!Meteor.userId()){
+        return TreeCollection.find({},{
+          fields: {
+            codeArbre: 1,
+            dispo: 1,
+          }
+        });
+      }
 		});
     //on publie certaines infos des users
 		Meteor.publish('users', function () {
       if(Meteor.userId()){
-        if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
-          return Meteor.users.find();
+        if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == true){
+          return Meteor.users.find({},{
+            fields:{
+              username:1,
+              emails:1,
+              profile:1,
+              _id:1
+            }
+          });
         }
-        else if(!Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+        else if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == false){
           return Meteor.users.findOne({_id: Meteor.userId()});
         }
+      }
+      else{
+        return Meteor.users.find({},{
+          fields:{
+            username:1,
+            'emails.address':1,
+          }
+        });
       }
     });
     

@@ -18,6 +18,12 @@ Meteor.methods({
         check(gps, String);
         check(codeTree, String);
         check(projectNum, Number);
+        let isAvailable = false;
+
+        if(!username){
+            username = "EN ATTENTE DE CODE"
+            isAvailable = true;
+        }
 
         //si on a un username : créer un arbre avec un proprio
         if(username){
@@ -27,19 +33,9 @@ Meteor.methods({
                 nombreArbres: nbr,
                 coordonneesArbres: gps,
                 codeArbre: codeTree,
-                numeroDeProjet: projectNum
-            })
-        }
-
-        //si on a pas un username : créer un arbre sans proprio
-        else{TreeCollection.insert({
-                nomUtilisateur: "EN ATTENTE DE CODE",
-                datePlantation: date,
-                nombreArbres: nbr,
-                coordonneesArbres: gps,
-                codeArbre: codeTree,
-                numeroDeProjet: projectNum
-            })
+                numeroDeProjet: projectNum,
+                dispo: isAvailable
+            });
         }
     },
     'arbres.addUpdate'(treeId, text, updateDate){

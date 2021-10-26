@@ -21,7 +21,6 @@ if(Meteor.isClient){
 		}
 		else {
 		  done();
-		  console.log('Success');
 		}
 	  });
 	});
@@ -69,7 +68,6 @@ Template.loginBtn.events({
 
 Template.registerPage.events({
 	'submit #formRegister': function(event){
-		console.log("I've been pressed !")
 		event.preventDefault();
 
 		//récupération des infos des inputs
@@ -80,6 +78,12 @@ Template.registerPage.events({
 		let motDePasseConfirmation = document.getElementById("passwordRegConf").value;
 
 		let nomComplet = prenomUt + " " + nomFam;
+
+		let passwordSecurityCapital = false;
+		let passwordSecurityLength = false;
+		let passwordSecurityNumber = false;
+		let passwordSecurity = false;
+		let monMDPTest = motDePasse.split("")
 
 		//variables pour des tests plus tard
 		let re = /\S+@\S+\.\S+/;
@@ -107,17 +111,45 @@ Template.registerPage.events({
 		if(motDePasse!=motDePasseConfirmation){
 			alert(motDePasse + " Les mots de passes ne sont pas les mêmes !");
 		}
+		else if(motDePasse == motDePasseConfirmation){
+			monMDPTest.forEach(function(element){
+				if(element == element.toUpperCase()){
+					passwordSecurityCapital = true;
+				}
+				if(!isNaN(element)){
+					passwordSecurityNumber = true;
+				}
+			});
+			if(monMDPTest.length >= 8){
+				passwordSecurityLength = true;
+			}
+			if(passwordSecurityCapital && passwordSecurityLength && passwordSecurityNumber){
+				passwordSecurity = true;
+			}
+		}
+
+		if(!passwordSecurity){
+			if(!passwordSecurityCapital){
+				alert("Veuillez avoir au moins une lettre majuscule");
+			}
+			else if(!passwordSecurityNumber){
+				alert("Veuillez avoir au moins un lettre");
+			}
+			else if(!passwordSecurityLength){
+				alert("Veuillez entrer un mot de passe d'au moins 8 caractères");
+			}
+		}
 
 		//si l'adress email est invalide
-		else if(!emailAdrs.match(re)){
+		if(!emailAdrs.match(re)){
 			alert("Votre email n'est pas valide !");
 		}
 
 		//s'il manque le nom/prénom
-		else if(!prenomUt || !nomFam){
+		if(!prenomUt || !nomFam){
 			alert("Veuillez entrer un nom/prénom !");
 		}
-		else{
+		if(emailAdrs.match(re) && prenomUt && nomFam && passwordSecurity){
 			//modifier le pseudo de l'utilisateur si un autre utilisateur a le même 
 			//--> transforme "johnsmith" en "johnsmith1" si le premier existe, "johnsmith1" en "johnsmith2" si "johnsmith1" existe, etc
 			if(Meteor.users.findOne({username: pseudo})){
@@ -198,7 +230,6 @@ Template.registerPage.events({
 	//si on annule, revenir en arrière
 	'click #annulerReg': function(event){
 		event.preventDefault();
-		console.log("annuler")
 		FlowRouter.go('home', { _id: Meteor.userId()});
 	}
 })
@@ -419,117 +450,128 @@ Template.disconnectHeader.events({
 Template.disconnectHeader.helpers({
 	//donner le nom de l'utilisateur dans le header, ainsi que son niveau de donateur
 	nomUser: function(){
-		let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
-		let monUserLevel = Meteor.users.findOne({_id: Meteor.userId()}).profile.userTier;
-		let monUserStars = "";
+		if(Meteor.userId()){
+			let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
+			let monUserLevel = Meteor.users.findOne({_id: Meteor.userId()}).profile.userTier;
+			let monUserStars = "";
 
-		//pour chaque niveau du donateur, ajouter une étoile
-		for(let i = 0; i <= monUserLevel; i++){
-			monUserStars += "☆";
+			//pour chaque niveau du donateur, ajouter une étoile
+			for(let i = 0; i <= monUserLevel; i++){
+				monUserStars += "☆";
+			}
+
+			return(monUsername + " | " + monUserStars);
 		}
-
-        return(monUsername + " | " + monUserStars);
     },
 	//afficher le nom d'un admin (pas d'étoile)
 	nomUserNoStar: function(){
-		let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
+		if(Meteor.userId()){
+			let monUsername = Meteor.users.findOne({_id: Meteor.userId()}).profile.fullName;
 
-        return(monUsername + " | Admin");
+        	return(monUsername + " | Admin");
+		}
 		
 	},
 	//savoir si l'utilisateur qui observe la page est administrateur
     'isAdmin': function(){
-        let myID = Meteor.userId();
-        let requete = Meteor.users.findOne({_id: myID});
-        if(requete.profile.isAdmin){
-            Template.instance().isAdmin = new ReactiveVar(true);
-        }
-        else {
-            Template.instance().isAdmin = new ReactiveVar(false);
-        }
-        return Template.instance().isAdmin.get();
+        if(Meteor.userId()){
+			let myID = Meteor.userId();
+			let requete = Meteor.users.findOne({_id: myID});
+			if(requete.profile.isAdmin){
+				Template.instance().isAdmin = new ReactiveVar(true);
+			}
+			else {
+				Template.instance().isAdmin = new ReactiveVar(false);
+			}
+			return Template.instance().isAdmin.get();
+		}
     },
 	//savoir si l'utilisateur qui observe la page a vérifié son adresse email
 	'isVerified': function(){
-        let myID = Meteor.userId();
-        let requete = Meteor.users.findOne({_id: myID});
-		let email = requete.emails[0].verified;
-		console.log(email)
-		if(email){
-			Template.instance().isVerified = new ReactiveVar(true);
+        if(Meteor.userId()){
+			let myID = Meteor.userId();
+			let requete = Meteor.users.findOne({_id: myID});
+			let email = requete.emails[0].verified;
+			if(email){
+				Template.instance().isVerified = new ReactiveVar(true);
+			}
+			else{
+				Template.instance().isVerified = new ReactiveVar(false);
+			}
+			return Template.instance().isVerified.get();
 		}
-		else{
-			Template.instance().isVerified = new ReactiveVar(false);
-		}
-		return Template.instance().isVerified.get();
 	},
 	//savoir s'il l'on regarde la page principale ou non
 	'isMainPage': function(){
-		let maPage = FlowRouter.getRouteName();
-		if(maPage == "home"){
-			Template.instance().isMainPage = new ReactiveVar(true);
+		if(Meteor.userId()){
+			let maPage = FlowRouter.getRouteName();
+			if(maPage == "home"){
+				Template.instance().isMainPage = new ReactiveVar(true);
+			}
+			else{
+				Template.instance().isMainPage = new ReactiveVar(false);
+			}
+			return Template.instance().isMainPage.get();
 		}
-		else{
-			Template.instance().isMainPage = new ReactiveVar(false);
-		}
-		return Template.instance().isMainPage.get();
 	}
 });
 
 Template.disconnectHeader.onRendered(function(){
-	//afficher le nombre approprié d'étoiles en fonction de nombre d'arbres plantés
-	//vérifier combien d'arbres un user a planté
-	let monUser = Meteor.users.findOne({_id: Meteor.userId()});
-	let userTrees = monUser.profile.trees;
-	let nbr = 0;
-	userTrees.forEach(function(element){
-		let monArbre = TreeCollection.findOne({codeArbre: element});
-		nbr += monArbre.nombreArbres;
-	});
-	//s'il en a planté - que 5'000, il est de niveau 0
-	//s'il en a planté + que 5'000, il est de niveau 1
-	if(nbr>5000){
-		if(monUser.profile.userTier < 1){
-			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 1}});
-		}
-	}
-	//s'il en a planté + que 10'000, il est de niveau 2
-	if(nbr>10000){
-		if(monUser.profile.userTier < 2){
-			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 2}});
-		}
-	}
-	//s'il en a planté + que 25'000, il est de niveau 3
-	if(nbr>25000){
-		if(monUser.profile.userTier < 3){
-			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 3}});
-		}
-	}
-	//s'il en a planté + que 50'000, il est de niveau 4
-	if(nbr>50000){
-		if(monUser.profile.userTier < 4){
-			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 4}});
-		}
-	}
-	//s'il en a planté + que 100'000, il est de niveau 5
-	if(nbr>100000){
-		if(monUser.profile.userTier < 5){
-			Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 5}});
-		}
-	}
-
-	//Vérifier si tous les arbres auquel le user a contribué lui sont attribué
-	let arbresUser = []
-	TreeCollection.find({nomUtilisateur: monUser.username}).forEach(function(element){
-		arbresUser.push(element.codeArbre);
-	});
-	let treesUser = monUser.profile.trees;
-
-	//si un arbre a été ajouté dans la BDD sans que le user l'ai ajouté lui-même, lui les attribuer automatiquement
-	let treesToAdd = arbresUser.filter(x => !treesUser.includes(x));
-	if(treesToAdd!=[]){
-		treesToAdd.forEach(function(element){
-			Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": element}});
+	if(Meteor.userId()){
+		//afficher le nombre approprié d'étoiles en fonction de nombre d'arbres plantés
+		//vérifier combien d'arbres un user a planté
+		let monUser = Meteor.users.findOne({_id: Meteor.userId()});
+		let userTrees = monUser.profile.trees;
+		let nbr = 0;
+		userTrees.forEach(function(element){
+			let monArbre = TreeCollection.findOne({codeArbre: element});
+			nbr += monArbre.nombreArbres;
 		});
+		//s'il en a planté - que 5'000, il est de niveau 0
+		//s'il en a planté + que 5'000, il est de niveau 1
+		if(nbr>5000){
+			if(monUser.profile.userTier < 1){
+				Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 1}});
+			}
+		}
+		//s'il en a planté + que 10'000, il est de niveau 2
+		if(nbr>10000){
+			if(monUser.profile.userTier < 2){
+				Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 2}});
+			}
+		}
+		//s'il en a planté + que 25'000, il est de niveau 3
+		if(nbr>25000){
+			if(monUser.profile.userTier < 3){
+				Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 3}});
+			}
+		}
+		//s'il en a planté + que 50'000, il est de niveau 4
+		if(nbr>50000){
+			if(monUser.profile.userTier < 4){
+				Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 4}});
+			}
+		}
+		//s'il en a planté + que 100'000, il est de niveau 5
+		if(nbr>100000){
+			if(monUser.profile.userTier < 5){
+				Meteor.users.update({_id: Meteor.userId()},{$set: {"profile.userTier": 5}});
+			}
+		}
+
+		//Vérifier si tous les arbres auquel le user a contribué lui sont attribué
+		let arbresUser = []
+		TreeCollection.find({nomUtilisateur: monUser.username}).forEach(function(element){
+			arbresUser.push(element.codeArbre);
+		});
+		let treesUser = monUser.profile.trees;
+
+		//si un arbre a été ajouté dans la BDD sans que le user l'ai ajouté lui-même, lui les attribuer automatiquement
+		let treesToAdd = arbresUser.filter(x => !treesUser.includes(x));
+		if(treesToAdd!=[]){
+			treesToAdd.forEach(function(element){
+				Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": element}});
+			});
+		}
 	}
 });

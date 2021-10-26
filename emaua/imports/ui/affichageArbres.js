@@ -11,6 +11,7 @@ import '../templates/addTreeCode.html';
 import '../templates/treeMaps.html';
 import '../templates/disconnectHeader.html';
 import '../templates/footerApp.html';
+import { isNumeric } from 'jquery';
 
 Template.addTreeCode.helpers({
     //afficher le code entré
@@ -47,19 +48,39 @@ Template.mainPage.onRendered(function() {
 Template.mainPage.helpers({
     //savoir si l'utilisateur qui observe la page est administrateur
     'isAdmin': function(){
-        let myID = Meteor.userId();
-        let requete = Meteor.users.findOne({_id: myID});
-        if(requete.profile.isAdmin){
-            Template.instance().isAdmin = new ReactiveVar(true);
+        if(Meteor.userId()){
+            let myID = Meteor.userId();
+            let requete = Meteor.users.findOne({_id: myID});
+            if(requete.profile.isAdmin){
+                Template.instance().isAdmin = new ReactiveVar(true);
+            }
+            else {
+                Template.instance().isAdmin = new ReactiveVar(false);
+            }
+            return Template.instance().isAdmin.get();
         }
-        else {
-            Template.instance().isAdmin = new ReactiveVar(false);
-        }
-        return Template.instance().isAdmin.get();
     },
+    //lister les projets du user
     'treeProjects': function () {
-        return Meteor.users.find({_id: Meteor.userId()}).fetch();
+        if(Meteor.userId()){
+            return Meteor.users.find({_id: Meteor.userId()}).fetch();
+        }
     },
+    //savoir si l'utilisateur a son email qui est vérifié
+    'isVerified': function(){
+        if(Meteor.userId()){
+			let myID = Meteor.userId();
+			let requete = Meteor.users.findOne({_id: myID});
+			let email = requete.emails[0].verified;
+			if(email){
+				Template.instance().isVerified = new ReactiveVar(true);
+			}
+			else{
+				Template.instance().isVerified = new ReactiveVar(false);
+			}
+			return Template.instance().isVerified.get();
+		}
+	},
     fullMapOptions: function() {
         //s'arrurer que l'API Google Maps est chargé
         if (GoogleMaps.loaded()) {
@@ -75,31 +96,33 @@ Template.mainPage.helpers({
 
 //Google Maps pour la carte avec TOUS les projets
 Template.mainPage.onCreated(function() {
-    setTimeout(function(){
-        //récupérer les geolocalisation des arbres et créer la liste des markers qu'on veut ajouter à la carte
-        let mesArbres = TreeCollection.find();
-        let mesMarkers = [];
-        
-        mesArbres.forEach(function(element){
-            let treez = element.coordonneesArbres;
-            let treezSplit = treez.split(",")
-            mesMarkers.push({
-                position: new google.maps.LatLng(treezSplit[0],treezSplit[1])
-            })
-        });
-
-        //callback pour interagir maintenant que la Map est prête
-        GoogleMaps.ready('exampleMap', function(map) {
-        //ajouter un marquer à la latitude/longitude indiquées
-        for (let i = 0; i < mesMarkers.length; i++) {
-                const marker = new google.maps.Marker({
-                    position: mesMarkers[i].position,
-                    //icon: "pin.png",
-                    map: map.instance,
-                });
-            }
-        });
-    },250);
+    if(Meteor.userId()){
+        setTimeout(function(){
+            //récupérer les geolocalisation des arbres et créer la liste des markers qu'on veut ajouter à la carte
+            let mesArbres = TreeCollection.find();
+            let mesMarkers = [];
+            
+            mesArbres.forEach(function(element){
+                let treez = element.coordonneesArbres;
+                let treezSplit = treez.split(",")
+                mesMarkers.push({
+                    position: new google.maps.LatLng(treezSplit[0],treezSplit[1])
+                })
+            });
+    
+            //callback pour interagir maintenant que la Map est prête
+            GoogleMaps.ready('exampleMap', function(map) {
+            //ajouter un marquer à la latitude/longitude indiquées
+            for (let i = 0; i < mesMarkers.length; i++) {
+                    const marker = new google.maps.Marker({
+                        position: mesMarkers[i].position,
+                        //icon: "pin.png",
+                        map: map.instance,
+                    });
+                }
+            });
+        },250);
+    }
   });
 
 
@@ -115,7 +138,7 @@ Template.mainPage.events({
         //si on trouve un arbre qui correspond...
 		if(TreeCollection.findOne({codeArbre: myCode})){
             //si l'arbre a déjà un proprio, on explique que le code est déjà utilisé
-            if(monArbre.nomUtilisateur!="EN ATTENTE DE CODE"){
+            if(!monArbre.dispo){
                 alert("Le code est déjà utilisé :(")
             }
             //si l'arbre est dispo, on lui ajoute un proprio
@@ -136,6 +159,14 @@ Template.mainPage.events({
         event.preventDefault();
         let selectProject = this;
         FlowRouter.go("project", {codeArbre: selectProject});
+    },
+    'click #validateEmail': function(event){
+        event.preventDefault();
+		if(Meteor.userId()){
+            Meteor.call('sendVerEmail', Meteor.userId(), function(){
+                alert("Email de vérification envoyé !");
+            });
+        }
     }
 });
 
@@ -254,15 +285,22 @@ Template.addTreeForm.events({
                         
                         //si aucune entrée n'existe, on créer une entrée dans la base de donnée
                         if(!canFindMyTree){
-                            if(latLongT!="" && dateT!=""){
+                            if(dateT!="" && projectNumber && !isNaN(nbrT)){
                                 Meteor.call('arbres.addTree', pseudo, dateT, nbrT, latLongT, codeT, projectNumber);
                             }
                         }
-                        //si une entrée existe déjà mais qu'elle n'avait précédemment pas de nom, les ajouter
+                        //si une entrée existe déjà
                         else if(canFindMyTree){
                             let treeOwner = canFindMyTree.nomUtilisateur;
+                            let noCoordonnee = canFindMyTree.coordonneesArbres;
+                            //s'il manque le nom : l'ajouter
                             if(treeOwner=="EN ATTENTE DE CODE" && pseudo!=""){
-                                TreeCollection.update({_id: canFindMyTree._id}, {$set: {nomUtilisateur: pseudo}});
+                                Tree
+                                Collection.update({_id: canFindMyTree._id}, {$set: {nomUtilisateur: pseudo}});
+                            }
+                            //s'il manque les coordonnées, les ajouter
+                            if(noCoordonnee=="" && latLongT!=""){
+                                TreeCollection.update({_id: canFindMyTree._id}, {$set: {coordonneesArbres: latLongT}});
                             }
                         }
                     }

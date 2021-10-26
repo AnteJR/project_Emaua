@@ -3,6 +3,8 @@
     {{#if currentUser}}
         {{#if isAdmin}}
         {{else}}
+            {{#if isVerified}}
+            <!--si le user est connecté, qu'il n'est pas admin et que son email est vérifié-->
             <div class = "mainPageDiv mainPageDivApp">
                 <h2 style="color:white;text-align:center;">Tous nos projets</h2>
                 <p style="color:white;text-align:center;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas laborum similique dolorum ex! Totam aperiam fugiat id voluptatibus modi ad, numquam, perspiciatis excepturi maxime ipsum molestiae cum eos accusantium a? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, pariatur eligendi dolore quibusdam quo fugiat optio, nam modi consequatur cum officiis fuga repellat voluptatibus ea tenetur aliquid aspernatur quam maxime.</p>
@@ -21,9 +23,29 @@
                     {{/each}}
                 </ol>
             </div>
+            {{else}}
+                <!--si le user n'a pas son email qui est vérifié-->
+                <div class="mainPageDiv divUnverified">
+                    <div class = "maps_info" align="center">
+                        <span class="monAdmin" style="margin-top:0px;background-color:tomato;">Votre email n'est pas vérifié !</span>
+                        <p class="pReg">Votre email n'est pas vérifié.</p>
+                        <p class="pReg">Pour des raisons de sécurité, nous bloquons l'accès au site aux personnes qui n'ont pas vérifié leurs adresse email.</p>
+                        <p class="pReg">Veuillez cliquer sur le bouton ci-dessous pour faire valider votre email actuel.</p>
+                        <p class="pReg"><button id="validateEmail" class="buttonGeneral" style="color:tomato;border-color:tomato">VALIDER MON EMAIL</button></p>
+                    </div>
+                </div>
+            {{/if}}
         {{/if}}
-        {{> footerApp}}
+        <!--si le user est connecté et que son email est vérifié, on affiche le footer-->
+        {{#if isVerified}}
+            {{> footerApp}}
+        {{else}}
+            {{#if isAdmin}}
+                {{> footerApp}}
+            {{/if}}
+        {{/if}}
     {{else}}
+        <!-- si le user n'est pas connecté, on affiche les boutons pour se connecter-->
         {{> loginBtn}}
     {{/if}}
 </template>

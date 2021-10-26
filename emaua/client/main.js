@@ -10,13 +10,18 @@ Meteor.startup(()=>{
 	Tracker.autorun(()=> {
         //on abonne les users à la collection des arbres
         Meteor.subscribe('users', function () {
-            if(Meteor.users.findOne({_id: Meteor.userId()}) && Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+            if(Meteor.userId()){
+                if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+                    return Meteor.users.find();
+                }
+                else if(!Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
+                    return Meteor.users.findOne({_id: Meteor.userId()});
+                }
+            }
+            else{
                 return Meteor.users.find();
             }
-            else if(Meteor.users.findOne({_id: Meteor.userId()}) && !!Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
-                return Meteor.users.findOne({_id: Meteor.userId()});
-            }
-        })
+        });
         Meteor.subscribe('arbres', function (_id) {
         	return TreeCollection.find()
         });

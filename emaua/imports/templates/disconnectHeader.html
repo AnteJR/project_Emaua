@@ -12,13 +12,13 @@
                 <div class="dropdown-content" style="text-align:left;">
                   <a href="" id="disconnectUser">SE DECONNECTER</a>
                   <a href="" id="changePassword">CHANGER MDP</a>
+                  {{#if isVerified}}
                     <a href="" id="addCode">
                       <form id="submitCodeHeader">
                         <input class="codeHeader" type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
                       </form>
                     </a>
-                  {{#if isVerified}}
-                  {{else}}
+                    {{else}}
                     <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
                   {{/if}}
                 </div>
