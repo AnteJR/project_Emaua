@@ -11,6 +11,7 @@ import '../templates/loginBtnTrees.html';
 import '../templates/addTreeCode.html';
 import '../templates/treeMaps.html';
 import '../templates/disconnectHeader.html';
+import '../templates/footerApp.html';
 
 Template.addTreeCode.helpers({
     //afficher le code entré
@@ -33,6 +34,10 @@ Template.loginBtnTrees.events({
         let code = FlowRouter.getParam('codeArbre');
         FlowRouter.go("loginPage", {typeUsLog: code});
     },
+    'click #annulerCode': function(event){
+        event.preventDefault();
+        FlowRouter.go('home');
+    }
 });
 
 Template.mainPage.onRendered(function() {

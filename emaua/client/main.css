@@ -1,5 +1,4 @@
 body {
-  padding: 10px;
   font-family: sans-serif;
   background-image: url("/images/BackgroundWebpage.jpg");
   background-repeat: no-repeat;
@@ -160,7 +159,6 @@ body {
   height:available;
 }
 .maps_info{
-  padding-top:25px;
   padding-bottom: 25px;
   background-color:white;
   border-radius:3px;
@@ -349,6 +347,41 @@ body {
 .buttonGeneral:hover{
   border-color:lightgrey;
   background-color: rgb(247, 247, 247);
+}
+.myFooter{
+  height:55px;
+  width:100%;
+  margin-top:50px;
+}
+.logoFooter{
+  height:40px;
+  float:left;
+  margin-top:7.5px;
+  margin-left: 10px;
+}
+.pFooter{
+  float:right;
+  margin-left:25px;
+  margin-top:30px;
+}
+span.pFooter{
+  margin-right:10px;
+}
+.darkA{
+  color:rgb(41, 41, 41);
+  text-decoration:none;
+}
+.darkA:hover{
+  color:rgb(255, 182, 47);
+  text-decoration:underline;
+}
+.whiteA{
+  color:white;
+  text-decoration: none;
+}
+a.whiteA:hover{
+  text-decoration: underline;
+  color:rgb(255, 182, 47);
 }
 @media only screen and (max-width: 1050px) {
   .placement_div_login1{
