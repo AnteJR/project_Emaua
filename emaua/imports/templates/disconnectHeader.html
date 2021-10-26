@@ -3,10 +3,10 @@
       <div class="myHeader">
         {{#if currentUser}}
           {{#if isAdmin}}
-          <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
+          <a href="/"><img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/></a>
           {{else}}
             {{#if isMainPage}}
-              <img src="/images/emaualogo.png" alt="" class="logoTitle"/>
+              <a href="/"><img src="/images/emaualogo.png" alt="" class="logoTitle"/></a>
               <div class="dropdown" style="float:right;">
                 <button class="dropbtn">{{nomUser}}</button>
                 <div class="dropdown-content" style="text-align:left;">
@@ -24,11 +24,11 @@
                 </div>
               </div>
               {{else}}
-              <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
+              <a href="/"><img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/></a>
               {{/if}}
             {{/if}}
           {{else}}
-            <img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/>
+            <a href="/"><img src="/images/emaualogo.png" alt="" class="logoTitleNoUser"/></a>
           {{/if}}
       </div>          
     </header>

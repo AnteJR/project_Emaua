@@ -473,6 +473,9 @@ a.whiteA:hover{
   .dropdown-content-wide{
     margin-top:10%;
   }
+  .txtCopyright{
+    display: none;
+  }
 }
 /*Si on regarde la page avec un appareil qui affiche avec une largeur de 786px MAX*/
 @media only screen and (max-width: 786px) {
@@ -513,6 +516,9 @@ a.whiteA:hover{
   }
   .half-div{
     width:100%
+  }
+  .logoFooter{
+    display: none;
   }
 }
 /*Si on regarde la page avec un appareil qui affiche avec une largeur de 450px MAX*/
@@ -578,5 +584,8 @@ a.whiteA:hover{
   }
   .buttonGeneral{
     width:100%;
+  }
+  .poweredBy{
+    display: none;
   }
 }

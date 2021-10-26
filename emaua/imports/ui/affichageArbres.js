@@ -360,7 +360,21 @@ Template.treeMaps.helpers({
     'updateToAdd': function(){
         let monCode = FlowRouter.getParam('codeArbre');
         return TreeCollection.find({codeArbre: monCode}).fetch();
-    }
+    },
+    'mapsAvailable':function() {
+        if(Meteor.userId()){
+            let monCode = FlowRouter.getParam('codeArbre');
+            let monArbre = TreeCollection.findOne({codeArbre: monCode});
+            let treeLatLong = monArbre.coordonneesArbres;
+            if(treeLatLong){
+                Template.instance().mapsAvailable = new ReactiveVar(true);
+            }
+            else {
+                Template.instance().mapsAvailable = new ReactiveVar(false);
+            }
+            return Template.instance().mapsAvailable.get();
+        }
+    },
 });
 
 Template.treeMaps.onCreated(function() {

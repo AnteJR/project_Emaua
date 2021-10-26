@@ -18,9 +18,20 @@
           <p class="pReg"><button class="buttonGeneral" id="backHome">RETOUR</button></p>
         </div>
       </div>
-      <div class="map-container container_maps">
-        {{> googleMap name="exampleMap" options=exampleMapOptions}}
+      {{#if mapsAvailable}}
+        <div class="map-container container_maps">
+          {{> googleMap name="exampleMap" options=exampleMapOptions}}
+        </div>
+      {{else}}
+      <div class="container_maps" style="margin-top:25px;">
+        <div class = "maps_info" align="center">
+          <span class="monAdmin" style="margin-top:0px;background-color:tomato;">Projet {{idPlant}}</span>
+          <p class="pReg">Votre projet n'a pas encore été planté chez un·e habitant·e du Kenya.</p>
+          <p class="pReg">Vous pouvez néanmoins toujours vous tenir informé·e des mises à jour que notre équipe poste ci-dessus !</p>
+          <p class="pReg">Si vous avez des questions, vous pouvez nous contacter à l'adresse email suivante : info(at)emaua.org.</p>
+        </div>
       </div>
+      {{/if}}
     </div>
     {{> footerApp}}
 </template>
