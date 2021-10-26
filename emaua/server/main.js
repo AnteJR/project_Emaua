@@ -9,7 +9,6 @@ Meteor.startup(() => {
   Tracker.autorun(()=>{
     //on publie la collection des arbres
 		Meteor.publish('arbres', function () {
-			//if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin || Meteor.users.findOne({_id: Meteor.userId()}).emails[0].verified){
       if(Meteor.userId()){
         return TreeCollection.find();
       }
