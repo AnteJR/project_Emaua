@@ -245,7 +245,7 @@ Template.registerPage.events({
 
 		//le premier utilisateur créé est admin
         let monAdmin = false;
-        if(Meteor.users.find().count()<1){
+        if(pseudo == "joëlrimaz" || pseudo == "julienkauer"){
             monAdmin = true;
         }
 
