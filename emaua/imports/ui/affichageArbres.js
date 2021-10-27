@@ -295,8 +295,8 @@ Template.addTreeForm.events({
                             let noCoordonnee = canFindMyTree.coordonneesArbres;
                             //s'il manque le nom : l'ajouter
                             if(treeOwner=="EN ATTENTE DE CODE" && pseudo!=""){
-                                Tree
-                                Collection.update({_id: canFindMyTree._id}, {$set: {nomUtilisateur: pseudo}});
+                                TreeCollection.update({_id: canFindMyTree._id}, {$set: {nomUtilisateur: pseudo}});
+                                TreeCollection.update({_id: canFindMyTree._id}, {$set: {dispo: false}});
                             }
                             //s'il manque les coordonnées, les ajouter
                             if(noCoordonnee=="" && latLongT!=""){
@@ -408,6 +408,9 @@ Template.disconnectHeader.events({
             Meteor.users.update({_id: Meteor.userId()}, {$push: {"profile.trees": monCodeArbre}});
             TreeCollection.update({_id: TreeCollection.findOne({codeArbre: monCodeArbre})._id}, 
 								  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
+			);
+            TreeCollection.update({_id: TreeCollection.findOne({codeArbre: monCodeArbre})._id}, 
+								  {$set: {dispo: false}}
 			);
             //alerter que le  code a été utilisé
             alert("Code "+monCodeArbre+" ajouté !");

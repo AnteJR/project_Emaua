@@ -330,6 +330,8 @@ Template.registerPage.events({
 						//si le user se crée un compte après avoir entré un code, lui attribuer cet arbre dans la collection TreeCollection
 						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
 											  {$set: {nomUtilisateur: pseudo}});
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
+											  {$set: {dispo: false}});
 						//envoyer un mail de bienvenue avec les identifiants
 						Meteor.call(
 							'sendEmail',
@@ -406,6 +408,8 @@ Template.loginPage.events({
 						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
 											  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
 						);
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
+											  {$set: {dispo: false}});
 					}
 					//dans tous les cas, revenir à la page HOME
 					FlowRouter.go('home');
@@ -426,6 +430,8 @@ Template.loginPage.events({
 						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsLog")})._id}, 
 											  {$set: {nomUtilisateur: Meteor.users.findOne({_id: Meteor.userId()}).username}}
 						);
+						TreeCollection.update({_id: TreeCollection.findOne({codeArbre: FlowRouter.getParam("typeUsReg")})._id}, 
+											  {$set: {dispo: false}});
 					}
 					//dans tous les cas, revenir à la page HOME
 					FlowRouter.go('home');
