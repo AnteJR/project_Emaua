@@ -428,6 +428,13 @@ a.whiteA:hover{
   opacity: 1;
   visibility: visible;
 }
+.hiddenP{
+  display:none;
+  font-size:10px;
+}
+.inputPW:focus-within .hiddenP{
+  display:block;
+}
 /*Si on regarde la page avec un appareil qui affiche avec une largeur de 1050px MAX*/
 @media only screen and (max-width: 1050px) {
   .placement_div_login1{

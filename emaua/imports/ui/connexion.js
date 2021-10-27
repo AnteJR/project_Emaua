@@ -34,16 +34,108 @@ Template.forgotPassword.events({
 		event.preventDefault()
 		let password1 = document.getElementById("nouveauPW").value;
 		let password2 = document.getElementById("nouveauPWConf").value;
-		if (password1 != password2)
-		{
-			alert("Les mots de passe ne correspondent pas")
-		}
 		let token = FlowRouter.getParam("monToken");
 
-		Accounts.resetPassword(token, password1, ()=>
+		let passwordSecurityCapital = false;
+		let passwordSecurityLength = false;
+		let passwordSecurityNumber = false;
+		let passwordSecurity = false;
+		let monMDPTest = password1.split("");
+
+		//si les deux mots de passes ne sont pas les mêmes
+		if(password1!=password2){
+			alert("Les mots de passes ne sont pas les mêmes !");
+		}
+		//si les conditions de sécurité sont remplies
+		else if(password1 == password2){
+			monMDPTest.forEach(function(element){
+				if(element == element.toUpperCase()){
+					passwordSecurityCapital = true;
+				}
+				if(!isNaN(element)){
+					passwordSecurityNumber = true;
+				}
+			});
+			if(monMDPTest.length >= 8){
+				passwordSecurityLength = true;
+			}
+			if(passwordSecurityCapital && passwordSecurityLength && passwordSecurityNumber){
+				passwordSecurity = true;
+			}
+		}
+
+		//si les conditions de sécurités ne sont pas remplies
+		if(!passwordSecurity){
+			if(!passwordSecurityCapital){
+				alert("Veuillez avoir au moins une lettre majuscule");
+			}
+			else if(!passwordSecurityNumber){
+				alert("Veuillez avoir au moins un lettre");
+			}
+			else if(!passwordSecurityLength){
+				alert("Veuillez entrer un mot de passe d'au moins 8 caractères");
+			}
+		}
+		else if(passwordSecurity){
+			Accounts.resetPassword(token, password1, ()=>
 		{
 			FlowRouter.go("home");
 		});
+		}
+	},
+
+	//fonction pour l'indication de la foce du MDP
+	'keyup #nouveauPW': function(event){
+		event.preventDefault();
+
+		let monCritere1 = document.getElementById("critere1");
+		let monCritere2 = document.getElementById("critere2");
+		let monCritere3 = document.getElementById("critere3");
+		let maLettre = event.target.value.split("");
+
+		let countCapital = 0;
+		let countNum = 0;
+
+		if(maLettre.length > 0){
+			//on vérifie l'entier du mot de passe à chaque nouvelle lettre
+			maLettre.forEach(function(e){
+				if(e == e.toUpperCase() && isNaN(e)){
+					countCapital++
+				}
+				if(!isNaN(e)){
+					countNum++;
+				}
+			});
+			//s'il y a au moins une majuscule, passer le texte en vert
+			if(countCapital > 0){
+				monCritere2.style.color = "lightgreen";
+			}
+			//s'il y a pas de majuscule, passer le texte en rouge
+			else if(countCapital < 1){
+				monCritere2.style.color = "tomato";
+			}
+			//s'il y a au moins un chiffre, passer le texte en vert
+			if(countNum > 0){
+				monCritere3.style.color = "lightgreen";
+			}
+			//s'il y a pas de chiffre, passer le texte en rouge
+			else if(countNum < 1){
+				monCritere3.style.color = "tomato";
+			}
+		}
+		//si le mdp est supprimé, passer les textes en rouge
+		else{
+			monCritere2.style.color = "tomato";
+			monCritere3.style.color = "tomato";
+		}
+		//si le mdp fait 8+ caractères, le passer en vert
+		if(maLettre.length >= 8){
+			monCritere1.style.color = "lightgreen";
+		}
+		//si le mdp fait 7- caractères, le passer en rouge
+		else if(maLettre.length <= 7){
+			monCritere1.style.color = "tomato";
+		}
 	},
 	'click #goHome': function(event){
 		event.preventDefault();
@@ -67,6 +159,60 @@ Template.loginBtn.events({
 });
 
 Template.registerPage.events({
+	//fonction pour l'indication de la foce du MDP
+	'keyup #passwordReg': function(event){
+		event.preventDefault();
+
+		let monCritere1 = document.getElementById("critere1");
+		let monCritere2 = document.getElementById("critere2");
+		let monCritere3 = document.getElementById("critere3");
+		let maLettre = event.target.value.split("");
+
+		let countCapital = 0;
+		let countNum = 0;
+
+		if(maLettre.length > 0){
+			//on vérifie l'entier du mot de passe à chaque nouvelle lettre
+			maLettre.forEach(function(e){
+				if(e == e.toUpperCase() && isNaN(e)){
+					countCapital++
+				}
+				if(!isNaN(e)){
+					countNum++;
+				}
+			});
+			//s'il y a au moins une majuscule, passer le texte en vert
+			if(countCapital > 0){
+				monCritere2.style.color = "lightgreen";
+			}
+			//s'il y a pas de majuscule, passer le texte en rouge
+			else if(countCapital < 1){
+				monCritere2.style.color = "tomato";
+			}
+			//s'il y a au moins un chiffre, passer le texte en vert
+			if(countNum > 0){
+				monCritere3.style.color = "lightgreen";
+			}
+			//s'il y a pas de chiffre, passer le texte en rouge
+			else if(countNum < 1){
+				monCritere3.style.color = "tomato";
+			}
+		}
+		//si le mdp est supprimé, passer les textes en rouge
+		else{
+			monCritere2.style.color = "tomato";
+			monCritere3.style.color = "tomato";
+		}
+		//si le mdp fait 8+ caractères, le passer en vert
+		if(maLettre.length >= 8){
+			monCritere1.style.color = "lightgreen";
+		}
+		//si le mdp fait 7- caractères, le passer en rouge
+		else if(maLettre.length <= 7){
+			monCritere1.style.color = "tomato";
+		}
+
+	},
 	'submit #formRegister': function(event){
 		event.preventDefault();
 
@@ -83,7 +229,7 @@ Template.registerPage.events({
 		let passwordSecurityLength = false;
 		let passwordSecurityNumber = false;
 		let passwordSecurity = false;
-		let monMDPTest = motDePasse.split("")
+		let monMDPTest = motDePasse.split("");
 
 		//variables pour des tests plus tard
 		let re = /\S+@\S+\.\S+/;
@@ -109,8 +255,9 @@ Template.registerPage.events({
 
 		//si les deux mots de passes ne sont pas les mêmes
 		if(motDePasse!=motDePasseConfirmation){
-			alert(motDePasse + " Les mots de passes ne sont pas les mêmes !");
+			alert("Les mots de passes ne sont pas les mêmes !");
 		}
+		//si les conditions de sécurité sont remplies
 		else if(motDePasse == motDePasseConfirmation){
 			monMDPTest.forEach(function(element){
 				if(element == element.toUpperCase()){
@@ -128,6 +275,7 @@ Template.registerPage.events({
 			}
 		}
 
+		//si les conditions de sécurités ne sont pas remplies
 		if(!passwordSecurity){
 			if(!passwordSecurityCapital){
 				alert("Veuillez avoir au moins une lettre majuscule");
@@ -139,7 +287,7 @@ Template.registerPage.events({
 				alert("Veuillez entrer un mot de passe d'au moins 8 caractères");
 			}
 		}
-
+		
 		//si l'adress email est invalide
 		if(!emailAdrs.match(re)){
 			alert("Votre email n'est pas valide !");
@@ -341,13 +489,50 @@ Template.changePassword.events({
 		let newPWConf = document.getElementById('newPassConf').value;
 		let samePW = false;
 
+		let passwordSecurityCapital = false;
+		let passwordSecurityLength = false;
+		let passwordSecurityNumber = false;
+		let passwordSecurity = false;
+		let monMDPTest = newPW.split("");
+
 		//vérifier que la personne a bien entré 2 fois le même MDP
+		if(newPW != newPWConf){
+			alert("Veuillez entrer 2 fois le même mot de passe");
+		}
+		//si les conditions de sécurité sont remplies
 		if(newPW == newPWConf){
 			samePW = true;
+			monMDPTest.forEach(function(element){
+				if(element == element.toUpperCase()){
+					passwordSecurityCapital = true;
+				}
+				if(!isNaN(element)){
+					passwordSecurityNumber = true;
+				}
+			});
+			if(monMDPTest.length >= 8){
+				passwordSecurityLength = true;
+			}
+			if(passwordSecurityCapital && passwordSecurityLength && passwordSecurityNumber){
+				passwordSecurity = true;
+			}
+		}
+
+		//si les conditions de sécurités ne sont pas remplies
+		if(!passwordSecurity){
+			if(!passwordSecurityCapital){
+				alert("Veuillez avoir au moins une lettre majuscule");
+			}
+			else if(!passwordSecurityNumber){
+				alert("Veuillez avoir au moins un lettre");
+			}
+			else if(!passwordSecurityLength){
+				alert("Veuillez entrer un mot de passe d'au moins 8 caractères");
+			}
 		}
 
 		//si c'est le cas, créer un nouveau mot de passe
-		if(samePW = true){
+		if(samePW && passwordSecurity){
 			Accounts.changePassword(oldPW, newPW, function(error){
 				if(error){
 					alert(error.reason);
@@ -359,6 +544,60 @@ Template.changePassword.events({
 				}
 			})
 		}
+	},
+	//fonction pour indiquer au user la force de son mot de passe
+	'keyup #newPass': function(event){
+		event.preventDefault();
+
+		let monCritere1 = document.getElementById("critere1");
+		let monCritere2 = document.getElementById("critere2");
+		let monCritere3 = document.getElementById("critere3");
+		let maLettre = event.target.value.split("");
+
+		let countCapital = 0;
+		let countNum = 0;
+
+		if(maLettre.length > 0){
+			//on vérifie l'entier du mot de passe à chaque nouvelle lettre
+			maLettre.forEach(function(e){
+				if(e == e.toUpperCase() && isNaN(e)){
+					countCapital++
+				}
+				if(!isNaN(e)){
+					countNum++;
+				}
+			});
+			//s'il y a au moins une majuscule, passer le texte en vert
+			if(countCapital > 0){
+				monCritere2.style.color = "lightgreen";
+			}
+			//s'il y a pas de majuscule, passer le texte en rouge
+			else if(countCapital < 1){
+				monCritere2.style.color = "tomato";
+			}
+			//s'il y a au moins un chiffre, passer le texte en vert
+			if(countNum > 0){
+				monCritere3.style.color = "lightgreen";
+			}
+			//s'il y a pas de chiffre, passer le texte en rouge
+			else if(countNum < 1){
+				monCritere3.style.color = "tomato";
+			}
+		}
+		//si le mdp est supprimé, passer les textes en rouge
+		else{
+			monCritere2.style.color = "tomato";
+			monCritere3.style.color = "tomato";
+		}
+		//si le mdp fait 8+ caractères, le passer en vert
+		if(maLettre.length >= 8){
+			monCritere1.style.color = "lightgreen";
+		}
+		//si le mdp fait 7- caractères, le passer en rouge
+		else if(maLettre.length <= 7){
+			monCritere1.style.color = "tomato";
+		}
+
 	},
 	'click #homeBtn': function(event){
 		event.preventDefault();
