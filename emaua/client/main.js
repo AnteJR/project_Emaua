@@ -14,8 +14,8 @@ Meteor.startup(()=>{
                 if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
                     return Meteor.users.find();
                 }
-                else if(!Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin){
-                    return Meteor.users.findOne({_id: Meteor.userId()});
+                else if(!Meteor.users.findOne({_id: Meteor.userId()}).emails[0].verified){
+                    return Meteor.users.find({_id: Meteor.userId()});
                 }
             }
             else{

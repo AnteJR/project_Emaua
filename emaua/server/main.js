@@ -9,12 +9,7 @@ Meteor.startup(() => {
   Tracker.autorun(()=>{
     //on publie la collection des arbres
 		Meteor.publish('arbres', function () {
-      if(Meteor.userId()){
-        if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == true || Meteor.users.findOne({_id: Meteor.userId()}).emails[0].verified == true){
-          return TreeCollection.find();
-        }
-      }
-      else if(!Meteor.userId()){
+      if(!Meteor.userId()){
         return TreeCollection.find({},{
           fields: {
             codeArbre: 1,
@@ -22,10 +17,23 @@ Meteor.startup(() => {
           }
         });
       }
+      else{
+        if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == true || Meteor.users.findOne({_id: Meteor.userId()}).emails[0].verified == true){
+          return TreeCollection.find();
+        }
+      }
 		});
     //on publie certaines infos des users
 		Meteor.publish('users', function () {
-      if(Meteor.userId()){
+      if(!Meteor.userId()){
+        return Meteor.users.find({},{
+          fields:{
+            username:1,
+            'emails.address':1,
+          }
+        });
+      }
+      else{
         if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == true){
           return Meteor.users.find({},{
             fields:{
@@ -37,16 +45,15 @@ Meteor.startup(() => {
           });
         }
         else if(Meteor.users.findOne({_id: Meteor.userId()}).profile.isAdmin == false){
-          return Meteor.users.findOne({_id: Meteor.userId()});
+          return Meteor.users.find({_id: Meteor.userId()},{
+            fields:{
+              username:1,
+              emails:1,
+              profile:1,
+              _id:1
+            }
+          });
         }
-      }
-      else{
-        return Meteor.users.find({},{
-          fields:{
-            username:1,
-            'emails.address':1,
-          }
-        });
       }
     });
     
