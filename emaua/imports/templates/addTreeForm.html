@@ -1,17 +1,21 @@
 <template name='addTreeForm'>
-    {{> disconnectHeader}}
-    <div class = "mainPageDiv">
-        <div class = "maps_info" align="center">
-            <span class="monAdmin" style="margin-top:0px;">Mettre à jour la base de donnée</span>
-            <h2 class="pReg">Instruction pour la mise à jour de la base de données</h2>
-            <p class="pReg">La base de donnée est mise à jour à travers l'usage de fichier CSV. Pour ce faire, il suffit d'ouvrir le document sur Drive et de cliquer sur Fichier > Télécharger, et sélectionner le format CSV. Une fois que c'est fait, simplement cliquer sur le bouton ci-dessous pour uploader le fichier et automatiquement mettre la base à jour.</p>
-            <hr class="hr_platform">
-            <h2 class="pReg">Instructions on how to update the database</h2>
-            <p class="pReg">The database is updated using CSV files. To do so, go find the file on the Drive, and select "File > Download", and select the CSV format. Once it is done, simply clic on the button below to upload the file - the program will update the database automatically.</p>
-            <hr class="hr_platform">
-            <p class="pReg">Entrer un fichier : <input type="file" id="myfile" name="myfile" accept=".csv"></p>
-            <p class="pReg"><button class="buttonGeneral" id="homeButton">Retour</button></p>
+    {{#if currentUser}}
+        {{> disconnectHeader}}
+        <div class = "mainPageDiv">
+            <div class = "maps_info" align="center">
+                <span class="monAdmin" style="margin-top:0px;">Mettre à jour la base de donnée</span>
+                <h2 class="pReg">Instruction pour la mise à jour de la base de données</h2>
+                <p class="pReg">La base de donnée est mise à jour à travers l'usage de fichier CSV. Pour ce faire, il suffit d'ouvrir le document sur Drive et de cliquer sur Fichier > Télécharger, et sélectionner le format CSV. Une fois que c'est fait, simplement cliquer sur le bouton ci-dessous pour uploader le fichier et automatiquement mettre la base à jour.</p>
+                <hr class="hr_platform">
+                <h2 class="pReg">Instructions on how to update the database</h2>
+                <p class="pReg">The database is updated using CSV files. To do so, go find the file on the Drive, and select "File > Download", and select the CSV format. Once it is done, simply clic on the button below to upload the file - the program will update the database automatically.</p>
+                <hr class="hr_platform">
+                <p class="pReg">Entrer un fichier : <input type="file" id="myfile" name="myfile" accept=".csv"></p>
+                <p class="pReg"><button class="buttonGeneral" id="homeButton">Retour</button></p>
+            </div>
         </div>
-    </div>
-    {{> footerApp}}
+        {{> footerApp}}
+    {{else}}
+        {{> mainPage}}
+    {{/if}}
 </template>
