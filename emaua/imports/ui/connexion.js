@@ -243,12 +243,6 @@ Template.registerPage.events({
 		pseudo += nomFam.toLowerCase();
 		let pseudoOriginal = pseudo;
 
-		//le premier utilisateur créé est admin
-        let monAdmin = false;
-        if(pseudo == "joëlrimaz" || pseudo == "julienkauer"){
-            monAdmin = true;
-        }
-
 		if(FlowRouter.getParam("typeUsReg")!="free" && FlowRouter.getParam("typeUsReg")!="paying"){
 			codeT=FlowRouter.getParam("typeUsReg");
 		}
@@ -306,6 +300,13 @@ Template.registerPage.events({
 					i++;
 				}
 			}
+
+			//si joël ou julien se créent un compte, ils sont admin
+			let monAdmin = false;
+			if(pseudo == "joëlrimaz" || pseudo == "julienkauer"){
+				monAdmin = true;
+			}
+
 			let monMail = "<p>Bonjour,</p><p>Vos identifiants Emaua sont les suivants :</p><p><ul><li>Nom d'utilisateur : "+pseudo+"</li><li>E-mail: "+emailAdrs+"</li><li>Mot de passe : "+motDePasse+"</li></ul></p><p>Meilleures salutations,<br />L'équipe Emaua</p>"+'<p style="font-size:10px;"><em>Cet email est envoyé automatiquement ; veuillez ne pas y répondre.<br />Pour contacter Emaua, veuillez nous contacter en utilisant'+" l'adresse suivante : "+'<a href="mailto:info@emaua.org">info@emaua.org</a>.</em></p>'
 
 			//creation user selon si c'est via code ou non
