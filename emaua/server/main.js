@@ -14,6 +14,7 @@ Meteor.startup(() => {
           fields: {
             codeArbre: 1,
             dispo: 1,
+            coordonneesArbres: 1
           }
         });
       }
