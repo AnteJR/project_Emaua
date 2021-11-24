@@ -10,8 +10,8 @@
               <div class="dropdown" style="float:right;">
                 <button class="dropbtn">{{nomUser}}</button>
                 <div class="dropdown-content" style="text-align:left;">
-                  <a href="" id="disconnectUser">SE DECONNECTER</a>
-                  <a href="" id="changePassword">CHANGER MDP</a>
+                  <a href="" id="disconnectUser">Se déconnecter</a>
+                  <a href="" id="changePassword">Changer de mot de passe</a>
                   {{#if isVerified}}
                     <a href="" id="addCode">
                       <form id="submitCodeHeader">
@@ -36,25 +36,25 @@
       {{#if isMainPage}}
         <div class="dropdown-content-wide" style="text-align:left;">
           <span class="monAdmin">{{nomUserNoStar}}</span>
-          <a href="" id="disconnectUser">SE DECONNECTER</a>
-          <a href="" id="changePassword">CHANGER MDP</a>
-          <a href="" id="addTreeBtn">AJOUTER ARBRE</a>
-          <a href="" id="addUpdateBtn">AJOUTER UPDATE</a>
+          <a href="" id="disconnectUser">Se déconnecter</a>
+          <a href="" id="changePassword">Changer votre mot de passe</a>
+          <a href="" id="addTreeBtn">Ajouter un arbre</a>
+          <a href="" id="addUpdateBtn">Ajouter une update</a>
           <a href="" id="addUserAdmin" class="smallScreenAdmin">
             <form id="submitNewAdmin">
-              AJOUTER UN ADMIN : <br />
+              Ajouter un administrateur : <br />
               <input class="codeHeader" type="text" id="usernameHeader" placeholder="Entrer un nom" style="display:inline;" />
             </form>
           </a>
           <a href="" id="removeUserAdmin" class="smallScreenAdmin">
             <form id="submitLessAdmin">
-              RETIRER UN ADMIN : <br />
+              Retirer un administrateur : <br />
               <input class="codeHeader" type="text" id="usernameRemoveHeader" placeholder="Entrer un nom" style="display:inline;" />
             </form>
           </a>
           {{#if isVerified}}
             {{else}}
-              <a href="" id="verifyEmail" style="color:red;">VERIFIER EMAIL</a>
+              <a href="" id="verifyEmail" style="color:red;">Vérifier l'email</a>
             {{/if}}
         </div>
       {{/if}}

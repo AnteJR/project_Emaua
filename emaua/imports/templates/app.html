@@ -6,8 +6,10 @@
             {{#if isVerified}}
             <!--si le user est connecté, qu'il n'est pas admin et que son email est vérifié-->
             <div class = "mainPageDiv mainPageDivApp">
-                <h2 style="color:white;text-align:center;">Tous nos projets</h2>
-                <p style="color:white;text-align:center;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas laborum similique dolorum ex! Totam aperiam fugiat id voluptatibus modi ad, numquam, perspiciatis excepturi maxime ipsum molestiae cum eos accusantium a? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, pariatur eligendi dolore quibusdam quo fugiat optio, nam modi consequatur cum officiis fuga repellat voluptatibus ea tenetur aliquid aspernatur quam maxime.</p>
+                <h2 style="color:white;text-align:center; font-size: 50px;">VOICI LA LISTE DE NOS PROJETS</h2>
+                <p style="color:white;text-align:center;padding:0px 300px 0px 300px;line-height: 25px;"> Nos projets sont réparti sur une zone de la taille du canton de Fribourg, appelée "Busia County". Cette carte vous permet désormais de visualiser <span style="font-weight: 800;">les avancées de nos projets</span> de plantation d'arbres.</p>
+                <p style="color:white;text-align:center;padding:0px 300px 0px 300px;line-height: 25px;"> <span style="font-weight:800;">Chaque pin rouge indique un projet de plantation,</span> qui contient de 100 à 5000 arbres. Vos projets sont indiqués en dessous de la carte, sur des liens numérotés. Dans le cas où votre projet de s'affiche pas correctement, merci de consulter la FAQ et le cas échéant de nous contacter à info[at]emaua.org. </p>
+                <p style="color:white;text-align:center;padding:0px 300px 0px 300px;line-height: 25px;"> N'hésitez à pas utiliser la fonction street view de google, de sorte à vous faire une idée du paysage de notre région. Même si elle ne vous permettra malheureusement pas de visionner nos projets, car nous n'en n'avons pas le long des grands axes actuellement.</p>
                 <div class="map-container2 container2_maps">
                     {{> googleMap name="exampleMap" options=fullMapOptions}}
                 </div>
@@ -27,10 +29,9 @@
                 <!--si le user n'a pas son email qui est vérifié-->
                 <div class="mainPageDiv divUnverified">
                     <div class = "maps_info" align="center">
-                        <span class="monAdmin" style="margin-top:0px;background-color:lightgreen;">Merci de vérifier votre email !</span>
-                        <p class="pReg">Merci de vérifier votre email.</p>
+                        <span class="monAdmin" style="margin-top:0px;background-color:lightgreen;">MERCI DE VÉRIFIER VOTRE EMAIL</span>
                         <p class="pReg">Pour des raisons de sécurité, nous allons vous envoyer un email de vérification sur votre boîte mail.</p>
-                        <p class="pReg">Veuillez cliquer sur le bouton ci-dessous pour faire valider votre email actuel.</p>
+                        <p class="pReg">Veuillez cliquer sur le bouton ci-dessous pour valider votre email actuel.</p>
                         <p class="pReg"><button id="validateEmail" class="buttonGeneral" style="color:grey;border-color:lightgreen">VALIDER MON EMAIL</button></p>
                     </div>
                 </div>
