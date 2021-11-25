@@ -173,9 +173,12 @@ body {
 .maps_info{
   padding-bottom: 25px;
   background-color:white;
-  border-radius:3px;
-  width:60%;
-  margin-left:20%;
+  border-radius:10px;
+  width:22%;
+  position:absolute;
+  left:50%;
+  margin-left:-180px;
+  margin-top: 100px;
 }
 .loginTotal{
   width:75%;
@@ -203,6 +206,7 @@ body {
 .dropbtn {
   background-color: #04AA6D;
   color: white;
+  border-radius: 15px;
   padding: 16px;
   font-size: 16px;
   border: none;
@@ -233,13 +237,15 @@ body {
 }
 
 .dropdown-content a:hover {
-  background-color: #f1f1f1;
+  background-color:rgba(35, 161, 62, 0.507);
+  color: whitesmoke;
   border-radius: 15px 15px 15px 15px;}
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 .codeHeader{
   color:black;
+  font-weight: 800;
   background-color:rgba(255, 0, 0, 0);
   border:none;
   display:inline;
@@ -249,9 +255,8 @@ body {
   background-color:rgba(255, 0, 0, 0);
 }
 .codeHeader::placeholder{
-  color:#000000;
+  color:black;
 }
-
 .myHeader{
   width:100%;
   height:75px;
@@ -284,10 +289,12 @@ body {
 .inputReg::placeholder{
   text-align:center;
 }
-.pReg{
-  width:50%;
+.inputReg:hover{
+  color:rgb(35, 161, 62);
 }
-
+.pReg{
+  width:70%;
+}
 .a_black{
   color:black;
   font-size: 12px;
@@ -343,25 +350,30 @@ body {
 .monAdmin{
   background-color: #04AA6D;
   border-bottom: 1px lightgray solid;
-  padding: 15px;
+  padding: 25px 15px 15px 15px;
   height:25px;
+  width: 91%;
+  margin-bottom: 35px;
   text-decoration: none;
   display: block;
   color:white;
   font-size: 20px;
+  border-radius: 10px 10px 0px 0px;
 }
 .buttonGeneral{
   padding:10px;
   border-color:darkgrey;
   border-style: solid;
-  border-radius: 2px;
+  border-radius: 5px;
   border-width: 1px;
   background-color: rgb(241, 239, 239);
   width:100%;
 }
 .buttonGeneral:hover{
-  border-color:lightgrey;
-  background-color: rgb(247, 247, 247);
+  background-color: rgb(35, 161, 62);
+  border-color:whitesmoke;
+  color:whitesmoke;
+  font-weight: 600;
 }
 .myFooter{
   height:55px;
@@ -405,6 +417,7 @@ a.whiteA:hover{
 }
 .aMDP:hover{
   text-decoration: underline;
+  color:coral;
 }
 .hovertext {
   position: relative;
@@ -453,7 +466,7 @@ a.whiteA:hover{
     margin-top:5%;
   }
   .logoTitleNoUser{
-    width: 45%;
+    width: 25%;
     padding-left:27.5%;
   }
   .loginTotal{

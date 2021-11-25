@@ -11,11 +11,11 @@
                 <button class="dropbtn">{{nomUser}}</button>
                 <div class="dropdown-content" style="text-align:left;">
                   <a href="" id="disconnectUser">Se déconnecter</a>
-                  <a href="" id="changePassword">Changer de mot de passe</a>
+                  <a href="" id="changePassword" style="padding-bottom: 25px;">Changer de mot de passe</a>
                   {{#if isVerified}}
                     <a href="" id="addCode">
                       <form id="submitCodeHeader">
-                        <input class="codeHeader" type="text" id="codeHeader" placeholder="ENTRER UN CODE" style="display:inline;float:left;" />
+                        <input class="codeHeader" type="text" id="codeHeader" placeholder="Entrer un code" style="display:inline;float:left;"/>
                       </form>
                     </a>
                     {{else}}
