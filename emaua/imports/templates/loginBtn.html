@@ -1,5 +1,5 @@
 <template name="loginBtn">
-    <div class="loginDiv">
+    <!--<div class="loginDiv">
         <div class="placement_div_login1" align="center">
             <div class="loginTotal">
                 <div align="center" class="loginplatform">
@@ -7,7 +7,7 @@
                         <span class="Créer">Créer un compte <span class="txt_green">gratuit</span></span>
                     </button>
                     <hr class="hr_platform">
-                    <button class="btnLogin btn_bottom hovertext" data-hover="cette fonctionalité n'est pas encore disponible"> <!-- id="registerButtonPremium" when button is available -->
+                    <button class="btnLogin btn_bottom hovertext" data-hover="cette fonctionalité n'est pas encore disponible">
                         Créer un compte <span class="txt_green">payant</span>
                     </button>
                 </div>
@@ -33,5 +33,21 @@
                 Nous diffusons du savoir<span class="txt_couleur"> indigène et scientifique</span> pour améliorer l'autonomie des communautés et nous plantons <span class="txt_couleur">des dizaines de milliers d'arbres</span>
             </p>
         </div>
+    </div>-->
+    <div class="mainPageDiv">
+        <div class="maps_info" align="center">
+            <span class="monAdmin" style="margin-top:0px;">Connexions</span>
+            <p class="pReg"><input type="button" class="buttonGeneral" onclick="loginFunction()" value="SE CONNECTER" /></p>
+            <p class="pReg"><input type="button" id="annulerLogin" class="buttonGeneral" onclick="registerFunction()" value="CREER UN COMPTE" /></p>
+        </div>
     </div>
+
+    <script>
+        function loginFunction(){
+            FlowRouter.go('loginPage', {typeUsLog: "user"});
+        }
+        function registerFunction(){
+            FlowRouter.go('registerPage', {typeUsReg: "free"});
+        }
+    </script>
 </template>

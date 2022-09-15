@@ -82,7 +82,7 @@ Meteor.startup(() => {
     
     if(Meteor.isServer){
       //on charge le serveur mail
-      process.env.MAIL_URL = `smtps://emaua.info@gmail.com:emaua_MP21@smtp.gmail.com:465/`;
+      process.env.MAIL_URL = `smtps://emaua.info@gmail.com:fegdurnwlgqchako@smtp.gmail.com:465/`;
 
       //on créer des templates pour les mails automatiques
       Accounts.emailTemplates = {
